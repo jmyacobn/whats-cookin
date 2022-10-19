@@ -1,6 +1,6 @@
 body {
   background: white;
-  background-size: cover; 
+  background-size: cover;
   width: 100vw;
   height: 100vh;
   margin: 0;
@@ -36,6 +36,10 @@ h2 {
   padding-left: 2vw;
 }
 
+h3 {
+  color: #4b4040;
+}
+
 nav {
   height: 7vh;
   margin-top: 15px;
@@ -52,6 +56,13 @@ nav {
   width: 100vw;
 }
 
+.tags {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 18vw;
+}
+
 .tag-section, .ingredient-section {
   width: 25vw;
   margin-right: 15px;
@@ -60,6 +71,18 @@ nav {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.search {
+  display: flex;
+  width: 20vw;
+  justify-content: center;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+}
+
+.submit-search-button {
+  margin-left: 1.5vw;
 }
 
 li {
@@ -132,14 +155,15 @@ button {
 
 .fullwrap {
   position: relative;
+  height: fit-content;
 }
- 
+
 .fullcap {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 0; 
+  top: 0;
   left: 0;
   text-align: center;
   padding-top: 50%;
@@ -148,9 +172,9 @@ button {
   visibility: none; opacity: 0;
   transition: opacity 0.3s;
 }
- 
+
 .fullwrap:hover, .fullcap:hover {
-  visibility: visible; 
+  visibility: visible;
   opacity: 1;
 }
 
