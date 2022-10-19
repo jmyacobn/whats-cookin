@@ -51,7 +51,7 @@ nav {
   padding-right: 2vw;
 }
 
-.bottom-section {
+.main {
   display: flex;
   width: 100vw;
 }
@@ -63,7 +63,7 @@ nav {
   width: 18vw;
 }
 
-.tag-section, .ingredient-section {
+.filter-section, .ingredient-section {
   width: 25vw;
   margin-right: 15px;
   background: #E3D3D3;
@@ -98,7 +98,7 @@ ul {
   padding-top: 12px;
 }
 
-.main, .favorite {
+.recipe-repository, .favorite {
   width: 75vw;
   min-height: 100vh;
   background: #E3D3D3;
