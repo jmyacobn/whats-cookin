@@ -8,9 +8,9 @@ class User {
     addRecipesToCook(recipe) {
         return this.recipesToCook.push(recipe);
     }
-    removeRecipesToCook(recipe) {
-        this.recipesToCook.splice(recipe, 1)
-        return this.recipesToCook
+    removeRecipesToCook(recipeToRemove) {
+      const index = this.recipesToCook.indexOf(recipeToRemove) 
+       return this.recipesToCook.splice([index], 1)
     }
 }
 
