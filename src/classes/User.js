@@ -17,7 +17,13 @@ class User {
             return recipe.tags.includes(tag)
         })
     }
-
+    filterToCookByName(name) {
+        return this.recipesToCook.filter((recipe) => {
+            return recipe.name === name
+        })
+    }
 }
+
+
 
 export default User;
