@@ -20,10 +20,11 @@ let randomUser;
 console.log("HELP", sampleUsersData)
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
+const userName = document.querySelector('#user-info')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', displayAllRecipes);
-window.addEventListener('load', randomizeUser)
+window.addEventListener('load', displayWelcomeMessage)
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
@@ -59,4 +60,9 @@ function randomizeUser() {
         randomUser = sampleUsersData[Math.floor(Math.random() * sampleUsersData.length)]
         let user = new User(randomUser);
         return user
+}
+
+function displayWelcomeMessage() {
+    randomizeUser()
+    userName.innerText = `Welcome, ${randomUser.name}!`
 }
