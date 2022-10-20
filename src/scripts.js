@@ -16,16 +16,18 @@ import './images/turing-logo.png'
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
 let recipeRepository;
 let randomUser;
+let user
 
 console.log("HELP", sampleUsersData)
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
 const userName = document.querySelector('#user-info')
 
+
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', displayAllRecipes);
 window.addEventListener('load', displayWelcomeMessage)
-
+allRecipes.addEventListener('click', addRecipeToFavorites)
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
 //GOAL: image URL and image name
@@ -37,20 +39,26 @@ function displayAllRecipes() {
     recipeRepository = new RecipeRepository(sampleRecipeData);
 
     const recipeDisplayList = recipeRepository.recipes.reduce((acc, current) => {
+        console.log("Current", current)
         const recipeData = {};
+        recipeData.id = current.id
         recipeData.imageURL = current.image;
         recipeData.name = current.name;
+        console.log(recipeData)
         acc.push(recipeData);
         return acc;
     }, [])
-    .forEach((current) => {
+    console.log("HELLO", recipeDisplayList)
+    recipeDisplayList.forEach((current) => {
         allRecipes.innerHTML += `
-            <div class = "fullwrap">
+        <div class = "fullwrap" id="${current.id}">
+        <span id="favorite">❤️</span>
                 <img src="${current.imageURL}" alt="${current.name}">
-            <div class="fullcap"> 
+             <div> 
                 ${current.name}
+                </div>
             </div>
-            </div>`
+           `
     })
     console.log(recipeDisplayList);
 }
@@ -58,11 +66,21 @@ function displayAllRecipes() {
 
 function randomizeUser() {
         randomUser = sampleUsersData[Math.floor(Math.random() * sampleUsersData.length)]
-        let user = new User(randomUser);
+        user = new User(randomUser);
         return user
 }
 
 function displayWelcomeMessage() {
     randomizeUser()
     userName.innerText = `Welcome, ${randomUser.name}!`
+}
+
+function addRecipeToFavorites(event) {
+    let clickableID = Number(event.target.parentNode.id)
+    let favoriteRecipe = sampleRecipeData.filter((recipe)=>{
+      return recipe.id === clickableID 
+    })
+     user.addRecipesToCook(favoriteRecipe)
+    console.log(user.recipesToCook)
+    return
 }
