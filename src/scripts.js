@@ -16,6 +16,9 @@ let recipeRepository;
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
+const singleRecipe = document.querySelector("#recipe");
+const filterSidebar = document.querySelector("#filterSection");
+const ingredientSidebar = document.querySelector("#ingredientSection")
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', displayAllRecipes);
@@ -48,4 +51,20 @@ function displayAllRecipes() {
             </div>`
     })
     console.log(recipeDisplayList);
-}
+};
+
+function viewRecipeDetail() {
+    hide(allRecipes);
+    hide(filterSidebar)
+    show(singleRecipe)
+    show(ingredientSidebar)
+};
+
+// ~~~~~~~ Helper Functions ~~~~~~~
+
+function hide(element) {
+    element.classList.add("hidden");
+  };
+   function show(element) {
+    element.classList.remove("hidden");
+  };
