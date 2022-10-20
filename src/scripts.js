@@ -21,10 +21,30 @@ const allRecipes = document.querySelector("#recipeRepository");
 window.addEventListener('load', displayAllRecipes);
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
+
+//GOAL: image URL and image name
+//NEED: [{imageURL: www.abd.com, name: burrito}, 
+//       {imageURL: www.abc.com, name: taco},
+//       {imageURL: www.abe.com, name: burger}]
+
 function displayAllRecipes() {
     recipeRepository = new RecipeRepository(sampleRecipeData);
-    let images = recipeRepository.recipes.map(recipe => recipe.image)
-    .forEach((imageUrl) => {
-        allRecipes.innerHTML += `<img src="${imageUrl}">`
+
+    const recipeDisplayList = recipeRepository.recipes.reduce((acc, current) => {
+        const recipeData = {};
+        recipeData.imageURL = current.image;
+        recipeData.name = current.name;
+        acc.push(recipeData);
+        return acc;
+    }, [])
+    .forEach((current) => {
+        allRecipes.innerHTML += `
+            <div class = "fullwrap">
+                <img src="${current.imageURL}" alt="${current.name}">
+            <div class="fullcap"> 
+                ${current.name}
+            </div>
+            </div>`
     })
+    console.log(recipeDisplayList);
 }
