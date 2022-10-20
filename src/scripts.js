@@ -2,7 +2,9 @@ import apiCalls from './apiCalls';
 import './styles.css';
 import RecipeRepository from './classes/RecipeRepository';
 import Recipe from "./classes/Recipe";
-import { sampleRecipeData } from './data/sample-data';
+import User from "./classes/User";
+import { sampleRecipeData, sampleUsersData } from './data/sample-data';
+
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
 
@@ -13,12 +15,15 @@ import './images/turing-logo.png'
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
 let recipeRepository;
+let randomUser;
 
+console.log("HELP", sampleUsersData)
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', displayAllRecipes);
+window.addEventListener('load', randomizeUser)
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
@@ -47,4 +52,11 @@ function displayAllRecipes() {
             </div>`
     })
     console.log(recipeDisplayList);
+}
+
+
+function randomizeUser() {
+        randomUser = sampleUsersData[Math.floor(Math.random() * sampleUsersData.length)]
+        let user = new User(randomUser);
+        return user
 }
