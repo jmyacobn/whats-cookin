@@ -54,6 +54,12 @@ describe('User', () => {
     // user.removeRecipesToCook(recipe1)
     // expect(user.recipesToCook).to.deep.equal([])
   })
+  it('should filter recipesToCook by tag', () => {
+    user.addRecipesToCook(recipe1)
+    user.addRecipesToCook(recipe2)
+    user.filterToCookByTag(recipeRepo, "hor d'oeuvre")
+    expect(user.recipesToCook).to.deep.equal([recipe1])
+  })
 });
 
 // Create classes and methods that can:
