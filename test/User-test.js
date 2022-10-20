@@ -42,28 +42,18 @@ describe('User', () => {
   });
   it('should have a method to remove recipes to cook', () => {
     user.addRecipesToCook(recipe1)
-    expect(user.recipesToCook).to.deep.equal([recipe1])
-    user.removeRecipesToCook(recipe1)
-    expect(user.recipesToCook).to.deep.equal([])
-
-    user.addRecipesToCook(recipe1)
     user.addRecipesToCook(recipe2)
     expect(user.recipesToCook).to.deep.equal([recipe1, recipe2])
     user.removeRecipesToCook(recipe2)
     expect(user.recipesToCook).to.deep.equal([recipe1])
-    // user.removeRecipesToCook(recipe1)
-    // expect(user.recipesToCook).to.deep.equal([])
+    user.removeRecipesToCook(recipe1)
+    expect(user.recipesToCook).to.deep.equal([])
   })
   it('should filter recipesToCook by tag', () => {
     user.addRecipesToCook(recipe1)
     user.addRecipesToCook(recipe2)
-    user.filterToCookByTag(recipeRepo, "hor d'oeuvre")
-    expect(user.recipesToCook).to.deep.equal([recipe1])
+    expect(user.filterToCookByTag("hor d'oeuvre")).to.deep.equal([recipe1])
+    expect(user.filterToCookByTag("main dish")).to.deep.equal([recipe2])
+    expect(user.filterToCookByTag("munchies")).to.deep.equal([])
   })
 });
-
-// Create classes and methods that can:
-
-// Allow a user to add/remove a recipe to their recipesToCook list (add to my recipesToCook)
-// Filter my recipesToCook by a tag. (Extension option: filter by multiple tags)
-// Filter my recipesToCook by its name. (Extension option: filter by name or ingredients)
