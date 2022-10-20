@@ -35,11 +35,12 @@ function displayAllRecipes() {
         recipeData.imageURL = current.image;
         recipeData.name = current.name;
         acc.push(recipeData);
+        recipeData.id = current.id;
         return acc;
     }, [])
     .forEach((current) => {
         allRecipes.innerHTML += `
-            <div class = "fullwrap">
+            <div class= "fullwrap" id="${current.id}">
                 <img src="${current.imageURL}" alt="${current.name}">
             <div class="fullcap"> 
                 ${current.name}
