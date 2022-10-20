@@ -1,5 +1,3 @@
-import RecipeRepository from "./RecipeRepository";
-
 class User {
     constructor(data) {
         this.name = data.name;
@@ -11,12 +9,13 @@ class User {
         return this.recipesToCook.push(recipe);
     }
     removeRecipesToCook(recipeToRemove) {
-      const index = this.recipesToCook.indexOf(recipeToRemove) 
-       return this.recipesToCook.splice([index], 1)
+        const index = this.recipesToCook.indexOf(recipeToRemove)
+        return this.recipesToCook.splice([index], 1)
     }
-    filterToCookByTag(RecipeRepository, tag) {
-       return this.recipesToCook[RecipeRepository.filterTag(tag)]
-       
+    filterToCookByTag(tag) {
+        return this.recipesToCook.filter((recipe) => {
+            return recipe.tags.includes(tag)
+        })
     }
 
 }
