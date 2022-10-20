@@ -22,7 +22,7 @@ const ingredientSidebar = document.querySelector("#ingredientSection")
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', displayAllRecipes);
-
+allRecipes.addEventListener('click', viewRecipeDetail);
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
 //GOAL: image URL and image name
@@ -45,19 +45,26 @@ function displayAllRecipes() {
         allRecipes.innerHTML += `
             <div class= "fullwrap" id="${current.id}">
                 <img src="${current.imageURL}" alt="${current.name}">
-            <div class="fullcap"> 
-                ${current.name}
-            </div>
+                <div class="fullcap"> 
+                    ${current.name}
+                </div>
             </div>`
     })
-    console.log(recipeDisplayList);
+    // console.log(recipeDisplayList);
 };
 
-function viewRecipeDetail() {
+function viewRecipeDetail(event) {
+    console.log(event.target.parentElement)
+    if(event.target.parentElement.id === "595736") {
+        console.log("Cookies, Yay")
+        // singleRecipe.innerHTML += `
+        // <img src="${current.imageURL}" alt="${current.name}">
+        // `
+    };
     hide(allRecipes);
-    hide(filterSidebar)
-    show(singleRecipe)
-    show(ingredientSidebar)
+    hide(filterSidebar);
+    show(singleRecipe);
+    show(ingredientSidebar);
 };
 
 // ~~~~~~~ Helper Functions ~~~~~~~
