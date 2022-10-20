@@ -45,6 +45,12 @@ describe('User', () => {
     expect(user.recipesToCook).to.deep.equal([recipe1])
     user.removeRecipesToCook(recipe1)
     expect(user.recipesToCook).to.deep.equal([])
+
+    user.addRecipesToCook(recipe1)
+    user.addRecipesToCook(recipe2)
+    expect(user.recipesToCook).to.deep.equal([recipe1, recipe2])
+    user.removeRecipesToCook(recipe2)
+    expect(user.recipesToCook).to.deep.equal([recipe1])
     // user.removeRecipesToCook(recipe1)
     // expect(user.recipesToCook).to.deep.equal([])
   })
