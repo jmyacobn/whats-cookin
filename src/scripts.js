@@ -65,7 +65,7 @@ function viewRecipeDetail(event) {
     let instructionElement = "";
 
     instructionsArray.forEach(curr => {
-      instructionElement += curr + "<br>"
+      instructionElement += "<p>" + curr + "</p>"
     })
     console.log(instructionElement)
 
@@ -73,7 +73,7 @@ function viewRecipeDetail(event) {
         <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
         <section class="instructions">
           <h2>${foundRecipe.name}</h2>
-          <p>${instructionElement}</p>
+          ${instructionElement}
         </section>`
 
     // console.log("here:",foundRecipe);
