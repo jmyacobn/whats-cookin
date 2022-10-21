@@ -11,7 +11,7 @@ import { usersData } from './data/users';
 import './images/turing-logo.png'
 import { use } from 'chai';
 
-// As a user, I should be able to click on a recipe to view more information including directions, ingredients needed, and total cost.
+// As a user, I should be able to click on a recipe to view more information including ingredients.
 // As a user, I should be able to filter recipes by a tag.
 // As a user, I should be able to filter my toCook recipes by a tag.
 
@@ -28,6 +28,7 @@ const ingredientSidebar = document.querySelector("#ingredientSection")
 const userName = document.querySelector('#user-info');
 const favoritesView = document.querySelector('#favorites-view');
 const savedButton = document.querySelector('#saved-recipe-button');
+const totalCost = document.querySelector('#totalCost')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 allRecipes.addEventListener('click', viewRecipeDetail);
@@ -46,20 +47,27 @@ function displayAllRecipes() {
 }
 
 function viewRecipeDetail(event) {
-    //GOAL: incoporate instructions and total cost into recipe details page
+  viewRecipeInstructions(event);
+  viewRecipeTotalCost(event);
+}
+
+function viewRecipeIngredients(event) {
+  const foundRecipe = recipeRepository.recipes.find((current) => {
+      return current.id === findId(event);
+  })
+}
+
+function viewRecipeTotalCost(event) {
+  const foundRecipe = recipeRepository.recipes.find((current) => {
+      return current.id === findId(event);
+  })
+  totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredientsData)}`
+}
+
+function viewRecipeInstructions(event) {
     const foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event);
     })
-
-    // ${foundRecipe.instructions[i].number}. ${foundRecipe.instructions[i].instruction}
-    //Create variable and do iterator here
-    // Store in variable => insert that variable in p tag below where we hard coded!
-    // forEach to do p tag for each instrution step
-
-    //GOAL: display all instructions as p triangles
-    //INFO: instruction method and instructions array
-    //
-    // console.log("instructions", foundRecipe.getInstructions())
 
     let instructionsArray = foundRecipe.getInstructions();
     let instructionElement = "";
