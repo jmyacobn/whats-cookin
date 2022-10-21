@@ -29,6 +29,7 @@ const userName = document.querySelector('#user-info');
 const favoritesView = document.querySelector('#favorites-view');
 const savedButton = document.querySelector('#saved-recipe-button');
 const totalCost = document.querySelector('#totalCost')
+const ingredientList = document.querySelector('#ingredientList');
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 allRecipes.addEventListener('click', viewRecipeDetail);
@@ -49,19 +50,23 @@ function displayAllRecipes() {
 function viewRecipeDetail(event) {
   viewRecipeInstructions(event);
   viewRecipeTotalCost(event);
+  viewRecipeIngredients(event);
 }
 
 function viewRecipeIngredients(event) {
   const foundRecipe = recipeRepository.recipes.find((current) => {
       return current.id === findId(event);
   })
-}
+  console.log(foundRecipe.determineIngredients(ingredientsData));
+  
+  let ingredientListArray = foundRecipe.determineIngredients(ingredientsData);
+  let ingredientListInfo = "";
 
-function viewRecipeTotalCost(event) {
-  const foundRecipe = recipeRepository.recipes.find((current) => {
-      return current.id === findId(event);
+  ingredientListArray.forEach(curr => {
+    ingredientListInfo += "<li>" + curr + "</li>"
   })
-  totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredientsData)}`
+  ingredientList.innerHTML += `${ingredientListInfo}`
+
 }
 
 function viewRecipeInstructions(event) {
@@ -84,6 +89,13 @@ function viewRecipeInstructions(event) {
         </section>`
     return foundRecipe;
 };
+
+function viewRecipeTotalCost(event) {
+    const foundRecipe = recipeRepository.recipes.find((current) => {
+        return current.id === findId(event);
+    })
+    totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredientsData)}`
+  }
 
 function randomizeUser() {
         randomUser = usersData[Math.floor(Math.random() * usersData.length)]
