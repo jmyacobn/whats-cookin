@@ -123,14 +123,18 @@ ul {
 }
 
 .instructions{
-  width:65vw;
+  width:60vw;
   height: fit-content;
   background: white;
-  text-align: center;
+  text-align: left;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  margin-top: 5vw;
 }
 
 h2 {
   padding-left: 0;
+  text-align: center;
 }
 
 .total-cost {
