@@ -6,7 +6,6 @@ import { sampleRecipeData } from './data/sample-data';
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
 
-// As a user, I should be able to view a list of all recipes.
 // As a user, I should be able to click on a recipe to view more information including directions, ingredients needed, and total cost.
 // As a user, I should be able to filter recipes by a tag. (Extension option: by multiple tags)
 // As a user, I should be able to search recipes by their name. (Extension option: by name or ingredients)
@@ -22,7 +21,6 @@ const ingredientSidebar = document.querySelector("#ingredientSection")
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', displayAllRecipes);
-// allRecipes.addEventListener('click', findId);
 allRecipes.addEventListener('click', viewRecipeDetail);
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
@@ -59,41 +57,21 @@ function findId(event){
 }
 
 function viewRecipeDetail(event) {
-
-    //GOAL: iterate through sample data list that matches 
-    // our id, and return object containing url, name, instructions, cost
-    //INFO: We are given a id number (represents a recipe)
-
+    //GOAL: incoporate instructions and total cost into recipe details page
     const foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event);
     })
 
-    console.log
-
     singleRecipe.innerHTML += `
-        <img src="${foundRecipe.image}">
+        <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
         <section class="instructions">
-          <h2>TEST</h2>
-          <p>Poop</p>
+          <h2>${foundRecipe.name}</h2>
+          <p>instructionsss 1 2 3</p>
         </section>`
 
     console.log("here:", foundRecipe);
     return foundRecipe;
 };
-
-
-
-// function viewRecipeDetail(event) {
-//     console.log(event.target.parentElement)
-//     if(event.target.parentElement.id === "595736") {
-//         console.log("Cookies, Yay")
-//     };
-   
-//     hide(allRecipes);
-//     hide(filterSidebar);
-//     show(singleRecipe);
-//     show(ingredientSidebar);
-// };
 
 // ~~~~~~~ Helper Functions ~~~~~~~
 
