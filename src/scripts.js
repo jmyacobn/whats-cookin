@@ -3,7 +3,9 @@ import './styles.css';
 import RecipeRepository from './classes/RecipeRepository';
 import Recipe from "./classes/Recipe";
 import User from "./classes/User";
-import { sampleRecipeData, sampleUsersData } from './data/sample-data';
+import { ingredientsData } from './data/ingredients'
+import { recipeData } from './data/recipes';
+import { usersData } from './data/users';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
@@ -37,7 +39,7 @@ savedButton.addEventListener('click', displayFavorites);
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
 function displayAllRecipes() {
-    recipeRepository = new RecipeRepository(sampleRecipeData);
+    recipeRepository = new RecipeRepository(recipeData);
     return recipeRepository.recipes.forEach((current) => {
         displayRecipePreview(current, allRecipes)
     })
@@ -65,7 +67,7 @@ function viewRecipeDetail(event) {
 };
 
 function randomizeUser() {
-        randomUser = sampleUsersData[Math.floor(Math.random() * sampleUsersData.length)]
+        randomUser = usersData[Math.floor(Math.random() * usersData.length)]
         user = new User(randomUser);
         return user
 }
@@ -77,7 +79,7 @@ function displayWelcomeMessage() {
 
 function addRecipeToFavorites(event) {
     let clickableID = Number(event.target.parentNode.id)
-    let favoriteRecipe = sampleRecipeData.filter((recipe)=>{
+    let favoriteRecipe = recipeData.filter((recipe)=>{
       return recipe.id === clickableID 
     })
      user.addRecipesToCook(favoriteRecipe)
@@ -107,11 +109,12 @@ function displayRecipePreview(current, view) {
     view.innerHTML += `
     <div class = "fullwrap" id="${current.id}">
     <span id="favorite">❤️</span>
-            <img src="${current.image}" alt="${current.name}">
-         <div class="fullcap"> 
-            ${current.name}
-            </div>
-        </div>`
+    <img src="${current.image}" alt="${current.name}">
+    <div class="fullcap"> 
+        ${current.name}
+    </div>
+    </div>
+    `
     }
     
  function findId(event){
