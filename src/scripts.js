@@ -22,6 +22,7 @@ const ingredientSidebar = document.querySelector("#ingredientSection")
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', displayAllRecipes);
+// allRecipes.addEventListener('click', findId);
 allRecipes.addEventListener('click', viewRecipeDetail);
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
@@ -32,6 +33,12 @@ allRecipes.addEventListener('click', viewRecipeDetail);
 
 function displayAllRecipes() {
     recipeRepository = new RecipeRepository(sampleRecipeData);
+
+    // function displayAllRecipes() {
+    //     recipeRepository = new RecipeRepository(sampleRecipeData)
+    //     let images = recipeRepository.recipes.map(recipe => recipe.image)
+    //     .forEach((image) => {allRecipes.innerHTML += `<img src="${image}"alt="A gear with a T in the center">`})
+    // }
 
     const recipeDisplayList = recipeRepository.recipes.reduce((acc, current) => {
         const recipeData = {};
@@ -50,22 +57,70 @@ function displayAllRecipes() {
                 </div>
             </div>`
     })
-    // console.log(recipeDisplayList);
 };
 
+// function findId(event){
+//     const recipeId = event.target.parentElement.id;
+//     hide(allRecipes);
+//     hide(filterSidebar);
+//     show(singleRecipe);
+//     show(ingredientSidebar);
+
+//     console.log("ID", recipeId);
+
+//     return recipeId;
+// }
+
 function viewRecipeDetail(event) {
-    console.log(event.target.parentElement)
-    if(event.target.parentElement.id === "595736") {
-        console.log("Cookies, Yay")
-        // singleRecipe.innerHTML += `
-        // <img src="${current.imageURL}" alt="${current.name}">
-        // `
-    };
+
+    //GOAL: iterate through sample data list that matches 
+    // our id, and return object containing url, name, instructions, cost
+    //INFO: We are given a id number (represents a recipe)
+
+    const recipeId = Number(event.target.parentElement.id);
     hide(allRecipes);
     hide(filterSidebar);
     show(singleRecipe);
     show(ingredientSidebar);
+
+    const foundRecipe = recipeRepository.recipes.filter((current) => {
+        return current.id === recipeId;
+    })
+
+    console.log("here:", foundRecipe);
+    return foundRecipe;
+
+
+    // singleRecipe.innerHTML += `
+    //     <img src="/images/turing-logo.png" class="recipe-image" alt="A gear with a T in the center">
+    //     <section class="instructions">
+    //       <h2>Instructions</h2>
+    //       <p></p>
+    //     </section>`
+
+//     if(event.target.parentElement.id === "595736") {
+//         console.log("Cookies, Yay")
+//     };
+   
+//     hide(allRecipes);
+//     hide(filterSidebar);
+//     show(singleRecipe);
+//     show(ingredientSidebar);
 };
+
+
+
+// function viewRecipeDetail(event) {
+//     console.log(event.target.parentElement)
+//     if(event.target.parentElement.id === "595736") {
+//         console.log("Cookies, Yay")
+//     };
+   
+//     hide(allRecipes);
+//     hide(filterSidebar);
+//     show(singleRecipe);
+//     show(ingredientSidebar);
+// };
 
 // ~~~~~~~ Helper Functions ~~~~~~~
 
