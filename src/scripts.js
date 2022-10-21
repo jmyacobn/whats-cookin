@@ -9,8 +9,6 @@ import { sampleRecipeData, sampleUsersData } from './data/sample-data';
 import './images/turing-logo.png'
 import { use } from 'chai';
 
-var test
-// As a user, I should be able to view a list of all recipes.
 // As a user, I should be able to click on a recipe to view more information including directions, ingredients needed, and total cost.
 // As a user, I should be able to filter recipes by a tag. (Extension option: by multiple tags)
 // As a user, I should be able to search recipes by their name. (Extension option: by name or ingredients)
@@ -18,29 +16,25 @@ var test
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
 let recipeRepository;
 let randomUser;
-let user
+let user;
 
-console.log("HELP", sampleUsersData)
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
+const singleRecipe = document.querySelector("#recipe");
+const filterSidebar = document.querySelector("#filterSection");
+const ingredientSidebar = document.querySelector("#ingredientSection")
 const userName = document.querySelector('#user-info');
 const favoritesView = document.querySelector('#favorites-view');
 const savedButton = document.querySelector('#saved-recipe-button');
-const singleRecipe = document.querySelector('#recipe');
-
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
+allRecipes.addEventListener('click', viewRecipeDetail);
 window.addEventListener('load', displayAllRecipes);
 window.addEventListener('load', displayWelcomeMessage);
 allRecipes.addEventListener('click', addRecipeToFavorites);
 savedButton.addEventListener('click', displayFavorites);
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
-
-//GOAL: image URL and image name
-//NEED: [{imageURL: www.abd.com, name: burrito}, 
-//       {imageURL: www.abc.com, name: taco},
-//       {imageURL: www.abe.com, name: burger}]
 
 function displayAllRecipes() {
     recipeRepository = new RecipeRepository(sampleRecipeData);
@@ -49,16 +43,26 @@ function displayAllRecipes() {
     })
 }
 
-function displayRecipePreview(current, view) {
-    view.innerHTML += `
-    <div class = "fullwrap" id="${current.id}">
-    <span id="favorite">❤️</span>
-            <img src="${current.image}" alt="${current.name}">
-         <div> 
-            ${current.name}
-            </div>
-        </div>`
-    }
+function viewRecipeDetail(event) {
+    //GOAL: incoporate instructions and total cost into recipe details page
+    const foundRecipe = recipeRepository.recipes.find((current) => {
+        return current.id === findId(event);
+    })
+    //found.instructions is an array
+    // ${foundRecipe.instructions[i].number}. ${foundRecipe.instructions[i].instruction}
+    //Create variable and do iterator here
+    // Store in variable => insert that variable in p tag below where we hard coded!
+    // forEach to do p tag for each instrution step
+    singleRecipe.innerHTML += `
+        <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
+        <section class="instructions">
+          <h2>${foundRecipe.name}</h2>
+          <p>${foundRecipe.instructions[0].instruction}</p>
+        </section>`
+
+    console.log("here:",foundRecipe);
+    return foundRecipe;
+};
 
 function randomizeUser() {
         randomUser = sampleUsersData[Math.floor(Math.random() * sampleUsersData.length)]
@@ -90,10 +94,32 @@ function displayFavorites() {
     })
 }
 
+// ~~~~~~~ Helper Functions ~~~~~~~
+
 function hide(element) {
     element.classList.add("hidden");
-};
-
-function show(element) {
+  };
+   function show(element) {
     element.classList.remove("hidden");
-};
+  };
+
+function displayRecipePreview(current, view) {
+    view.innerHTML += `
+    <div class = "fullwrap" id="${current.id}">
+    <span id="favorite">❤️</span>
+            <img src="${current.image}" alt="${current.name}">
+         <div class="fullcap"> 
+            ${current.name}
+            </div>
+        </div>`
+    }
+    
+ function findId(event){
+    const recipeId = Number(event.target.parentElement.id);
+    hide(allRecipes);
+    hide(filterSidebar);
+    show(singleRecipe);
+    show(ingredientSidebar);
+
+    return recipeId;
+}
