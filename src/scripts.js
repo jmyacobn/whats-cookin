@@ -2,9 +2,12 @@ import apiCalls from './apiCalls';
 import './styles.css';
 import RecipeRepository from './classes/RecipeRepository';
 import Recipe from "./classes/Recipe";
-import { sampleRecipeData } from './data/sample-data';
+import User from "./classes/User";
+import { sampleRecipeData, sampleUsersData } from './data/sample-data';
+
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
+import { use } from 'chai';
 
 // As a user, I should be able to click on a recipe to view more information including directions, ingredients needed, and total cost.
 // As a user, I should be able to filter recipes by a tag. (Extension option: by multiple tags)
@@ -12,48 +15,32 @@ import './images/turing-logo.png'
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
 let recipeRepository;
+let randomUser;
+let user;
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
 const singleRecipe = document.querySelector("#recipe");
 const filterSidebar = document.querySelector("#filterSection");
 const ingredientSidebar = document.querySelector("#ingredientSection")
+const userName = document.querySelector('#user-info');
+const favoritesView = document.querySelector('#favorites-view');
+const savedButton = document.querySelector('#saved-recipe-button');
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
-window.addEventListener('load', displayAllRecipes);
 allRecipes.addEventListener('click', viewRecipeDetail);
+window.addEventListener('load', displayAllRecipes);
+window.addEventListener('load', displayWelcomeMessage);
+allRecipes.addEventListener('click', addRecipeToFavorites);
+savedButton.addEventListener('click', displayFavorites);
+
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
 function displayAllRecipes() {
     recipeRepository = new RecipeRepository(sampleRecipeData);
-
-    const recipeDisplayList = recipeRepository.recipes.reduce((acc, current) => {
-        const recipeData = {};
-        recipeData.imageURL = current.image;
-        recipeData.name = current.name;
-        acc.push(recipeData);
-        recipeData.id = current.id;
-        return acc;
-    }, [])
-    .forEach((current) => {
-        allRecipes.innerHTML += `
-            <div class= "fullwrap" id="${current.id}">
-                <img src="${current.imageURL}" alt="${current.name}">
-                <div class="fullcap">
-                    ${current.name}
-                </div>
-            </div>`
+    return recipeRepository.recipes.forEach((current) => {
+        displayRecipePreview(current, allRecipes)
     })
-};
-
-function findId(event){
-    const recipeId = Number(event.target.parentElement.id);
-    hide(allRecipes);
-    hide(filterSidebar);
-    show(singleRecipe);
-    show(ingredientSidebar);
-
-    return recipeId;
 }
 
 function viewRecipeDetail(event) {
@@ -77,6 +64,36 @@ function viewRecipeDetail(event) {
     return foundRecipe;
 };
 
+function randomizeUser() {
+        randomUser = sampleUsersData[Math.floor(Math.random() * sampleUsersData.length)]
+        user = new User(randomUser);
+        return user
+}
+
+function displayWelcomeMessage() {
+    randomizeUser()
+    userName.innerText = `Welcome, ${randomUser.name}!`
+}
+
+function addRecipeToFavorites(event) {
+    let clickableID = Number(event.target.parentNode.id)
+    let favoriteRecipe = sampleRecipeData.filter((recipe)=>{
+      return recipe.id === clickableID 
+    })
+     user.addRecipesToCook(favoriteRecipe)
+    return
+}
+
+function displayFavorites() {
+   hide(allRecipes);
+   show(favoritesView);
+   return user.recipesToCook.map((recipe) => {
+    recipe.forEach((current) => {
+        displayRecipePreview(current, favoritesView)
+        })
+    })
+}
+
 // ~~~~~~~ Helper Functions ~~~~~~~
 
 function hide(element) {
@@ -85,3 +102,24 @@ function hide(element) {
    function show(element) {
     element.classList.remove("hidden");
   };
+
+function displayRecipePreview(current, view) {
+    view.innerHTML += `
+    <div class = "fullwrap" id="${current.id}">
+    <span id="favorite">❤️</span>
+            <img src="${current.image}" alt="${current.name}">
+         <div class="fullcap"> 
+            ${current.name}
+            </div>
+        </div>`
+    }
+    
+ function findId(event){
+    const recipeId = Number(event.target.parentElement.id);
+    hide(allRecipes);
+    hide(filterSidebar);
+    show(singleRecipe);
+    show(ingredientSidebar);
+
+    return recipeId;
+}
