@@ -32,7 +32,7 @@ class Recipe {
               });
             return total
           }, 0);
-            return this.totalCost;
+            return this.totalCost.toFixed(2);
     }
     getInstructions() {
       return this.instructions.reduce((instructionArray, direction) => {
