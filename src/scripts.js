@@ -39,7 +39,7 @@ function displayAllRecipes() {
         allRecipes.innerHTML += `
             <div class= "fullwrap" id="${current.id}">
                 <img src="${current.imageURL}" alt="${current.name}">
-                <div class="fullcap"> 
+                <div class="fullcap">
                     ${current.name}
                 </div>
             </div>`
@@ -61,15 +61,19 @@ function viewRecipeDetail(event) {
     const foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event);
     })
-
+    //found.instructions is an array
+    // ${foundRecipe.instructions[i].number}. ${foundRecipe.instructions[i].instruction}
+    //Create variable and do iterator here
+    // Store in variable => insert that variable in p tag below where we hard coded!
+    // forEach to do p tag for each instrution step
     singleRecipe.innerHTML += `
         <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
         <section class="instructions">
           <h2>${foundRecipe.name}</h2>
-          <p>instructionsss 1 2 3</p>
+          <p>${foundRecipe.instructions[0].instruction}</p>
         </section>`
 
-    console.log("here:", foundRecipe);
+    console.log("here:",foundRecipe);
     return foundRecipe;
 };
 
