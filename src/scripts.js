@@ -7,7 +7,7 @@ import { sampleRecipeData, sampleUsersData } from './data/sample-data';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
-
+var test
 // As a user, I should be able to view a list of all recipes.
 // As a user, I should be able to click on a recipe to view more information including directions, ingredients needed, and total cost.
 // As a user, I should be able to filter recipes by a tag. (Extension option: by multiple tags)
@@ -21,13 +21,18 @@ let user
 console.log("HELP", sampleUsersData)
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
-const userName = document.querySelector('#user-info')
+const userName = document.querySelector('#user-info');
+const favoritesView = document.querySelector('#favorites-view');
+const savedButton = document.querySelector('#saved-recipe-button');
+const singleRecipe = document.querySelector('#recipe');
 
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', displayAllRecipes);
-window.addEventListener('load', displayWelcomeMessage)
-allRecipes.addEventListener('click', addRecipeToFavorites)
+window.addEventListener('load', displayWelcomeMessage);
+allRecipes.addEventListener('click', addRecipeToFavorites);
+savedButton.addEventListener('click', displayFavorites);
+
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
 //GOAL: image URL and image name
@@ -50,7 +55,9 @@ function displayAllRecipes() {
     }, [])
     console.log("HELLO", recipeDisplayList)
     recipeDisplayList.forEach((current) => {
-        allRecipes.innerHTML += `
+        displayRecipePreview(current, allRecipes)
+        allRecipes.innerHTML += 
+        `
         <div class = "fullwrap" id="${current.id}">
         <span id="favorite">❤️</span>
                 <img src="${current.imageURL}" alt="${current.name}">
@@ -63,6 +70,20 @@ function displayAllRecipes() {
     console.log(recipeDisplayList);
 }
 
+function displayRecipePreview(array, view) {
+    console.log('current', current)
+    console.log('HELLO ELEANOR')
+    array.forEach((current) => {
+    view.innerHTML += `
+    <div class = "fullwrap" id="${current.id}">
+    <span id="favorite">❤️</span>
+            <img src="${current.imageURL}" alt="${current.name}">
+         <div> 
+            ${current.name}
+            </div>
+        </div>`
+    })
+}
 
 function randomizeUser() {
         randomUser = sampleUsersData[Math.floor(Math.random() * sampleUsersData.length)]
@@ -84,3 +105,19 @@ function addRecipeToFavorites(event) {
     console.log(user.recipesToCook)
     return
 }
+
+function displayFavorites() {
+    hide(allRecipes);
+    show(favoritesView);
+    console.log('WHAT ARE YOU', user.recipesToCook)
+    displayRecipePreview(user.recipesToCook, favoritesView)
+    // displayRecipePreview(user.recipesToCook, favoritesView)
+    }
+
+
+function hide(element) {
+    element.classList.add("hidden");
+  };
+   function show(element) {
+    element.classList.remove("hidden");
+  };
