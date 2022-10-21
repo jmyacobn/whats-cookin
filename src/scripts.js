@@ -39,6 +39,7 @@ window.addEventListener('load', displayWelcomeMessage);
 savedButton.addEventListener('click', displayFavorites);
 saveRecipeButton.addEventListener('click', addRecipeToFavorites)
 homeButton.addEventListener('click', displayHomePage)
+favoritesView.addEventListener('dblclick', removeFromFavorites)
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
@@ -90,6 +91,7 @@ function displayFavorites() {
    hide(savedButton);
    show(filterSidebar);
    hide(ingredientSidebar)
+   favoritesView.innerHTML = ''
    user.recipesToCook.forEach((current) => {
     displayRecipePreview(current, favoritesView)
     })
@@ -99,10 +101,15 @@ function displayHomePage() {
     show(allRecipes);
     hide(singleRecipe);
     hide(favoritesView);
-    show(saveRecipeButton);
+    hide(saveRecipeButton);
     show(savedButton);
     show(filterSidebar);
     hide(ingredientSidebar)
+}
+
+function removeFromFavorites() {
+    user.removeRecipesToCook(foundRecipe)
+    displayFavorites()
 }
 // ~~~~~~~ Helper Functions ~~~~~~~
 
