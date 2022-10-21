@@ -30,6 +30,7 @@ const userName = document.querySelector('#user-info');
 const favoritesView = document.querySelector('#favorites-view');
 const savedButton = document.querySelector('#saved-recipe-button');
 const saveRecipeButton = document.querySelector('#favorite-recipe-button')
+const homeButton = document.querySelector('#home-button')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 allRecipes.addEventListener('click', viewRecipeDetail);
@@ -37,6 +38,7 @@ window.addEventListener('load', displayAllRecipes);
 window.addEventListener('load', displayWelcomeMessage);
 savedButton.addEventListener('click', displayFavorites);
 saveRecipeButton.addEventListener('click', addRecipeToFavorites)
+homeButton.addEventListener('click', displayHomePage)
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
@@ -56,7 +58,7 @@ function viewRecipeDetail(event) {
     foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event)
     })
-    singleRecipe.innerHTML += `
+    singleRecipe.innerHTML = `
         <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
         <section class="instructions">
           <h2>${foundRecipe.name}</h2>
@@ -86,11 +88,22 @@ function displayFavorites() {
    show(favoritesView);
    hide(saveRecipeButton);
    hide(savedButton);
+   show(filterSidebar);
+   hide(ingredientSidebar)
    user.recipesToCook.forEach((current) => {
     displayRecipePreview(current, favoritesView)
     })
 }
 
+function displayHomePage() {
+    show(allRecipes);
+    hide(singleRecipe);
+    hide(favoritesView);
+    show(saveRecipeButton);
+    show(savedButton);
+    show(filterSidebar);
+    hide(ingredientSidebar)
+}
 // ~~~~~~~ Helper Functions ~~~~~~~
 
 function hide(element) {
