@@ -26,19 +26,8 @@ window.addEventListener('load', displayAllRecipes);
 allRecipes.addEventListener('click', viewRecipeDetail);
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
-//GOAL: image URL and image name
-//NEED: [{imageURL: www.abd.com, name: burrito}, 
-//       {imageURL: www.abc.com, name: taco},
-//       {imageURL: www.abe.com, name: burger}]
-
 function displayAllRecipes() {
     recipeRepository = new RecipeRepository(sampleRecipeData);
-
-    // function displayAllRecipes() {
-    //     recipeRepository = new RecipeRepository(sampleRecipeData)
-    //     let images = recipeRepository.recipes.map(recipe => recipe.image)
-    //     .forEach((image) => {allRecipes.innerHTML += `<img src="${image}"alt="A gear with a T in the center">`})
-    // }
 
     const recipeDisplayList = recipeRepository.recipes.reduce((acc, current) => {
         const recipeData = {};
@@ -75,35 +64,21 @@ function viewRecipeDetail(event) {
     // our id, and return object containing url, name, instructions, cost
     //INFO: We are given a id number (represents a recipe)
 
-    const recipeId = Number(event.target.parentElement.id);
-    hide(allRecipes);
-    hide(filterSidebar);
-    show(singleRecipe);
-    show(ingredientSidebar);
-
-    const foundRecipe = recipeRepository.recipes.filter((current) => {
+    const foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event);
     })
 
+    console.log
+
+    singleRecipe.innerHTML += `
+        <img src="${foundRecipe.image}">
+        <section class="instructions">
+          <h2>TEST</h2>
+          <p>Poop</p>
+        </section>`
+
     console.log("here:", foundRecipe);
     return foundRecipe;
-
-
-    // singleRecipe.innerHTML += `
-    //     <img src="/images/turing-logo.png" class="recipe-image" alt="A gear with a T in the center">
-    //     <section class="instructions">
-    //       <h2>Instructions</h2>
-    //       <p></p>
-    //     </section>`
-
-//     if(event.target.parentElement.id === "595736") {
-//         console.log("Cookies, Yay")
-//     };
-   
-//     hide(allRecipes);
-//     hide(filterSidebar);
-//     show(singleRecipe);
-//     show(ingredientSidebar);
 };
 
 
