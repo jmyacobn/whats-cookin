@@ -7,6 +7,7 @@ import { sampleRecipeData, sampleUsersData } from './data/sample-data';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
+import { use } from 'chai';
 var test
 // As a user, I should be able to view a list of all recipes.
 // As a user, I should be able to click on a recipe to view more information including directions, ingredients needed, and total cost.
@@ -42,48 +43,22 @@ savedButton.addEventListener('click', displayFavorites);
 
 function displayAllRecipes() {
     recipeRepository = new RecipeRepository(sampleRecipeData);
-
-    const recipeDisplayList = recipeRepository.recipes.reduce((acc, current) => {
-        console.log("Current", current)
-        const recipeData = {};
-        recipeData.id = current.id
-        recipeData.imageURL = current.image;
-        recipeData.name = current.name;
-        console.log(recipeData)
-        acc.push(recipeData);
-        return acc;
-    }, [])
-    console.log("HELLO", recipeDisplayList)
-    recipeDisplayList.forEach((current) => {
+    return recipeRepository.recipes.forEach((current) => {
         displayRecipePreview(current, allRecipes)
-        allRecipes.innerHTML += 
-        `
-        <div class = "fullwrap" id="${current.id}">
-        <span id="favorite">❤️</span>
-                <img src="${current.imageURL}" alt="${current.name}">
-             <div> 
-                ${current.name}
-                </div>
-            </div>
-           `
     })
-    console.log(recipeDisplayList);
 }
 
-function displayRecipePreview(array, view) {
-    console.log('current', current)
-    console.log('HELLO ELEANOR')
-    array.forEach((current) => {
+function displayRecipePreview(current, view) {
     view.innerHTML += `
     <div class = "fullwrap" id="${current.id}">
     <span id="favorite">❤️</span>
-            <img src="${current.imageURL}" alt="${current.name}">
+            <img src="${current.image}" alt="${current.name}">
          <div> 
             ${current.name}
             </div>
         </div>`
-    })
-}
+    }
+
 
 function randomizeUser() {
         randomUser = sampleUsersData[Math.floor(Math.random() * sampleUsersData.length)]
@@ -102,18 +77,18 @@ function addRecipeToFavorites(event) {
       return recipe.id === clickableID 
     })
      user.addRecipesToCook(favoriteRecipe)
-    console.log(user.recipesToCook)
     return
 }
 
 function displayFavorites() {
-    hide(allRecipes);
-    show(favoritesView);
-    console.log('WHAT ARE YOU', user.recipesToCook)
-    displayRecipePreview(user.recipesToCook, favoritesView)
-    // displayRecipePreview(user.recipesToCook, favoritesView)
-    }
-
+   hide(allRecipes);
+   show(favoritesView);
+   return user.recipesToCook.map((recipe) => {
+    recipe.forEach((current) => {
+        displayRecipePreview(current, favoritesView)
+        })
+    })
+}
 
 function hide(element) {
     element.classList.add("hidden");
