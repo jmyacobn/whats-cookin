@@ -59,17 +59,15 @@ function displayAllRecipes() {
     })
 };
 
-// function findId(event){
-//     const recipeId = event.target.parentElement.id;
-//     hide(allRecipes);
-//     hide(filterSidebar);
-//     show(singleRecipe);
-//     show(ingredientSidebar);
+function findId(event){
+    const recipeId = Number(event.target.parentElement.id);
+    hide(allRecipes);
+    hide(filterSidebar);
+    show(singleRecipe);
+    show(ingredientSidebar);
 
-//     console.log("ID", recipeId);
-
-//     return recipeId;
-// }
+    return recipeId;
+}
 
 function viewRecipeDetail(event) {
 
@@ -84,7 +82,7 @@ function viewRecipeDetail(event) {
     show(ingredientSidebar);
 
     const foundRecipe = recipeRepository.recipes.filter((current) => {
-        return current.id === recipeId;
+        return current.id === findId(event);
     })
 
     console.log("here:", foundRecipe);
