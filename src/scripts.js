@@ -59,7 +59,6 @@ function displayRecipePreview(current, view) {
         </div>`
     }
 
-
 function randomizeUser() {
         randomUser = sampleUsersData[Math.floor(Math.random() * sampleUsersData.length)]
         user = new User(randomUser);
@@ -92,7 +91,8 @@ function displayFavorites() {
 
 function hide(element) {
     element.classList.add("hidden");
-  };
-   function show(element) {
+};
+
+function show(element) {
     element.classList.remove("hidden");
-  };
+};
