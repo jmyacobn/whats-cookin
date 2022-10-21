@@ -12,8 +12,8 @@ import './images/turing-logo.png'
 import { use } from 'chai';
 
 // As a user, I should be able to click on a recipe to view more information including directions, ingredients needed, and total cost.
-// As a user, I should be able to filter recipes by a tag. (Extension option: by multiple tags)
-// As a user, I should be able to search recipes by their name. (Extension option: by name or ingredients)
+// As a user, I should be able to filter recipes by a tag.
+// As a user, I should be able to filter my toCook recipes by a tag.
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
 let recipeRepository;
@@ -50,19 +50,33 @@ function viewRecipeDetail(event) {
     const foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event);
     })
-    //found.instructions is an array
+
     // ${foundRecipe.instructions[i].number}. ${foundRecipe.instructions[i].instruction}
     //Create variable and do iterator here
     // Store in variable => insert that variable in p tag below where we hard coded!
     // forEach to do p tag for each instrution step
+
+    //GOAL: display all instructions as p triangles
+    //INFO: instruction method and instructions array
+    //
+    // console.log("instructions", foundRecipe.getInstructions())
+
+    let instructionsArray = foundRecipe.getInstructions();
+    let instructionElement = "";
+
+    instructionsArray.forEach(curr => {
+      instructionElement += curr + "<br>"
+    })
+    console.log(instructionElement)
+
     singleRecipe.innerHTML += `
         <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
         <section class="instructions">
           <h2>${foundRecipe.name}</h2>
-          <p>${foundRecipe.instructions[0].instruction}</p>
+          <p>${instructionElement}</p>
         </section>`
 
-    console.log("here:",foundRecipe);
+    // console.log("here:",foundRecipe);
     return foundRecipe;
 };
 
@@ -80,7 +94,7 @@ function displayWelcomeMessage() {
 function addRecipeToFavorites(event) {
     let clickableID = Number(event.target.parentNode.id)
     let favoriteRecipe = recipeData.filter((recipe)=>{
-      return recipe.id === clickableID 
+      return recipe.id === clickableID
     })
      user.addRecipesToCook(favoriteRecipe)
     return
@@ -110,13 +124,13 @@ function displayRecipePreview(current, view) {
     <div class = "fullwrap" id="${current.id}">
     <span id="favorite">❤️</span>
     <img src="${current.image}" alt="${current.name}">
-    <div class="fullcap"> 
+    <div class="fullcap">
         ${current.name}
     </div>
     </div>
     `
     }
-    
+
  function findId(event){
     const recipeId = Number(event.target.parentElement.id);
     hide(allRecipes);
