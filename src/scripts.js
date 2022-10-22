@@ -9,7 +9,6 @@ import { usersData } from './data/users';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
-import { use } from 'chai';
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
 let recipeRepository;
@@ -28,7 +27,6 @@ const favoritesView = document.querySelector('#favorites-view');
 const savedButton = document.querySelector('#saved-recipe-button');
 const totalCost = document.querySelector('#totalCost')
 const ingredientList = document.querySelector('#ingredientList');
-const ingredientAmounts = document.querySelector('#ingredientAmounts')
 let radioButtons = document.querySelectorAll('.food-category');
 let submitTagButton = document.querySelector("#submitTagButton");
 const saveRecipeButton = document.querySelector('#favorite-recipe-button')
@@ -47,6 +45,7 @@ submitTagButton.addEventListener('click', displayFilteredFavorite)
 saveRecipeButton.addEventListener('click', addRecipeToFavorites);
 homeButton.addEventListener('click', displayHomePage);
 favoritesView.addEventListener('dblclick', removeFromFavorites);
+favoritesView.addEventListener('click', viewRecipeDetail);
 submitButton.addEventListener('click', () => {
     if(homeView) {searchForRecipe()}
     else {searchFavorites()}
@@ -118,28 +117,11 @@ function viewRecipeIngredients(event) {
       return current.id === findId(event);
   });
 
-  let ingredientsArray = foundRecipe.ingredients;
-  let ingredientListAmounts = "";
-  let quant = "";
-  let unit = "";
-  let amount = "";
-  let amountArray = [];
-  ingredientsArray.forEach(curr => {
-    quant = `${curr.quantity.amount.toFixed(2)}`
-    unit = `${curr.quantity.unit}`
-    amount = "<p>" + quant + " " + unit + "</p>"
-    amountArray.push(amount);
-    ingredientListAmounts = `${amountArray.join(" ")}`
+  let listOfIngredients = foundRecipe.determineIngredients(ingredientsData);
+  ingredientList.innerHTML = ''
+  listOfIngredients.forEach((item) => {
+        ingredientList.innerHTML += `<p>${item.ingredient}</p>`;
   });
-
-  let ingredientListArray = foundRecipe.determineIngredients(ingredientsData);
-  let ingredientListInfo = "";
-
-  ingredientListArray.forEach(curr => {
-    ingredientListInfo += "<p>" + curr + "</p>"
-  });
-  ingredientList.innerHTML += `${ingredientListInfo}`
-  ingredientAmounts.innerHTML += `${ingredientListAmounts}`
 };
 
 function viewRecipeInstructions(event) {
@@ -161,6 +143,7 @@ function viewRecipeInstructions(event) {
           ${instructionElement}`
           
     show(saveRecipeButton);
+    hide(favoritesView);
     hide(allRecipes);
     hide(filterSidebar);
     show(singleRecipe);

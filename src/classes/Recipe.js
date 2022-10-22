@@ -15,12 +15,15 @@ class Recipe {
     determineIngredients(ingredientInfo) {
         this.ingredientsList = ingredientInfo.reduce((acc, ingredient) => {
             this.ingredients.forEach((item) => {
-                if (item.id === ingredient.id)
-                  {acc.push(ingredient.name)};
+              if (item.id === ingredient.id) {
+                let name = ingredient.name;
+                let list = {ingredient: `${item.quantity.amount.toFixed(2)} ${item.quantity.unit} ${name}`}
+                acc.push(list)
+                }
               });
               return this.ingredientsList = acc;
           }, []);
-            return this.ingredientsList;
+          return this.ingredientsList;
     }
     calculateCost(ingredientInfo) {
         this.totalCost = ingredientInfo.reduce((total, ingredient) => {
