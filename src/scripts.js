@@ -83,21 +83,21 @@ function displayFilteredTag(){
 
 function displayFilteredFavorite() {
     const tagSelected = checkTagType();
-    const favArray = user.recipesToCook
-    const tagSelectedList = favArray.filterToCookByTag(tagSelected)
+    const favList = user.recipesToCook
+    const tagSelectedList = user.filterToCookByTag(tagSelected)
    
-    console.log("favArr", tagSelectedList)
+    favoritesView.innerHTML = ""
 
-    // allRecipes.innerHTML = ""
-
-    // if(tagSelected === "all"){
-    //     displayAllRecipes();
-    // }
-    // else{
-    //     return tagSelectedList.forEach((current) => {
-    //         displayRecipePreview(current, allRecipes)
-    //     });
-    // };
+    if(tagSelected === "all"){
+        return favList.forEach((current) => {
+            displayRecipePreview(current, favoritesView)
+        });
+    }
+    else{
+        return tagSelectedList.forEach((current) => {
+            displayRecipePreview(current, favoritesView)
+        });
+    };
 }
 
 function displayAllRecipes() {
