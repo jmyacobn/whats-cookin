@@ -10,18 +10,20 @@ class Recipe {
         this.name = data.name;
         this.tags = data.tags;
         this.ingredientsList = [];
-        // this.quantity = data.ingredients
         this.totalCost;
     }
     determineIngredients(ingredientInfo) {
         this.ingredientsList = ingredientInfo.reduce((acc, ingredient) => {
-            // this.ingredients.forEach((item) => {
-              //console.log("ITEM", item)
-                 return (`${item.quantity.amount} ${item.quantity.unit} ${ingredient.name}`);
-              //});
-              // return this.ingredientsList = acc;
+            this.ingredients.forEach((item) => {
+              if (item.id === ingredient.id) {
+                let name = ingredient.name;
+                let list = {ingredient: `${item.quantity.amount.toFixed(2)} ${item.quantity.unit} ${name}`}
+                acc.push(list)
+                }
+              });
+              return this.ingredientsList = acc;
           }, []);
-          console.log(this.ingredientsList)
+          console.log('HEY', this.ingredientsList)
             return this.ingredientsList;
     }
     calculateCost(ingredientInfo) {
