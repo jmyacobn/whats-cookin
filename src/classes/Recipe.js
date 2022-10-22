@@ -23,8 +23,7 @@ class Recipe {
               });
               return this.ingredientsList = acc;
           }, []);
-          console.log('HEY', this.ingredientsList)
-            return this.ingredientsList;
+          return this.ingredientsList;
     }
     calculateCost(ingredientInfo) {
         this.totalCost = ingredientInfo.reduce((total, ingredient) => {
