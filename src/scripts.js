@@ -95,16 +95,22 @@ function viewRecipeIngredients(event) {
   let unit = ""
   let amount = ""
   let amountArray = []
-
+  ingredientsArray.forEach(curr => {
+    quant = `${curr.quantity.amount.toFixed(2)}`
+    unit = `${curr.quantity.unit}`
+    amount = "<p>" + quant + " " + unit + "</p>"
+    amountArray.push(amount);
+    ingredientListAmounts = `${amountArray.join(" ")}`
+  })
 
   let ingredientListArray = foundRecipe.determineIngredients(ingredientsData);
   let ingredientListInfo = "";
 
   ingredientListArray.forEach(curr => {
-    ingredientListInfo += "<li>" + curr + "</li>"
+    ingredientListInfo += "<p>" + curr + "</p>"
   })
   ingredientList.innerHTML += `${ingredientListInfo}`
-
+  ingredientAmounts.innerHTML += `${ingredientListAmounts}`
 }
 
 function viewRecipeInstructions(event) {
