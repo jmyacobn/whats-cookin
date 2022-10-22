@@ -11,7 +11,6 @@ import { usersData } from './data/users';
 import './images/turing-logo.png'
 import { use } from 'chai';
 
-// As a user, I should be able to click on a recipe to view more information including ingredients.
 // As a user, I should be able to filter recipes by a tag.
 // As a user, I should be able to filter my toCook recipes by a tag.
 
@@ -31,6 +30,10 @@ const savedButton = document.querySelector('#saved-recipe-button');
 const totalCost = document.querySelector('#totalCost')
 const ingredientList = document.querySelector('#ingredientList');
 
+//********WIP
+let radioButtons = document.querySelectorAll('.food-category');
+let submitTagButton = document.querySelector("#submitTagButton");
+
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 allRecipes.addEventListener('click', viewRecipeDetail);
 window.addEventListener('load', displayAllRecipes);
@@ -38,7 +41,40 @@ window.addEventListener('load', displayWelcomeMessage);
 allRecipes.addEventListener('click', addRecipeToFavorites);
 savedButton.addEventListener('click', displayFavorites);
 
+//********WIP
+submitTagButton.addEventListener('click', checkTagType);
+
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
+
+// As a user, I should be able to filter recipes by a tag.
+//GOAL: Filters all recipies by given tag
+
+//*********WIP
+function checkTagType(){
+    let messageType = "";
+
+    for(var i = 0;i<radioButtons.length;i++){
+      if(radioButtons[i].checked===true){
+        messageType = radioButtons[i].value;
+        break;
+      }
+    }
+
+    // radioButtons.forEach((current) => {
+    //     if(current.check === true){
+    //         messageType = current.value;
+    //     }
+    // })
+    console.log(messageType);
+
+    // for(var i = 0;i<radioButtons.length;i++){
+    //   if(radioButtons[i].checked===true){
+    //     messageType = radioButtons[i].value;
+    //     break;
+    //   }
+    // }
+
+  }
 
 function displayAllRecipes() {
     recipeRepository = new RecipeRepository(recipeData);
