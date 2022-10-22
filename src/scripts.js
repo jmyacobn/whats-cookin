@@ -42,7 +42,7 @@ allRecipes.addEventListener('click', addRecipeToFavorites);
 savedButton.addEventListener('click', displayFavorites);
 
 //********WIP
-submitTagButton.addEventListener('click', checkTagType);
+submitTagButton.addEventListener('click', displayFilteredTag);
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
@@ -58,8 +58,26 @@ function checkTagType(){
             messageType = current.value;
         }
     })
-    console.log(messageType);
-  }
+    // console.log(messageType);
+    return messageType;
+}
+
+function displayFilteredTag(){
+    const tagSelected = checkTagType();
+    console.log("You selected", tagSelected);
+
+    const tagSelectedList = recipeRepository.filterTag(tagSelected)
+    console.log(tagSelectedList);
+
+    allRecipes.innerHTML = ""
+    
+    return tagSelectedList.forEach((current) => {
+        displayRecipePreview(current, allRecipes)
+    })
+
+}
+
+
 
 function displayAllRecipes() {
     recipeRepository = new RecipeRepository(recipeData);
