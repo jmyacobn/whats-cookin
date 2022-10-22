@@ -28,7 +28,6 @@ const favoritesView = document.querySelector('#favorites-view');
 const savedButton = document.querySelector('#saved-recipe-button');
 const totalCost = document.querySelector('#totalCost')
 const ingredientList = document.querySelector('#ingredientList');
-const ingredientAmounts = document.querySelector('#ingredientAmounts')
 let radioButtons = document.querySelectorAll('.food-category');
 let submitTagButton = document.querySelector("#submitTagButton");
 const saveRecipeButton = document.querySelector('#favorite-recipe-button')
@@ -99,32 +98,11 @@ function viewRecipeIngredients(event) {
       return current.id === findId(event);
   });
 
-//   let ingredientsArray = foundRecipe.ingredients;
-//   console.log("LOOK", ingredientsArray)
-//   let ingredientListAmounts = "";
-//   let quant = "";
-//   let unit = "";
-//   let amount = "";
-//   let amountArray = [];
-//   ingredientsArray.forEach(curr => {
-//     quant = `${curr.quantity.amount.toFixed(2)}`
-//     unit = `${curr.quantity.unit}`
-//     amount = "<p>" + quant + " " + unit + "</p>"
-//     amountArray.push(amount);
-//     ingredientListAmounts = `${amountArray.join(" ")}`
-//   });
-
-  let ingredientListArray = foundRecipe.determineIngredients(ingredientsData);
-  console.log("FOUNDREC", foundRecipe)
-  //console.log("LOOKKKK", ingredientListArray)
-  let ingredientListInfo = "";
+  let listOfIngredients = foundRecipe.determineIngredients(ingredientsData);
   ingredientList.innerHTML = ''
-  ingredientListArray.forEach(curr => {
-    //onsole.log("CURRENT", curr)
-    ingredientList.innerHTML += "<p>" + ingredientListInfo + "</p>"
+  listOfIngredients.forEach((item) => {
+        ingredientList.innerHTML += `<p>${item.ingredient}</p>`;
   });
-  ingredientList.innerHTML += `${ingredientListInfo}`
-  //ingredientAmounts.innerHTML += `${ingredientListAmounts}`
 };
 
 function viewRecipeInstructions(event) {
