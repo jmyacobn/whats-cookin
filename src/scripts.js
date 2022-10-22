@@ -28,6 +28,7 @@ const favoritesView = document.querySelector('#favorites-view');
 const savedButton = document.querySelector('#saved-recipe-button');
 const totalCost = document.querySelector('#totalCost')
 const ingredientList = document.querySelector('#ingredientList');
+const ingredientAmounts = document.querySelector('#ingredientAmounts')
 
 //********WIP
 let radioButtons = document.querySelectorAll('.food-category');
@@ -87,8 +88,15 @@ function viewRecipeIngredients(event) {
   const foundRecipe = recipeRepository.recipes.find((current) => {
       return current.id === findId(event);
   })
-  console.log(foundRecipe.determineIngredients(ingredientsData));
-  
+
+  let ingredientsArray = foundRecipe.ingredients
+  let ingredientListAmounts = ""
+  let quant = ""
+  let unit = ""
+  let amount = ""
+  let amountArray = []
+
+
   let ingredientListArray = foundRecipe.determineIngredients(ingredientsData);
   let ingredientListInfo = "";
 
