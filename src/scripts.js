@@ -46,6 +46,7 @@ submitTagButton.addEventListener('click', displayFilteredTag);
 saveRecipeButton.addEventListener('click', addRecipeToFavorites);
 homeButton.addEventListener('click', displayHomePage);
 favoritesView.addEventListener('dblclick', removeFromFavorites);
+favoritesView.addEventListener('click', viewRecipeDetail);
 submitButton.addEventListener('click', () => {
     if(homeView) {searchForRecipe()}
     else {searchFavorites()}
@@ -98,28 +99,32 @@ function viewRecipeIngredients(event) {
       return current.id === findId(event);
   });
 
-  let ingredientsArray = foundRecipe.ingredients;
-  let ingredientListAmounts = "";
-  let quant = "";
-  let unit = "";
-  let amount = "";
-  let amountArray = [];
-  ingredientsArray.forEach(curr => {
-    quant = `${curr.quantity.amount.toFixed(2)}`
-    unit = `${curr.quantity.unit}`
-    amount = "<p>" + quant + " " + unit + "</p>"
-    amountArray.push(amount);
-    ingredientListAmounts = `${amountArray.join(" ")}`
-  });
+//   let ingredientsArray = foundRecipe.ingredients;
+//   console.log("LOOK", ingredientsArray)
+//   let ingredientListAmounts = "";
+//   let quant = "";
+//   let unit = "";
+//   let amount = "";
+//   let amountArray = [];
+//   ingredientsArray.forEach(curr => {
+//     quant = `${curr.quantity.amount.toFixed(2)}`
+//     unit = `${curr.quantity.unit}`
+//     amount = "<p>" + quant + " " + unit + "</p>"
+//     amountArray.push(amount);
+//     ingredientListAmounts = `${amountArray.join(" ")}`
+//   });
 
   let ingredientListArray = foundRecipe.determineIngredients(ingredientsData);
+  console.log("FOUNDREC", foundRecipe)
+  //console.log("LOOKKKK", ingredientListArray)
   let ingredientListInfo = "";
-
+  ingredientList.innerHTML = ''
   ingredientListArray.forEach(curr => {
-    ingredientListInfo += "<p>" + curr + "</p>"
+    //onsole.log("CURRENT", curr)
+    ingredientList.innerHTML += "<p>" + ingredientListInfo + "</p>"
   });
   ingredientList.innerHTML += `${ingredientListInfo}`
-  ingredientAmounts.innerHTML += `${ingredientListAmounts}`
+  //ingredientAmounts.innerHTML += `${ingredientListAmounts}`
 };
 
 function viewRecipeInstructions(event) {
@@ -141,6 +146,7 @@ function viewRecipeInstructions(event) {
           ${instructionElement}`
           
     show(saveRecipeButton);
+    hide(favoritesView);
     hide(allRecipes);
     hide(filterSidebar);
     show(singleRecipe);
@@ -189,8 +195,6 @@ function displayFavorites() {
    hide(ingredientSidebar);
    favoritesView.innerHTML = '';
    user.recipesToCook.forEach((current) => {
-    console.log('current', current)
-    console.log('user', user.recipesToCook)
     displayRecipePreview(current, favoritesView)
     });
     homeView = false;
