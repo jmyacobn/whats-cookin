@@ -11,10 +11,6 @@ import { usersData } from './data/users';
 import './images/turing-logo.png'
 import { use } from 'chai';
 
-// As a user, I should be able to click on a recipe to view more information including directions, ingredients needed, and total cost.
-// As a user, I should be able to filter recipes by a tag. (Extension option: by multiple tags)
-// As a user, I should be able to search recipes by their name. (Extension option: by name or ingredients)
-
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
 let recipeRepository;
 let randomUser;
@@ -30,26 +26,59 @@ const ingredientSidebar = document.querySelector("#ingredientSection")
 const userName = document.querySelector('#user-info');
 const favoritesView = document.querySelector('#favorites-view');
 const savedButton = document.querySelector('#saved-recipe-button');
+const totalCost = document.querySelector('#totalCost')
+const ingredientList = document.querySelector('#ingredientList');
+const ingredientAmounts = document.querySelector('#ingredientAmounts')
+const radioButtons = document.querySelectorAll('.food-category');
+const submitTagButton = document.querySelector("#submitTagButton");
 const saveRecipeButton = document.querySelector('#favorite-recipe-button')
 const homeButton = document.querySelector('#home-button')
 const submitButton = document.querySelector('#submit-search-button')
 const searchBar = document.querySelector('#search-bar')
+
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 allRecipes.addEventListener('click', viewRecipeDetail);
 window.addEventListener('load', displayAllRecipes);
 window.addEventListener('load', displayWelcomeMessage);
 savedButton.addEventListener('click', displayFavorites);
-saveRecipeButton.addEventListener('click', addRecipeToFavorites)
-homeButton.addEventListener('click', displayHomePage)
-favoritesView.addEventListener('dblclick', removeFromFavorites)
+submitTagButton.addEventListener('click', displayFilteredTag);
+saveRecipeButton.addEventListener('click', addRecipeToFavorites);
+homeButton.addEventListener('click', displayHomePage);
+favoritesView.addEventListener('dblclick', removeFromFavorites);
 submitButton.addEventListener('click', () => {
     if(homeView) {searchForRecipe()}
     else {searchFavorites()}
-})
-
+});
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
+
+function checkTagType(){
+    let messageType = "";
+
+    radioButtons.forEach((currentRadioButton) => {
+        if(currentRadioButton.checked){
+            messageType = currentRadioButton.value;
+        }
+    })
+    return messageType;
+}
+
+function displayFilteredTag(){
+    const tagSelected = checkTagType();
+    const tagSelectedList = recipeRepository.filterTag(tagSelected)
+
+    allRecipes.innerHTML = ""
+
+    if(tagSelected === "all"){
+        displayAllRecipes();
+    }
+    else{
+        return tagSelectedList.forEach((current) => {
+            displayRecipePreview(current, allRecipes)
+        });
+    };
+};
 
 function displayAllRecipes() {
     recipeRepository = new RecipeRepository(recipeData);
@@ -59,13 +88,65 @@ function displayAllRecipes() {
 }
 
 function viewRecipeDetail(event) {
-    show(saveRecipeButton)
+  viewRecipeInstructions(event);
+  viewRecipeTotalCost(event);
+  viewRecipeIngredients(event);
+}
+
+function viewRecipeIngredients(event) {
+  const foundRecipe = recipeRepository.recipes.find((current) => {
+      return current.id === findId(event);
+  });
+
+  let ingredientsArray = foundRecipe.ingredients;
+  let ingredientListAmounts = "";
+  let quant = "";
+  let unit = "";
+  let amount = "";
+  let amountArray = [];
+  ingredientsArray.forEach(curr => {
+    quant = `${curr.quantity.amount.toFixed(2)}`
+    unit = `${curr.quantity.unit}`
+    amount = "<p>" + quant + " " + unit + "</p>"
+    amountArray.push(amount);
+    ingredientListAmounts = `${amountArray.join(" ")}`
+  });
+
+  let ingredientListArray = foundRecipe.determineIngredients(ingredientsData);
+  let ingredientListInfo = "";
+
+  ingredientListArray.forEach(curr => {
+    ingredientListInfo += "<p>" + curr + "</p>"
+  });
+  ingredientList.innerHTML += `${ingredientListInfo}`
+  ingredientAmounts.innerHTML += `${ingredientListAmounts}`
+};
+
+function viewRecipeInstructions(event) {
+    const foundRecipe = recipeRepository.recipes.find((current) => {
+        return current.id === findId(event);
+    });
+
+    let instructionsArray = foundRecipe.getInstructions();
+    let instructionElement = "";
+
+    instructionsArray.forEach(curr => {
+      instructionElement += "<p>" + curr + "</p>"
+    });
+
+    singleRecipe.innerHTML += `
+        <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
+        <section class="instructions">
+          <h2>${foundRecipe.name}</h2>
+          ${instructionElement}
+          
+    show(saveRecipeButton);
     hide(allRecipes);
     hide(filterSidebar);
     show(singleRecipe);
     show(ingredientSidebar);
     foundRecipe = recipeRepository.recipes.find((current) => {
-        return current.id === findId(event)
+        return current.id === findId(event);
     })
     singleRecipe.innerHTML = `
         <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
@@ -76,20 +157,27 @@ function viewRecipeDetail(event) {
     return foundRecipe;
 };
 
+function viewRecipeTotalCost(event) {
+    const foundRecipe = recipeRepository.recipes.find((current) => {
+        return current.id === findId(event);
+    })
+    totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredientsData)}`
+  };
+
 function randomizeUser() {
     randomUser = usersData[Math.floor(Math.random() * usersData.length)]
     user = new User(randomUser);
     return user
-}
+};
 
 function displayWelcomeMessage() {
     randomizeUser()
     userName.innerText = `Welcome, ${randomUser.name}!`
-}
+};
 
 function addRecipeToFavorites() {
-    return user.addRecipesToCook(foundRecipe)
-}
+    return user.addRecipesToCook(foundRecipe);
+};
 
 function displayFavorites() {
    hide(allRecipes);
@@ -98,30 +186,30 @@ function displayFavorites() {
    hide(saveRecipeButton);
    hide(savedButton);
    show(filterSidebar);
-   hide(ingredientSidebar)
-   favoritesView.innerHTML = ''
+   hide(ingredientSidebar);
+   favoritesView.innerHTML = '';
    user.recipesToCook.forEach((current) => {
     displayRecipePreview(current, favoritesView)
-    })
+    });
     homeView = false;
 }
 
 function displayHomePage() {
-    allRecipes.innerHTML = ''
+    allRecipes.innerHTML = '';
     show(allRecipes);
     hide(singleRecipe);
     hide(favoritesView);
     hide(saveRecipeButton);
     show(savedButton);
     show(filterSidebar);
-    hide(ingredientSidebar)
-    displayAllRecipes()
+    hide(ingredientSidebar);
+    displayAllRecipes();
     homeView = true;
 }
 
 function removeFromFavorites() {
-    user.removeRecipesToCook(foundRecipe)
-    displayFavorites()
+    user.removeRecipesToCook(foundRecipe);
+    displayFavorites();
 }
 
 function searchForRecipe() {
@@ -129,9 +217,9 @@ function searchForRecipe() {
    const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
    filteredRecipes.forEach((current) => {
        displayRecipePreview(current, allRecipes)
-   })
+   });
 searchBar.value = ''
-}
+};
 
 function searchFavorites() {
     favoritesView.innerHTML = ''
@@ -156,13 +244,19 @@ function displayRecipePreview(current, view) {
     view.innerHTML += `
     <div class = "fullwrap" id="${current.id}">
     <img src="${current.image}" alt="${current.name}">
-    <div class="fullcap"> 
+    <div class="fullcap">
         ${current.name}
     </div>
     </div>
     `
-    }
-    
+};
+
  function findId(event){
-    return Number(event.target.parentElement.id);
-}
+    const recipeId = Number(event.target.parentElement.id);
+    hide(allRecipes);
+    hide(filterSidebar);
+    show(singleRecipe);
+    show(ingredientSidebar);
+
+    return recipeId;
+};
