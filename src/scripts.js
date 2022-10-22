@@ -102,6 +102,7 @@ function displayFavorites() {
 }
 
 function displayHomePage() {
+    allRecipes.innerHTML = ''
     show(allRecipes);
     hide(singleRecipe);
     hide(favoritesView);
@@ -109,6 +110,7 @@ function displayHomePage() {
     show(savedButton);
     show(filterSidebar);
     hide(ingredientSidebar)
+    displayAllRecipes()
 }
 
 function removeFromFavorites() {
