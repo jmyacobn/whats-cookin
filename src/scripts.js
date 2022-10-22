@@ -43,6 +43,7 @@ window.addEventListener('load', displayAllRecipes);
 window.addEventListener('load', displayWelcomeMessage);
 savedButton.addEventListener('click', displayFavorites);
 submitTagButton.addEventListener('click', displayFilteredTag);
+submitTagButton.addEventListener('click', displayFilteredFavorite)
 saveRecipeButton.addEventListener('click', addRecipeToFavorites);
 homeButton.addEventListener('click', displayHomePage);
 favoritesView.addEventListener('dblclick', removeFromFavorites);
@@ -79,6 +80,25 @@ function displayFilteredTag(){
         });
     };
 };
+
+function displayFilteredFavorite() {
+    const tagSelected = checkTagType();
+    const favArray = user.recipesToCook
+    const tagSelectedList = favArray.filterToCookByTag(tagSelected)
+   
+    console.log("favArr", tagSelectedList)
+
+    // allRecipes.innerHTML = ""
+
+    // if(tagSelected === "all"){
+    //     displayAllRecipes();
+    // }
+    // else{
+    //     return tagSelectedList.forEach((current) => {
+    //         displayRecipePreview(current, allRecipes)
+    //     });
+    // };
+}
 
 function displayAllRecipes() {
     recipeRepository = new RecipeRepository(recipeData);
@@ -189,8 +209,6 @@ function displayFavorites() {
    hide(ingredientSidebar);
    favoritesView.innerHTML = '';
    user.recipesToCook.forEach((current) => {
-    console.log('current', current)
-    console.log('user', user.recipesToCook)
     displayRecipePreview(current, favoritesView)
     });
     homeView = false;
