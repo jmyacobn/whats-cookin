@@ -53,27 +53,12 @@ submitTagButton.addEventListener('click', checkTagType);
 function checkTagType(){
     let messageType = "";
 
-    for(var i = 0;i<radioButtons.length;i++){
-      if(radioButtons[i].checked===true){
-        messageType = radioButtons[i].value;
-        break;
-      }
-    }
-
-    // radioButtons.forEach((current) => {
-    //     if(current.check === true){
-    //         messageType = current.value;
-    //     }
-    // })
+    radioButtons.forEach((current) => {
+        if(current.checked === true){
+            messageType = current.value;
+        }
+    })
     console.log(messageType);
-
-    // for(var i = 0;i<radioButtons.length;i++){
-    //   if(radioButtons[i].checked===true){
-    //     messageType = radioButtons[i].value;
-    //     break;
-    //   }
-    // }
-
   }
 
 function displayAllRecipes() {
