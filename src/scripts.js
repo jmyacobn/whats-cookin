@@ -29,8 +29,8 @@ const savedButton = document.querySelector('#saved-recipe-button');
 const totalCost = document.querySelector('#totalCost')
 const ingredientList = document.querySelector('#ingredientList');
 const ingredientAmounts = document.querySelector('#ingredientAmounts')
-const radioButtons = document.querySelectorAll('.food-category');
-const submitTagButton = document.querySelector("#submitTagButton");
+let radioButtons = document.querySelectorAll('.food-category');
+let submitTagButton = document.querySelector("#submitTagButton");
 const saveRecipeButton = document.querySelector('#favorite-recipe-button')
 const homeButton = document.querySelector('#home-button')
 const submitButton = document.querySelector('#submit-search-button')
@@ -94,7 +94,7 @@ function viewRecipeDetail(event) {
 }
 
 function viewRecipeIngredients(event) {
-  const foundRecipe = recipeRepository.recipes.find((current) => {
+  foundRecipe = recipeRepository.recipes.find((current) => {
       return current.id === findId(event);
   });
 
@@ -123,7 +123,7 @@ function viewRecipeIngredients(event) {
 };
 
 function viewRecipeInstructions(event) {
-    const foundRecipe = recipeRepository.recipes.find((current) => {
+    foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event);
     });
 
@@ -138,7 +138,7 @@ function viewRecipeInstructions(event) {
         <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
         <section class="instructions">
           <h2>${foundRecipe.name}</h2>
-          ${instructionElement}
+          ${instructionElement}`
           
     show(saveRecipeButton);
     hide(allRecipes);
@@ -152,13 +152,13 @@ function viewRecipeInstructions(event) {
         <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
         <section class="instructions">
           <h2>${foundRecipe.name}</h2>
-          <p>${foundRecipe.getInstructions()}</p>
+          ${instructionElement}
         </section>`
     return foundRecipe;
 };
 
 function viewRecipeTotalCost(event) {
-    const foundRecipe = recipeRepository.recipes.find((current) => {
+    foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event);
     })
     totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredientsData)}`
@@ -189,6 +189,8 @@ function displayFavorites() {
    hide(ingredientSidebar);
    favoritesView.innerHTML = '';
    user.recipesToCook.forEach((current) => {
+    console.log('current', current)
+    console.log('user', user.recipesToCook)
     displayRecipePreview(current, favoritesView)
     });
     homeView = false;
@@ -213,21 +215,21 @@ function removeFromFavorites() {
 }
 
 function searchForRecipe() {
-    allRecipes.innerHTML= ''
+    allRecipes.innerHTML= '';
    const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
    filteredRecipes.forEach((current) => {
        displayRecipePreview(current, allRecipes)
    });
-searchBar.value = ''
+searchBar.value = '';
 };
 
 function searchFavorites() {
-    favoritesView.innerHTML = ''
+    favoritesView.innerHTML = '';
    const filteredFavorites = user.filterToCookByName(searchBar.value.toLowerCase())
    filteredFavorites.forEach((current) => {
        displayRecipePreview(current, favoritesView)
    })
-searchBar.value = ''
+searchBar.value = '';
 }
 
 // ~~~~~~~ Helper Functions ~~~~~~~
@@ -252,7 +254,7 @@ function displayRecipePreview(current, view) {
 };
 
  function findId(event){
-    const recipeId = Number(event.target.parentElement.id);
+    let recipeId = Number(event.target.parentElement.id);
     hide(allRecipes);
     hide(filterSidebar);
     show(singleRecipe);
