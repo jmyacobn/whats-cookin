@@ -20,6 +20,7 @@ let recipeRepository;
 let randomUser;
 let user;
 let foundRecipe;
+let homeView = true;
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
@@ -42,7 +43,10 @@ savedButton.addEventListener('click', displayFavorites);
 saveRecipeButton.addEventListener('click', addRecipeToFavorites)
 homeButton.addEventListener('click', displayHomePage)
 favoritesView.addEventListener('dblclick', removeFromFavorites)
-submitButton.addEventListener('click', searchForRecipe)
+submitButton.addEventListener('click', () => {
+    if(homeView) {searchForRecipe()}
+    else {searchFavorites()}
+})
 
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
@@ -99,6 +103,7 @@ function displayFavorites() {
    user.recipesToCook.forEach((current) => {
     displayRecipePreview(current, favoritesView)
     })
+    homeView = false;
 }
 
 function displayHomePage() {
@@ -111,6 +116,7 @@ function displayHomePage() {
     show(filterSidebar);
     hide(ingredientSidebar)
     displayAllRecipes()
+    homeView = true;
 }
 
 function removeFromFavorites() {
@@ -120,13 +126,22 @@ function removeFromFavorites() {
 
 function searchForRecipe() {
     allRecipes.innerHTML= ''
-   const help = recipeRepository.filterName(searchBar.value)
-   console.log('HELP', help)
-   help.forEach((current) => {
+   const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
+   filteredRecipes.forEach((current) => {
        displayRecipePreview(current, allRecipes)
    })
 searchBar.value = ''
 }
+
+function searchFavorites() {
+    favoritesView.innerHTML = ''
+   const filteredFavorites = user.filterToCookByName(searchBar.value.toLowerCase())
+   filteredFavorites.forEach((current) => {
+       displayRecipePreview(current, favoritesView)
+   })
+searchBar.value = ''
+}
+
 // ~~~~~~~ Helper Functions ~~~~~~~
 
 function hide(element) {
