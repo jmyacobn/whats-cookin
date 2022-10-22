@@ -11,12 +11,12 @@ import { usersData } from './data/users';
 import './images/turing-logo.png'
 import { use } from 'chai';
 
-// As a user, I should be able to filter my toCook recipes by a tag.
-
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
 let recipeRepository;
 let randomUser;
 let user;
+let foundRecipe;
+let homeView = true;
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
@@ -29,18 +29,27 @@ const savedButton = document.querySelector('#saved-recipe-button');
 const totalCost = document.querySelector('#totalCost')
 const ingredientList = document.querySelector('#ingredientList');
 const ingredientAmounts = document.querySelector('#ingredientAmounts')
+const radioButtons = document.querySelectorAll('.food-category');
+const submitTagButton = document.querySelector("#submitTagButton");
+const saveRecipeButton = document.querySelector('#favorite-recipe-button')
+const homeButton = document.querySelector('#home-button')
+const submitButton = document.querySelector('#submit-search-button')
+const searchBar = document.querySelector('#search-bar')
 
-//********WIP
-let radioButtons = document.querySelectorAll('.food-category');
-let submitTagButton = document.querySelector("#submitTagButton");
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 allRecipes.addEventListener('click', viewRecipeDetail);
 window.addEventListener('load', displayAllRecipes);
 window.addEventListener('load', displayWelcomeMessage);
-allRecipes.addEventListener('click', addRecipeToFavorites);
 savedButton.addEventListener('click', displayFavorites);
 submitTagButton.addEventListener('click', displayFilteredTag);
+saveRecipeButton.addEventListener('click', addRecipeToFavorites);
+homeButton.addEventListener('click', displayHomePage);
+favoritesView.addEventListener('dblclick', removeFromFavorites);
+submitButton.addEventListener('click', () => {
+    if(homeView) {searchForRecipe()}
+    else {searchFavorites()}
+});
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
@@ -67,9 +76,9 @@ function displayFilteredTag(){
     else{
         return tagSelectedList.forEach((current) => {
             displayRecipePreview(current, allRecipes)
-        })
-    }
-}
+        });
+    };
+};
 
 function displayAllRecipes() {
     recipeRepository = new RecipeRepository(recipeData);
@@ -87,49 +96,63 @@ function viewRecipeDetail(event) {
 function viewRecipeIngredients(event) {
   const foundRecipe = recipeRepository.recipes.find((current) => {
       return current.id === findId(event);
-  })
+  });
 
-  let ingredientsArray = foundRecipe.ingredients
-  let ingredientListAmounts = ""
-  let quant = ""
-  let unit = ""
-  let amount = ""
-  let amountArray = []
+  let ingredientsArray = foundRecipe.ingredients;
+  let ingredientListAmounts = "";
+  let quant = "";
+  let unit = "";
+  let amount = "";
+  let amountArray = [];
   ingredientsArray.forEach(curr => {
     quant = `${curr.quantity.amount.toFixed(2)}`
     unit = `${curr.quantity.unit}`
     amount = "<p>" + quant + " " + unit + "</p>"
     amountArray.push(amount);
     ingredientListAmounts = `${amountArray.join(" ")}`
-  })
+  });
 
   let ingredientListArray = foundRecipe.determineIngredients(ingredientsData);
   let ingredientListInfo = "";
 
   ingredientListArray.forEach(curr => {
     ingredientListInfo += "<p>" + curr + "</p>"
-  })
+  });
   ingredientList.innerHTML += `${ingredientListInfo}`
   ingredientAmounts.innerHTML += `${ingredientListAmounts}`
-}
+};
 
 function viewRecipeInstructions(event) {
     const foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event);
-    })
+    });
 
     let instructionsArray = foundRecipe.getInstructions();
     let instructionElement = "";
 
     instructionsArray.forEach(curr => {
       instructionElement += "<p>" + curr + "</p>"
-    })
+    });
 
     singleRecipe.innerHTML += `
         <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
         <section class="instructions">
           <h2>${foundRecipe.name}</h2>
           ${instructionElement}
+          
+    show(saveRecipeButton);
+    hide(allRecipes);
+    hide(filterSidebar);
+    show(singleRecipe);
+    show(ingredientSidebar);
+    foundRecipe = recipeRepository.recipes.find((current) => {
+        return current.id === findId(event);
+    })
+    singleRecipe.innerHTML = `
+        <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
+        <section class="instructions">
+          <h2>${foundRecipe.name}</h2>
+          <p>${foundRecipe.getInstructions()}</p>
         </section>`
     return foundRecipe;
 };
@@ -139,36 +162,72 @@ function viewRecipeTotalCost(event) {
         return current.id === findId(event);
     })
     totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredientsData)}`
-  }
+  };
 
 function randomizeUser() {
-        randomUser = usersData[Math.floor(Math.random() * usersData.length)]
-        user = new User(randomUser);
-        return user
-}
+    randomUser = usersData[Math.floor(Math.random() * usersData.length)]
+    user = new User(randomUser);
+    return user
+};
 
 function displayWelcomeMessage() {
     randomizeUser()
     userName.innerText = `Welcome, ${randomUser.name}!`
-}
+};
 
-function addRecipeToFavorites(event) {
-    let clickableID = Number(event.target.parentNode.id)
-    let favoriteRecipe = recipeData.filter((recipe)=>{
-      return recipe.id === clickableID
-    })
-     user.addRecipesToCook(favoriteRecipe)
-    return
-}
+function addRecipeToFavorites() {
+    return user.addRecipesToCook(foundRecipe);
+};
 
 function displayFavorites() {
    hide(allRecipes);
+   hide(singleRecipe);
    show(favoritesView);
-   return user.recipesToCook.map((recipe) => {
-    recipe.forEach((current) => {
-        displayRecipePreview(current, favoritesView)
-        })
-    })
+   hide(saveRecipeButton);
+   hide(savedButton);
+   show(filterSidebar);
+   hide(ingredientSidebar);
+   favoritesView.innerHTML = '';
+   user.recipesToCook.forEach((current) => {
+    displayRecipePreview(current, favoritesView)
+    });
+    homeView = false;
+}
+
+function displayHomePage() {
+    allRecipes.innerHTML = '';
+    show(allRecipes);
+    hide(singleRecipe);
+    hide(favoritesView);
+    hide(saveRecipeButton);
+    show(savedButton);
+    show(filterSidebar);
+    hide(ingredientSidebar);
+    displayAllRecipes();
+    homeView = true;
+}
+
+function removeFromFavorites() {
+    user.removeRecipesToCook(foundRecipe);
+    displayFavorites();
+}
+
+function searchForRecipe() {
+    allRecipes.innerHTML= ''
+   const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
+   filteredRecipes.forEach((current) => {
+       displayRecipePreview(current, allRecipes)
+   });
+searchBar.value = ''
+};
+
+function searchFavorites() {
+    favoritesView.innerHTML = ''
+   const filteredFavorites = user.filterToCookByName(searchBar.value.toLowerCase())
+   filteredFavorites.forEach((current) => {
+       displayRecipePreview(current, favoritesView)
+   })
+searchBar.value = ''
 }
 
 // ~~~~~~~ Helper Functions ~~~~~~~
@@ -176,21 +235,21 @@ function displayFavorites() {
 function hide(element) {
     element.classList.add("hidden");
   };
-   function show(element) {
+
+function show(element) {
     element.classList.remove("hidden");
   };
 
 function displayRecipePreview(current, view) {
     view.innerHTML += `
     <div class = "fullwrap" id="${current.id}">
-    <span id="favorite">❤️</span>
     <img src="${current.image}" alt="${current.name}">
     <div class="fullcap">
         ${current.name}
     </div>
     </div>
     `
-    }
+};
 
  function findId(event){
     const recipeId = Number(event.target.parentElement.id);
@@ -200,4 +259,4 @@ function displayRecipePreview(current, view) {
     show(ingredientSidebar);
 
     return recipeId;
-}
+};
