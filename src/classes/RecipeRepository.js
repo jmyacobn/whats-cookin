@@ -17,7 +17,7 @@ class RecipeRepository {
   }
   filterName(name) {
     return this.recipes.filter((recipe) => {
-      return recipe.name.includes(name)
+      return recipe.name.toLowerCase().includes(name)
     })
   }
 }
