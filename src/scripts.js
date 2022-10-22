@@ -94,7 +94,7 @@ function viewRecipeDetail(event) {
 }
 
 function viewRecipeIngredients(event) {
-  const foundRecipe = recipeRepository.recipes.find((current) => {
+  foundRecipe = recipeRepository.recipes.find((current) => {
       return current.id === findId(event);
   });
 
@@ -123,7 +123,7 @@ function viewRecipeIngredients(event) {
 };
 
 function viewRecipeInstructions(event) {
-    let foundRecipe = recipeRepository.recipes.find((current) => {
+    foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event);
     });
 
@@ -158,7 +158,7 @@ function viewRecipeInstructions(event) {
 };
 
 function viewRecipeTotalCost(event) {
-    let foundRecipe = recipeRepository.recipes.find((current) => {
+    foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event);
     })
     totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredientsData)}`
@@ -189,6 +189,8 @@ function displayFavorites() {
    hide(ingredientSidebar);
    favoritesView.innerHTML = '';
    user.recipesToCook.forEach((current) => {
+    console.log('current', current)
+    console.log('user', user.recipesToCook)
     displayRecipePreview(current, favoritesView)
     });
     homeView = false;
@@ -213,12 +215,12 @@ function removeFromFavorites() {
 }
 
 function searchForRecipe() {
-    allRecipes.innerHTML= ''
+    allRecipes.innerHTML= '';
    const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
    filteredRecipes.forEach((current) => {
        displayRecipePreview(current, allRecipes)
    });
-searchBar.value = ''
+searchBar.value = '';
 };
 
 function searchFavorites() {
