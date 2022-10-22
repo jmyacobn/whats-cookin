@@ -59,10 +59,15 @@ function displayFilteredTag(){
     const tagSelectedList = recipeRepository.filterTag(tagSelected)
 
     allRecipes.innerHTML = ""
-    
-    return tagSelectedList.forEach((current) => {
-        displayRecipePreview(current, allRecipes)
-    })
+
+    if(tagSelected === "all"){
+        displayAllRecipes();
+    }
+    else{
+        return tagSelectedList.forEach((current) => {
+            displayRecipePreview(current, allRecipes)
+        })
+    }
 }
 
 function displayAllRecipes() {
