@@ -79,6 +79,10 @@ nav {
   align-items: center;
 }
 
+.ingredient-info {
+  display: flex;
+}
+
 .search {
   display: flex;
   width: 20vw;
