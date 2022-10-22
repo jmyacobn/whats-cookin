@@ -19,6 +19,8 @@ import { use } from 'chai';
 let recipeRepository;
 let randomUser;
 let user;
+let foundRecipe;
+let homeView = true;
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
@@ -28,13 +30,24 @@ const ingredientSidebar = document.querySelector("#ingredientSection")
 const userName = document.querySelector('#user-info');
 const favoritesView = document.querySelector('#favorites-view');
 const savedButton = document.querySelector('#saved-recipe-button');
+const saveRecipeButton = document.querySelector('#favorite-recipe-button')
+const homeButton = document.querySelector('#home-button')
+const submitButton = document.querySelector('#submit-search-button')
+const searchBar = document.querySelector('#search-bar')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 allRecipes.addEventListener('click', viewRecipeDetail);
 window.addEventListener('load', displayAllRecipes);
 window.addEventListener('load', displayWelcomeMessage);
-allRecipes.addEventListener('click', addRecipeToFavorites);
 savedButton.addEventListener('click', displayFavorites);
+saveRecipeButton.addEventListener('click', addRecipeToFavorites)
+homeButton.addEventListener('click', displayHomePage)
+favoritesView.addEventListener('dblclick', removeFromFavorites)
+submitButton.addEventListener('click', () => {
+    if(homeView) {searchForRecipe()}
+    else {searchFavorites()}
+})
+
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
@@ -46,30 +59,27 @@ function displayAllRecipes() {
 }
 
 function viewRecipeDetail(event) {
-    //GOAL: incoporate instructions and total cost into recipe details page
-    const foundRecipe = recipeRepository.recipes.find((current) => {
-        return current.id === findId(event);
+    show(saveRecipeButton)
+    hide(allRecipes);
+    hide(filterSidebar);
+    show(singleRecipe);
+    show(ingredientSidebar);
+    foundRecipe = recipeRepository.recipes.find((current) => {
+        return current.id === findId(event)
     })
-    //found.instructions is an array
-    // ${foundRecipe.instructions[i].number}. ${foundRecipe.instructions[i].instruction}
-    //Create variable and do iterator here
-    // Store in variable => insert that variable in p tag below where we hard coded!
-    // forEach to do p tag for each instrution step
-    singleRecipe.innerHTML += `
+    singleRecipe.innerHTML = `
         <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
         <section class="instructions">
           <h2>${foundRecipe.name}</h2>
-          <p>${foundRecipe.instructions[0].instruction}</p>
+          <p>${foundRecipe.getInstructions()}</p>
         </section>`
-
-    console.log("here:",foundRecipe);
     return foundRecipe;
 };
 
 function randomizeUser() {
-        randomUser = usersData[Math.floor(Math.random() * usersData.length)]
-        user = new User(randomUser);
-        return user
+    randomUser = usersData[Math.floor(Math.random() * usersData.length)]
+    user = new User(randomUser);
+    return user
 }
 
 function displayWelcomeMessage() {
@@ -77,23 +87,59 @@ function displayWelcomeMessage() {
     userName.innerText = `Welcome, ${randomUser.name}!`
 }
 
-function addRecipeToFavorites(event) {
-    let clickableID = Number(event.target.parentNode.id)
-    let favoriteRecipe = recipeData.filter((recipe)=>{
-      return recipe.id === clickableID 
-    })
-     user.addRecipesToCook(favoriteRecipe)
-    return
+function addRecipeToFavorites() {
+    return user.addRecipesToCook(foundRecipe)
 }
 
 function displayFavorites() {
    hide(allRecipes);
+   hide(singleRecipe);
    show(favoritesView);
-   return user.recipesToCook.map((recipe) => {
-    recipe.forEach((current) => {
-        displayRecipePreview(current, favoritesView)
-        })
+   hide(saveRecipeButton);
+   hide(savedButton);
+   show(filterSidebar);
+   hide(ingredientSidebar)
+   favoritesView.innerHTML = ''
+   user.recipesToCook.forEach((current) => {
+    displayRecipePreview(current, favoritesView)
     })
+    homeView = false;
+}
+
+function displayHomePage() {
+    allRecipes.innerHTML = ''
+    show(allRecipes);
+    hide(singleRecipe);
+    hide(favoritesView);
+    hide(saveRecipeButton);
+    show(savedButton);
+    show(filterSidebar);
+    hide(ingredientSidebar)
+    displayAllRecipes()
+    homeView = true;
+}
+
+function removeFromFavorites() {
+    user.removeRecipesToCook(foundRecipe)
+    displayFavorites()
+}
+
+function searchForRecipe() {
+    allRecipes.innerHTML= ''
+   const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
+   filteredRecipes.forEach((current) => {
+       displayRecipePreview(current, allRecipes)
+   })
+searchBar.value = ''
+}
+
+function searchFavorites() {
+    favoritesView.innerHTML = ''
+   const filteredFavorites = user.filterToCookByName(searchBar.value.toLowerCase())
+   filteredFavorites.forEach((current) => {
+       displayRecipePreview(current, favoritesView)
+   })
+searchBar.value = ''
 }
 
 // ~~~~~~~ Helper Functions ~~~~~~~
@@ -101,14 +147,14 @@ function displayFavorites() {
 function hide(element) {
     element.classList.add("hidden");
   };
-   function show(element) {
+
+function show(element) {
     element.classList.remove("hidden");
   };
 
 function displayRecipePreview(current, view) {
     view.innerHTML += `
     <div class = "fullwrap" id="${current.id}">
-    <span id="favorite">❤️</span>
     <img src="${current.image}" alt="${current.name}">
     <div class="fullcap"> 
         ${current.name}
@@ -118,11 +164,5 @@ function displayRecipePreview(current, view) {
     }
     
  function findId(event){
-    const recipeId = Number(event.target.parentElement.id);
-    hide(allRecipes);
-    hide(filterSidebar);
-    show(singleRecipe);
-    show(ingredientSidebar);
-
-    return recipeId;
+    return Number(event.target.parentElement.id);
 }
