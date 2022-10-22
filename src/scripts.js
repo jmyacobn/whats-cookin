@@ -11,7 +11,6 @@ import { usersData } from './data/users';
 import './images/turing-logo.png'
 import { use } from 'chai';
 
-// As a user, I should be able to filter recipes by a tag.
 // As a user, I should be able to filter my toCook recipes by a tag.
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
@@ -40,44 +39,31 @@ window.addEventListener('load', displayAllRecipes);
 window.addEventListener('load', displayWelcomeMessage);
 allRecipes.addEventListener('click', addRecipeToFavorites);
 savedButton.addEventListener('click', displayFavorites);
-
-//********WIP
 submitTagButton.addEventListener('click', displayFilteredTag);
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
-// As a user, I should be able to filter recipes by a tag.
-//GOAL: Filters all recipies by given tag
-
-//*********WIP
 function checkTagType(){
     let messageType = "";
 
-    radioButtons.forEach((current) => {
-        if(current.checked === true){
-            messageType = current.value;
+    radioButtons.forEach((currentRadioButton) => {
+        if(currentRadioButton.checked){
+            messageType = currentRadioButton.value;
         }
     })
-    // console.log(messageType);
     return messageType;
 }
 
 function displayFilteredTag(){
     const tagSelected = checkTagType();
-    console.log("You selected", tagSelected);
-
     const tagSelectedList = recipeRepository.filterTag(tagSelected)
-    console.log(tagSelectedList);
 
     allRecipes.innerHTML = ""
     
     return tagSelectedList.forEach((current) => {
         displayRecipePreview(current, allRecipes)
     })
-
 }
-
-
 
 function displayAllRecipes() {
     recipeRepository = new RecipeRepository(recipeData);
