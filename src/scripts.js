@@ -71,7 +71,7 @@ function displayFilteredTag(){
 
     allRecipes.innerHTML = ""
 
-    if(tagSelected === "all"){
+    if(tagSelected === "reset all"){
         displayAllRecipes();
     }
     else{
@@ -88,7 +88,7 @@ function displayFilteredFavorite() {
    
     favoritesView.innerHTML = ""
 
-    if(tagSelected === "all"){
+    if(tagSelected === "reset all"){
         return favList.forEach((current) => {
             displayRecipePreview(current, favoritesView)
         });
