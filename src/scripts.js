@@ -1,9 +1,10 @@
+// ~~~~~~~~~~~~~~ File Imports ~~~~~~~~~~~~~~~~~~~~
 import {getRecipeData, getIngredientsData, getUserData} from './apiCalls';
-import './styles.css';
 import RecipeRepository from './classes/RecipeRepository';
+import Ingredients from './classes/Ingredients';
 import Recipe from "./classes/Recipe";
 import User from "./classes/User";
-import Ingredients from './classes/Ingredients';
+import './styles.css';
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
 let recipeRepository;
