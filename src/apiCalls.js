@@ -8,4 +8,3 @@ const getUserData = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v
     .then(response => response.json())
 
 export {getRecipeData, getIngredientsData, getUserData}
-

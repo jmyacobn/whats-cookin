@@ -37,20 +37,20 @@ const removeRecipeButton = document.querySelector('#remove-recipe-button')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData)
-allRecipes.addEventListener('click', viewRecipeDetail)
+allRecipes.addEventListener('click', displayRecipeDetailPage)
 homeButton.addEventListener('click', displayHomePage)
-favoritesView.addEventListener('click', viewRecipeDetail)
-submitTagButton.addEventListener('click', displayFilteredTag)
-submitTagButton.addEventListener('click', displayFilteredFavorite)
+favoritesView.addEventListener('click', displayRecipeDetailPage)
+submitTagButton.addEventListener('click', searchHomeRecipeByTag)
+submitTagButton.addEventListener('click', searchFavoriteRecipeByTag)
 saveRecipeButton.addEventListener('click', addRecipeToFavorites)
-removeRecipeButton.addEventListener('click', removeFromFavorites)
-savedButton.addEventListener('click', displayFavorites)
+removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
+savedButton.addEventListener('click', displayFavoritesPage)
 submitButton.addEventListener('click', () => {
     if(homeView) {
-        searchForRecipe()
+        searchHomeRecipeByName()
     }
     else {
-        searchFavorites()
+        searchFavoriteRecipeByName()
     }
 })
 
@@ -97,7 +97,7 @@ function displayHomePage() {
     homeView = true
 }
 
-function displayFavorites() {
+function displayFavoritesPage() {
     hide(removeRecipeButton)
     hide(allRecipes)
     hide(singleRecipe)
@@ -113,16 +113,16 @@ function displayFavorites() {
      homeView = false
  }
 
- function viewRecipeDetail(event) {
+ function displayRecipeDetailPage(event) {
     if (user.recipesToCook.length > 0) {
          show(removeRecipeButton)}
          show(savedButton)
-     viewRecipeInstructions(event)
-     viewRecipeTotalCost(event)
-     viewRecipeIngredients(event)
+     displayRecipeInstructions(event)
+     displayRecipeTotalCost(event)
+     displayRecipeIngredients(event)
  }
 
- function viewRecipeInstructions(event) {
+ function displayRecipeInstructions(event) {
     foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event)
     })
@@ -159,7 +159,7 @@ function displayFavorites() {
 }
 
  // ~~~~~~~~~~~~~~ Sidebar View Functions ~~~~~~~~~~~~~~~~~~~~
-function viewRecipeIngredients(event) {
+function displayRecipeIngredients(event) {
     foundRecipe = recipeRepository.recipes.find((current) => {
       return current.id === findId(event)
   })
@@ -170,7 +170,7 @@ function viewRecipeIngredients(event) {
   })
 }
 
-function viewRecipeTotalCost(event) {
+function displayRecipeTotalCost(event) {
     foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event)
     })
@@ -178,8 +178,8 @@ function viewRecipeTotalCost(event) {
 }
 
 // ~~~~~~~~~~~~~~ Filter Functions ~~~~~~~~~~~~~~~~~~~~
-function displayFilteredTag(){
-    const tagSelected = checkTagType()
+function searchHomeRecipeByTag(){
+    const tagSelected = determineSelectedTagValue()
     const tagSelectedList = recipeRepository.filterTag(tagSelected)
 
     allRecipes.innerHTML = ''
@@ -194,8 +194,8 @@ function displayFilteredTag(){
     }
 }
 
-function displayFilteredFavorite() {
-    const tagSelected = checkTagType()
+function searchFavoriteRecipeByTag() {
+    const tagSelected = determineSelectedTagValue()
     const favList = user.recipesToCook
     const tagSelectedList = user.filterToCookByTag(tagSelected)
    
@@ -213,7 +213,7 @@ function displayFilteredFavorite() {
     }
 }
 
-function searchForRecipe() {
+function searchHomeRecipeByName() {
     allRecipes.innerHTML= ''
    const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
    filteredRecipes.forEach((current) => {
@@ -222,7 +222,7 @@ function searchForRecipe() {
     searchBar.value = ''
 }
 
-function searchFavorites() {
+function searchFavoriteRecipeByName() {
     favoritesView.innerHTML = ''
    const filteredFavorites = user.filterToCookByName(searchBar.value.toLowerCase())
    filteredFavorites.forEach((current) => {
@@ -236,7 +236,7 @@ function addRecipeToFavorites() {
     return user.addRecipesToCook(foundRecipe)
 }
 
-function removeFromFavorites() {
+function removeRecipeFromFavorites() {
     if(user.recipesToCook.includes(foundRecipe)) {
         user.removeRecipesToCook(foundRecipe)
     resetView()
@@ -259,7 +259,7 @@ function displayWelcomeMessage(user) {
     userName.innerText = `Welcome, ${user}!`
 }
 
-function checkTagType(){
+function determineSelectedTagValue(){
     let messageType = ''
     radioButtons.forEach((currentRadioButton) => {
         if(currentRadioButton.checked){
@@ -280,7 +280,7 @@ function findId(event){
 
 function resetView() {
     if(user.recipesToCook.length > 0) {
-        displayFavorites()
+        displayFavoritesPage()
     } 
     else {
         displayHomePage()
@@ -289,8 +289,8 @@ function resetView() {
 
 function hide(element) {
     element.classList.add('hidden')
-  }
+}
 
 function show(element) {
     element.classList.remove('hidden')
-  }
+}
