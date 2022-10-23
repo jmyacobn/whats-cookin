@@ -1,11 +1,9 @@
-import apiCalls from './apiCalls';
+import getData from './apiCalls';
 import './styles.css';
 import RecipeRepository from './classes/RecipeRepository';
 import Recipe from "./classes/Recipe";
 import User from "./classes/User";
-import { ingredientsData } from './data/ingredients'
-import { recipeData } from './data/recipes';
-import { usersData } from './data/users';
+
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
@@ -15,7 +13,36 @@ let recipeRepository;
 let randomUser;
 let user;
 let foundRecipe;
+//let listOfIngredients
 let homeView = true;
+
+let apiUsers
+let apiRecipes
+let apiIngredients 
+
+const userURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/users'
+const recipeURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes'
+const ingredientURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients'
+
+function fetchData(urls) {
+    Promise.all([getData(urls[0]), getData(urls[1]), getData(urls[2])])
+    .then(data => {
+        apiUsers = data[0]
+        apiRecipes = data[1]
+        apiIngredients = data[2]
+        //console.log(apiRecipes.recipeData)
+        //console.log(apiUsers.usersData)
+        recipeRepository = new RecipeRepository(apiRecipes.recipeData, apiIngredients.ingredientsData);
+        console.log("recipeRepository", recipeRepository)
+        displayAllRecipes()
+        randomUser = apiUsers.usersData[Math.floor(Math.random() * apiUsers.usersData.length)]
+        randomizeUser(apiUsers.usersData)
+        //console.log("apiIngredient.ingredientsData", apiIngredients.ingredientsData)
+    
+    })
+}
+fetchData([userURL, recipeURL, ingredientURL])
+
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
@@ -37,8 +64,8 @@ const searchBar = document.querySelector('#search-bar')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 allRecipes.addEventListener('click', viewRecipeDetail);
-window.addEventListener('load', displayAllRecipes);
-window.addEventListener('load', displayWelcomeMessage);
+//window.addEventListener('load', displayAllRecipes);
+//window.addEventListener('load', displayWelcomeMessage);
 savedButton.addEventListener('click', displayFavorites);
 submitTagButton.addEventListener('click', displayFilteredTag);
 submitTagButton.addEventListener('click', displayFilteredFavorite)
@@ -55,7 +82,6 @@ submitButton.addEventListener('click', () => {
 
 function checkTagType(){
     let messageType = "";
-
     radioButtons.forEach((currentRadioButton) => {
         if(currentRadioButton.checked){
             messageType = currentRadioButton.value;
@@ -100,7 +126,6 @@ function displayFilteredFavorite() {
 }
 
 function displayAllRecipes() {
-    recipeRepository = new RecipeRepository(recipeData);
     return recipeRepository.recipes.forEach((current) => {
         displayRecipePreview(current, allRecipes)
     })
@@ -117,7 +142,7 @@ function viewRecipeIngredients(event) {
       return current.id === findId(event);
   });
 
-  let listOfIngredients = foundRecipe.determineIngredients(ingredientsData);
+    let listOfIngredients = foundRecipe.determineIngredients(recipeRepository.ingredients);
   ingredientList.innerHTML = ''
   listOfIngredients.forEach((item) => {
         ingredientList.innerHTML += `<p>${item.ingredient}</p>`;
@@ -164,18 +189,18 @@ function viewRecipeTotalCost(event) {
     foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event);
     })
-    totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredientsData)}`
+    totalCost.innerText = `$ ${foundRecipe.calculateCost(recipeRepository.ingredients)}`
   };
 
 function randomizeUser() {
-    randomUser = usersData[Math.floor(Math.random() * usersData.length)]
     user = new User(randomUser);
+    displayWelcomeMessage(user.name)
     return user
 };
 
-function displayWelcomeMessage() {
-    randomizeUser()
-    userName.innerText = `Welcome, ${randomUser.name}!`
+function displayWelcomeMessage(user) {
+    userName.innerText = `Welcome, ${user}!`
+   
 };
 
 function addRecipeToFavorites() {
