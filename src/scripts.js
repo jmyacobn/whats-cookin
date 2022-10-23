@@ -17,21 +17,6 @@ let apiUsers
 let apiRecipes
 let apiIngredients 
 
-
-function fetchData() {
-    Promise.all([getUserData, getRecipeData, getIngredientsData])
-    .then(data => {
-        apiUsers = data[0]
-        apiRecipes = data[1]
-        apiIngredients = data[2]
-        recipeRepository = new RecipeRepository(apiRecipes.recipeData);
-        ingredients = new Ingredients(apiIngredients.ingredientsData)
-        displayAllRecipes()
-        randomizeUser(apiUsers.usersData)
-    })
-    //.catch
-}
-
 window.addEventListener('load', fetchData);
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
@@ -70,6 +55,19 @@ submitButton.addEventListener('click', () => {
 });
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
+
+function fetchData() {
+    Promise.all([getUserData, getRecipeData, getIngredientsData])
+    .then(data => {
+        apiUsers = data[0]
+        apiRecipes = data[1]
+        apiIngredients = data[2]
+        recipeRepository = new RecipeRepository(apiRecipes.recipeData);
+        ingredients = new Ingredients(apiIngredients.ingredientsData)
+        displayAllRecipes()
+        randomizeUser(apiUsers.usersData)
+    })
+}
 
 function checkTagType(){
     let messageType = "";
