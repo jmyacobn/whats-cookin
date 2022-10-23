@@ -4,15 +4,15 @@ import User from '../src/classes/User';
 import { sampleIngredientsData, sampleUsersData, sampleRecipeData } from '../src/data/sample-data';
 
 describe('User', () => {
-  sampleIngredientsData
-  sampleUsersData
-  sampleRecipeData
-  let recipe1, recipe2, user1, user2
+  sampleIngredientsData;
+  sampleUsersData;
+  sampleRecipeData;
+  let recipe1, recipe2, user1, user2;
 
 
   beforeEach(() => {
-    user1 = new User(sampleUsersData[0])
-    user2 = new User(sampleUsersData[1])
+    user1 = new User(sampleUsersData[0]);
+    user2 = new User(sampleUsersData[1]);
     recipe1 = new Recipe(sampleRecipeData[0]);
     recipe2 = new Recipe(sampleRecipeData[1]);
     sampleIngredientsData;
