@@ -2,7 +2,6 @@
 import {getRecipeData, getIngredientsData, getUserData} from './apiCalls'
 import RecipeRepository from './classes/RecipeRepository'
 import Ingredients from './classes/Ingredients'
-import Recipe from './classes/Recipe'
 import User from './classes/User'
 import './styles.css'
 
