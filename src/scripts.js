@@ -65,6 +65,8 @@ function fetchData() {
         displayAllRecipes()
         randomizeUser(apiUsers.usersData)
     })
+    .catch(err => console.log(err))
+
 }
 
 function displayAllRecipes() {
