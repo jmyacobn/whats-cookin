@@ -67,10 +67,10 @@ describe('User', () => {
   it('should filter recipesToCook by name', () => {
     user1.addRecipesToCook(recipe1);
     user1.addRecipesToCook(recipe2);
-    expect(user1.filterToCookByName("Loaded Chocolate Chip Pudding Cookie Cups")).to.deep.equal([recipe1]);
-    expect(user1.filterToCookByName("Maple Dijon Apple Cider Grilled Pork Chops")).to.deep.equal([recipe2]);
+    expect(user1.filterToCookByName("loaded chocolate chip pudding cookie cups")).to.deep.equal([recipe1]);
+    expect(user1.filterToCookByName("maple dijon apple cider grilled pork chops")).to.deep.equal([recipe2]);
   });
-  it.only('should return nothing if name does exist in recipesToCook', () => {
+  it('should return nothing if name does exist in recipesToCook', () => {
     user2.addRecipesToCook(recipe1);
     user2.addRecipesToCook(recipe2);
     expect(user2.filterToCookByName("suuushhhhhhiiii")).to.deep.equal([]);
