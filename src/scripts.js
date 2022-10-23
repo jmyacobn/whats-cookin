@@ -146,6 +146,7 @@ searchBar.value = '';
 function viewRecipeDetail(event) {
    if (user.recipesToCook.length > 0) {
         show(removeRecipeButton)};
+        show(savedButton);
     viewRecipeInstructions(event);
     viewRecipeTotalCost(event);
     viewRecipeIngredients(event);
@@ -241,11 +242,9 @@ function displayHomePage() {
 }
 
 function removeFromFavorites() {
-    user.removeRecipesToCook(foundRecipe);
-    console.log('retoco', user.recipesToCook)
-    if(user.recipesToCook.length > 0) {
-        displayFavorites()} 
-    else {displayHomePage()};
+    if(user.recipesToCook.includes(foundRecipe)) {
+        user.removeRecipesToCook(foundRecipe)
+    }
 }
 
 
