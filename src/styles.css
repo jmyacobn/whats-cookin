@@ -10,7 +10,7 @@ body {
   padding-left: 2vw;
 }
 
-.home-button, .saved-recipe-button{
+.home-button, .saved-recipe-button, .favorite-recipe-button{
   margin-left: 10px;
 }
 
@@ -24,7 +24,6 @@ body {
   padding-right:0;
   display: flex;
   justify-content: flex-end;
-  width: 20vw;
 }
 
 h1 {

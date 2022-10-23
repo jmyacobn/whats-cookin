@@ -2,13 +2,13 @@
 // import {sampleIngredientsData} from '../data/sample-data';
 
 class Recipe {
-    constructor(data) {
-        this.id = data.id;
-        this.image = data.image;
-        this.ingredients = data.ingredients;
-        this.instructions = data.instructions;
-        this.name = data.name;
-        this.tags = data.tags;
+    constructor(recipeData) {
+        this.id = recipeData.id;
+        this.image = recipeData.image;
+        this.ingredients = recipeData.ingredients;
+        this.instructions = recipeData.instructions;
+        this.name = recipeData.name;
+        this.tags = recipeData.tags;
         this.ingredientsList = [];
         this.totalCost;
     }

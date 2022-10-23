@@ -1,21 +1,43 @@
-import apiCalls from './apiCalls';
+import {getRecipeData, getIngredientsData, getUserData} from './apiCalls';
 import './styles.css';
 import RecipeRepository from './classes/RecipeRepository';
 import Recipe from "./classes/Recipe";
 import User from "./classes/User";
-import { ingredientsData } from './data/ingredients'
-import { recipeData } from './data/recipes';
-import { usersData } from './data/users';
+
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
+import Ingredients from './classes/Ingredients';
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
 let recipeRepository;
+let ingredients
 let randomUser;
 let user;
 let foundRecipe;
+//let listOfIngredients
 let homeView = true;
+
+let apiUsers
+let apiRecipes
+let apiIngredients 
+
+
+function fetchData() {
+    Promise.all([getUserData, getRecipeData, getIngredientsData])
+    .then(data => {
+        apiUsers = data[0]
+        apiRecipes = data[1]
+        apiIngredients = data[2]
+        recipeRepository = new RecipeRepository(apiRecipes.recipeData);
+        ingredients = new Ingredients(apiIngredients.ingredientsData)
+        displayAllRecipes()
+        randomizeUser(apiUsers.usersData)
+    })
+    //.catch
+}
+
+window.addEventListener('load', fetchData);
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
@@ -33,12 +55,13 @@ const saveRecipeButton = document.querySelector('#favorite-recipe-button')
 const homeButton = document.querySelector('#home-button')
 const submitButton = document.querySelector('#submit-search-button')
 const searchBar = document.querySelector('#search-bar')
+const deleteInstructions = document.querySelector('#delete-instructions')
 
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 allRecipes.addEventListener('click', viewRecipeDetail);
-window.addEventListener('load', displayAllRecipes);
-window.addEventListener('load', displayWelcomeMessage);
+//window.addEventListener('load', displayAllRecipes);
+//window.addEventListener('load', displayWelcomeMessage);
 savedButton.addEventListener('click', displayFavorites);
 submitTagButton.addEventListener('click', displayFilteredTag);
 submitTagButton.addEventListener('click', displayFilteredFavorite)
@@ -55,7 +78,6 @@ submitButton.addEventListener('click', () => {
 
 function checkTagType(){
     let messageType = "";
-
     radioButtons.forEach((currentRadioButton) => {
         if(currentRadioButton.checked){
             messageType = currentRadioButton.value;
@@ -100,16 +122,17 @@ function displayFilteredFavorite() {
 }
 
 function displayAllRecipes() {
-    recipeRepository = new RecipeRepository(recipeData);
+    hide(deleteInstructions)
     return recipeRepository.recipes.forEach((current) => {
         displayRecipePreview(current, allRecipes)
     })
 }
 
 function viewRecipeDetail(event) {
-  viewRecipeInstructions(event);
-  viewRecipeTotalCost(event);
-  viewRecipeIngredients(event);
+    hide(deleteInstructions)
+    viewRecipeInstructions(event);
+    viewRecipeTotalCost(event);
+    viewRecipeIngredients(event);
 }
 
 function viewRecipeIngredients(event) {
@@ -117,7 +140,7 @@ function viewRecipeIngredients(event) {
       return current.id === findId(event);
   });
 
-  let listOfIngredients = foundRecipe.determineIngredients(ingredientsData);
+    let listOfIngredients = foundRecipe.determineIngredients(ingredients.ingredients);
   ingredientList.innerHTML = ''
   listOfIngredients.forEach((item) => {
         ingredientList.innerHTML += `<p>${item.ingredient}</p>`;
@@ -164,18 +187,19 @@ function viewRecipeTotalCost(event) {
     foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event);
     })
-    totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredientsData)}`
+    totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredients.ingredients)}`
   };
 
-function randomizeUser() {
-    randomUser = usersData[Math.floor(Math.random() * usersData.length)]
+function randomizeUser(data) {
+    randomUser = data[Math.floor(Math.random() * data.length)]
     user = new User(randomUser);
+    displayWelcomeMessage(user.name)
     return user
 };
 
-function displayWelcomeMessage() {
-    randomizeUser()
-    userName.innerText = `Welcome, ${randomUser.name}!`
+function displayWelcomeMessage(user) {
+    userName.innerText = `Welcome, ${user}!`
+   
 };
 
 function addRecipeToFavorites() {
@@ -190,6 +214,7 @@ function displayFavorites() {
    hide(savedButton);
    show(filterSidebar);
    hide(ingredientSidebar);
+   show(deleteInstructions)
    favoritesView.innerHTML = '';
    user.recipesToCook.forEach((current) => {
     displayRecipePreview(current, favoritesView)
@@ -206,6 +231,7 @@ function displayHomePage() {
     show(savedButton);
     show(filterSidebar);
     hide(ingredientSidebar);
+    hide(deleteInstructions);
     displayAllRecipes();
     homeView = true;
 }
