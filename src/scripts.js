@@ -29,18 +29,12 @@ function fetchData() {
         apiUsers = data[0]
         apiRecipes = data[1]
         apiIngredients = data[2]
-        //console.log(apiRecipes.recipeData)
-        //console.log(apiUsers.usersData)
-        // recipeRepository = new RecipeRepository(apiRecipes.recipeData, apiIngredients.ingredientsData);
         recipeRepository = new RecipeRepository(apiRecipes.recipeData);
-        //testing it out 
         ingredients = new Ingredients(apiIngredients.ingredientsData)
-        //console.log("recipeRepository", recipeRepository)
         displayAllRecipes()
         randomizeUser(apiUsers.usersData)
-        //console.log("apiIngredient.ingredientsData", apiIngredients.ingredientsData)
-    
     })
+    //.catch
 }
 
 window.addEventListener('load', fetchData);
