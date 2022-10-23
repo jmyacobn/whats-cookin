@@ -17,7 +17,6 @@ let user;
 let foundRecipe;
 //let listOfIngredients
 let homeView = true;
-
 let apiUsers
 let apiRecipes
 let apiIngredients 
@@ -55,7 +54,7 @@ const saveRecipeButton = document.querySelector('#favorite-recipe-button')
 const homeButton = document.querySelector('#home-button')
 const submitButton = document.querySelector('#submit-search-button')
 const searchBar = document.querySelector('#search-bar')
-const deleteInstructions = document.querySelector('#delete-instructions')
+const removeRecipeButton = document.querySelector('#remove-recipe-button');
 
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
@@ -67,7 +66,7 @@ submitTagButton.addEventListener('click', displayFilteredTag);
 submitTagButton.addEventListener('click', displayFilteredFavorite)
 saveRecipeButton.addEventListener('click', addRecipeToFavorites);
 homeButton.addEventListener('click', displayHomePage);
-favoritesView.addEventListener('dblclick', removeFromFavorites);
+removeRecipeButton.addEventListener('click', removeFromFavorites);
 favoritesView.addEventListener('click', viewRecipeDetail);
 submitButton.addEventListener('click', () => {
     if(homeView) {searchForRecipe()}
@@ -122,14 +121,14 @@ function displayFilteredFavorite() {
 }
 
 function displayAllRecipes() {
-    hide(deleteInstructions)
     return recipeRepository.recipes.forEach((current) => {
         displayRecipePreview(current, allRecipes)
     })
 }
 
 function viewRecipeDetail(event) {
-    hide(deleteInstructions)
+   if (user.recipesToCook.length > 0) {
+        show(removeRecipeButton)};
     viewRecipeInstructions(event);
     viewRecipeTotalCost(event);
     viewRecipeIngredients(event);
@@ -207,6 +206,7 @@ function addRecipeToFavorites() {
 };
 
 function displayFavorites() {
+   hide(removeRecipeButton);
    hide(allRecipes);
    hide(singleRecipe);
    show(favoritesView);
@@ -214,7 +214,6 @@ function displayFavorites() {
    hide(savedButton);
    show(filterSidebar);
    hide(ingredientSidebar);
-   show(deleteInstructions)
    favoritesView.innerHTML = '';
    user.recipesToCook.forEach((current) => {
     displayRecipePreview(current, favoritesView)
@@ -224,6 +223,7 @@ function displayFavorites() {
 
 function displayHomePage() {
     allRecipes.innerHTML = '';
+    hide(removeRecipeButton);
     show(allRecipes);
     hide(singleRecipe);
     hide(favoritesView);
@@ -231,14 +231,16 @@ function displayHomePage() {
     show(savedButton);
     show(filterSidebar);
     hide(ingredientSidebar);
-    hide(deleteInstructions);
     displayAllRecipes();
     homeView = true;
 }
 
 function removeFromFavorites() {
     user.removeRecipesToCook(foundRecipe);
-    displayFavorites();
+    console.log('retoco', user.recipesToCook)
+    if(user.recipesToCook.length > 0) {
+        displayFavorites()} 
+    else {displayHomePage()};
 }
 
 function searchForRecipe() {
@@ -286,6 +288,5 @@ function displayRecipePreview(current, view) {
     hide(filterSidebar);
     show(singleRecipe);
     show(ingredientSidebar);
-
     return recipeId;
 };
