@@ -12,7 +12,6 @@ let ingredients
 let randomUser;
 let user;
 let foundRecipe;
-//let listOfIngredients
 let homeView = true;
 let apiUsers
 let apiRecipes
