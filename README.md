@@ -33,14 +33,14 @@ What's Cookin'? is a two-part group project that is completed during Weeks 2 and
 HTML | CSS | JavaScript | Figma | Webpack | API | Mocha and Chai | Chrome Dev Tools | GitHub Projects
 
 ## Wins 🏆
-### Part1
+### Part 1
 - Built fully functional site to meet the MVP outlined in the project spec
 - Successfully learned and implemented API fetch calls
 - Highly successful team collaboration due thorough DTR, calendaring, project board, and daily stand-ups
 - Learned to use Figma to design our website and GitHub Projects to manage our work as a team
 
 ## Challenges 😅
-### Part1
+### Part 1
 - Deleting recipes from our save recipe view with a double click, while using a single click to view recipe details
 - Initially, accessing the data in our fetch calls
 
