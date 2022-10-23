@@ -1,4 +1,4 @@
-import getData from './apiCalls';
+import {getRecipeData, getIngredientsData, getUserData} from './apiCalls';
 import './styles.css';
 import RecipeRepository from './classes/RecipeRepository';
 import Recipe from "./classes/Recipe";
@@ -20,12 +20,9 @@ let apiUsers
 let apiRecipes
 let apiIngredients 
 
-const userURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/users'
-const recipeURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes'
-const ingredientURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients'
 
-function fetchData(urls) {
-    Promise.all([getData(urls[0]), getData(urls[1]), getData(urls[2])])
+function fetchData() {
+    Promise.all([getUserData, getRecipeData, getIngredientsData])
     .then(data => {
         apiUsers = data[0]
         apiRecipes = data[1]
@@ -33,7 +30,7 @@ function fetchData(urls) {
         //console.log(apiRecipes.recipeData)
         //console.log(apiUsers.usersData)
         recipeRepository = new RecipeRepository(apiRecipes.recipeData, apiIngredients.ingredientsData);
-        console.log("recipeRepository", recipeRepository)
+        //console.log("recipeRepository", recipeRepository)
         displayAllRecipes()
         randomUser = apiUsers.usersData[Math.floor(Math.random() * apiUsers.usersData.length)]
         randomizeUser(apiUsers.usersData)
@@ -41,7 +38,7 @@ function fetchData(urls) {
     
     })
 }
-fetchData([userURL, recipeURL, ingredientURL])
+fetchData()
 
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
