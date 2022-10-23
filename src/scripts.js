@@ -50,8 +50,7 @@ submitButton.addEventListener('click', () => {
         searchForRecipe()
     }
     else {
-        searchFavorites()
-    }
+        searchFavorites()}
 });
 
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
@@ -111,12 +110,6 @@ function displayFilteredFavorite() {
             displayRecipePreview(current, favoritesView)
         });
     };
-}
-
-function displayAllRecipes() {
-    return recipeRepository.recipes.forEach((current) => {
-        displayRecipePreview(current, allRecipes)
-    })
 }
 
 function viewRecipeDetail(event) {
@@ -181,13 +174,6 @@ function viewRecipeTotalCost(event) {
     })
     totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredients.ingredients)}`
   };
-
-function randomizeUser(data) {
-    randomUser = data[Math.floor(Math.random() * data.length)]
-    user = new User(randomUser);
-    displayWelcomeMessage(user.name)
-    return user
-};
 
 function displayWelcomeMessage(user) {
     userName.innerText = `Welcome, ${user}!`
@@ -255,6 +241,18 @@ searchBar.value = '';
 }
 
 // ~~~~~~~ Helper Functions ~~~~~~~
+function displayAllRecipes() {
+    return recipeRepository.recipes.forEach((current) => {
+        displayRecipePreview(current, allRecipes)
+    })
+}
+
+function randomizeUser(data) {
+    randomUser = data[Math.floor(Math.random() * data.length)]
+    user = new User(randomUser);
+    displayWelcomeMessage(user.name)
+    return user
+};
 
 function hide(element) {
     element.classList.add("hidden");
