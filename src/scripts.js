@@ -7,9 +7,11 @@ import User from "./classes/User";
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
+import Ingredients from './classes/Ingredients';
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
 let recipeRepository;
+let ingredients
 let randomUser;
 let user;
 let foundRecipe;
@@ -27,15 +29,12 @@ function fetchData() {
         apiUsers = data[0]
         apiRecipes = data[1]
         apiIngredients = data[2]
-        //console.log(apiRecipes.recipeData)
-        //console.log(apiUsers.usersData)
-        recipeRepository = new RecipeRepository(apiRecipes.recipeData, apiIngredients.ingredientsData);
-        //console.log("recipeRepository", recipeRepository)
+        recipeRepository = new RecipeRepository(apiRecipes.recipeData);
+        ingredients = new Ingredients(apiIngredients.ingredientsData)
         displayAllRecipes()
         randomizeUser(apiUsers.usersData)
-        //console.log("apiIngredient.ingredientsData", apiIngredients.ingredientsData)
-    
     })
+    //.catch
 }
 
 window.addEventListener('load', fetchData);
@@ -56,6 +55,7 @@ const saveRecipeButton = document.querySelector('#favorite-recipe-button')
 const homeButton = document.querySelector('#home-button')
 const submitButton = document.querySelector('#submit-search-button')
 const searchBar = document.querySelector('#search-bar')
+const deleteInstructions = document.querySelector('#delete-instructions')
 
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
@@ -122,15 +122,17 @@ function displayFilteredFavorite() {
 }
 
 function displayAllRecipes() {
+    hide(deleteInstructions)
     return recipeRepository.recipes.forEach((current) => {
         displayRecipePreview(current, allRecipes)
     })
 }
 
 function viewRecipeDetail(event) {
-  viewRecipeInstructions(event);
-  viewRecipeTotalCost(event);
-  viewRecipeIngredients(event);
+    hide(deleteInstructions)
+    viewRecipeInstructions(event);
+    viewRecipeTotalCost(event);
+    viewRecipeIngredients(event);
 }
 
 function viewRecipeIngredients(event) {
@@ -138,7 +140,7 @@ function viewRecipeIngredients(event) {
       return current.id === findId(event);
   });
 
-    let listOfIngredients = foundRecipe.determineIngredients(recipeRepository.ingredients);
+    let listOfIngredients = foundRecipe.determineIngredients(ingredients.ingredients);
   ingredientList.innerHTML = ''
   listOfIngredients.forEach((item) => {
         ingredientList.innerHTML += `<p>${item.ingredient}</p>`;
@@ -185,7 +187,7 @@ function viewRecipeTotalCost(event) {
     foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event);
     })
-    totalCost.innerText = `$ ${foundRecipe.calculateCost(recipeRepository.ingredients)}`
+    totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredients.ingredients)}`
   };
 
 function randomizeUser(data) {
@@ -212,6 +214,7 @@ function displayFavorites() {
    hide(savedButton);
    show(filterSidebar);
    hide(ingredientSidebar);
+   show(deleteInstructions)
    favoritesView.innerHTML = '';
    user.recipesToCook.forEach((current) => {
     displayRecipePreview(current, favoritesView)
@@ -228,6 +231,7 @@ function displayHomePage() {
     show(savedButton);
     show(filterSidebar);
     hide(ingredientSidebar);
+    hide(deleteInstructions);
     displayAllRecipes();
     homeView = true;
 }

@@ -2,9 +2,9 @@ import Recipe from "./Recipe";
 //import { recipeData } from "../data/recipes";
 
 class RecipeRepository {
-  constructor(recipes, ingredients) {
+  constructor(recipes) {
     this.recipes = this.createRecipes(recipes)
-    this.ingredients = ingredients
+    // this.ingredients = ingredients
   }
   createRecipes(recipes) {
     return recipes.map((recipeInfo) => {
