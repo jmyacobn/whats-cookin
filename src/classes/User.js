@@ -6,7 +6,9 @@ class User {
         this.recipesToCook = [];
     }
     addRecipesToCook(recipe) {
+        if(!this.recipesToCook.includes(recipe)){
         return this.recipesToCook.push(recipe);
+        }
     }
     removeRecipesToCook(recipeToRemove) {
         const index = this.recipesToCook.indexOf(recipeToRemove)
