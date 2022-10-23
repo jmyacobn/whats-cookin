@@ -17,8 +17,6 @@ let apiUsers
 let apiRecipes
 let apiIngredients 
 
-window.addEventListener('load', fetchData);
-
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
 const singleRecipe = document.querySelector("#recipe");
@@ -37,23 +35,20 @@ const submitButton = document.querySelector('#submit-search-button')
 const searchBar = document.querySelector('#search-bar')
 const removeRecipeButton = document.querySelector('#remove-recipe-button');
 
-
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
+window.addEventListener('load', fetchData);
 allRecipes.addEventListener('click', viewRecipeDetail);
-//window.addEventListener('load', displayAllRecipes);
-//window.addEventListener('load', displayWelcomeMessage);
-savedButton.addEventListener('click', displayFavorites);
+homeButton.addEventListener('click', displayHomePage);
+favoritesView.addEventListener('click', viewRecipeDetail);
 submitTagButton.addEventListener('click', displayFilteredTag);
 submitTagButton.addEventListener('click', displayFilteredFavorite)
 saveRecipeButton.addEventListener('click', addRecipeToFavorites);
-homeButton.addEventListener('click', displayHomePage);
 removeRecipeButton.addEventListener('click', removeFromFavorites);
-favoritesView.addEventListener('click', viewRecipeDetail);
+savedButton.addEventListener('click', displayFavorites);
 submitButton.addEventListener('click', () => {
     if(homeView) {searchForRecipe()}
     else {searchFavorites()}
 });
-
 // ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
 function fetchData() {
