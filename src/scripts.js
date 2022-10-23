@@ -1,5 +1,5 @@
 // ~~~~~~~~~~~~~~ File Imports ~~~~~~~~~~~~~~~~~~~~
-import {getRecipeData, getIngredientsData, getUserData} from './apiCalls'
+import { getRecipeData, getIngredientsData, getUserData } from './apiCalls'
 import RecipeRepository from './classes/RecipeRepository'
 import Ingredients from './classes/Ingredients'
 import User from './classes/User'
@@ -14,7 +14,7 @@ let foundRecipe
 let homeView = true
 let apiUsers
 let apiRecipes
-let apiIngredients 
+let apiIngredients
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector('#recipeRepository')
@@ -45,7 +45,7 @@ saveRecipeButton.addEventListener('click', addRecipeToFavorites)
 removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
 savedButton.addEventListener('click', displayFavoritesPage)
 submitButton.addEventListener('click', () => {
-    if(homeView) {
+    if (homeView) {
         searchHomeRecipeByName()
     }
     else {
@@ -56,16 +56,16 @@ submitButton.addEventListener('click', () => {
 // ~~~~~~~~~~~~~~ Setup Functions ~~~~~~~~~~~~~~~~~~~~
 function fetchData() {
     Promise.all([getUserData, getRecipeData, getIngredientsData])
-    .then(data => {
-        apiUsers = data[0]
-        apiRecipes = data[1]
-        apiIngredients = data[2]
-        recipeRepository = new RecipeRepository(apiRecipes.recipeData)
-        ingredients = new Ingredients(apiIngredients.ingredientsData)
-        displayAllRecipes()
-        randomizeUser(apiUsers.usersData)
-    })
-    .catch(err => console.log(err))
+        .then(data => {
+            apiUsers = data[0]
+            apiRecipes = data[1]
+            apiIngredients = data[2]
+            recipeRepository = new RecipeRepository(apiRecipes.recipeData)
+            ingredients = new Ingredients(apiIngredients.ingredientsData)
+            displayAllRecipes()
+            randomizeUser(apiUsers.usersData)
+        })
+        .catch(err => console.log(err))
 }
 
 function displayAllRecipes() {
@@ -107,21 +107,22 @@ function displayFavoritesPage() {
     hide(ingredientSidebar)
     favoritesView.innerHTML = ''
     user.recipesToCook.forEach((current) => {
-     displayRecipePreview(current, favoritesView)
-     })
-     homeView = false
- }
+        displayRecipePreview(current, favoritesView)
+    })
+    homeView = false
+}
 
- function displayRecipeDetailPage(event) {
+function displayRecipeDetailPage(event) {
     if (user.recipesToCook.length > 0) {
-         show(removeRecipeButton)}
-         show(savedButton)
-     displayRecipeInstructions(event)
-     displayRecipeTotalCost(event)
-     displayRecipeIngredients(event)
- }
+        show(removeRecipeButton)
+    }
+    show(savedButton)
+    displayRecipeInstructions(event)
+    displayRecipeTotalCost(event)
+    displayRecipeIngredients(event)
+}
 
- function displayRecipeInstructions(event) {
+function displayRecipeInstructions(event) {
     foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event)
     })
@@ -130,7 +131,7 @@ function displayFavoritesPage() {
     let instructionElement = ''
 
     instructionsArray.forEach(curr => {
-      instructionElement += '<p>' + curr + '</p>'
+        instructionElement += '<p>' + curr + '</p>'
     })
 
     singleRecipe.innerHTML += `
@@ -138,7 +139,7 @@ function displayFavoritesPage() {
         <section class='instructions'>
           <h2>${foundRecipe.name}</h2>
           ${instructionElement}`
-          
+
     show(saveRecipeButton)
     hide(favoritesView)
     hide(allRecipes)
@@ -157,16 +158,16 @@ function displayFavoritesPage() {
     return foundRecipe
 }
 
- // ~~~~~~~~~~~~~~ Sidebar View Functions ~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~ Sidebar View Functions ~~~~~~~~~~~~~~~~~~~~
 function displayRecipeIngredients(event) {
     foundRecipe = recipeRepository.recipes.find((current) => {
-      return current.id === findId(event)
-  })
-  let listOfIngredients = foundRecipe.determineIngredients(ingredients.ingredients)
-  ingredientList.innerHTML = ''
-  listOfIngredients.forEach((item) => {
+        return current.id === findId(event)
+    })
+    let listOfIngredients = foundRecipe.determineIngredients(ingredients.ingredients)
+    ingredientList.innerHTML = ''
+    listOfIngredients.forEach((item) => {
         ingredientList.innerHTML += `<p>${item.ingredient}</p>`
-  })
+    })
 }
 
 function displayRecipeTotalCost(event) {
@@ -177,16 +178,16 @@ function displayRecipeTotalCost(event) {
 }
 
 // ~~~~~~~~~~~~~~ Filter Functions ~~~~~~~~~~~~~~~~~~~~
-function searchHomeRecipeByTag(){
+function searchHomeRecipeByTag() {
     const tagSelected = determineSelectedTagValue()
     const tagSelectedList = recipeRepository.filterTag(tagSelected)
 
     allRecipes.innerHTML = ''
 
-    if(tagSelected === 'reset all'){
+    if (tagSelected === 'reset all') {
         displayAllRecipes()
     }
-    else{
+    else {
         return tagSelectedList.forEach((current) => {
             displayRecipePreview(current, allRecipes)
         })
@@ -197,15 +198,15 @@ function searchFavoriteRecipeByTag() {
     const tagSelected = determineSelectedTagValue()
     const favList = user.recipesToCook
     const tagSelectedList = user.filterToCookByTag(tagSelected)
-   
+
     favoritesView.innerHTML = ''
 
-    if(tagSelected === 'reset all'){
+    if (tagSelected === 'reset all') {
         return favList.forEach((current) => {
             displayRecipePreview(current, favoritesView)
         })
     }
-    else{
+    else {
         return tagSelectedList.forEach((current) => {
             displayRecipePreview(current, favoritesView)
         })
@@ -213,20 +214,20 @@ function searchFavoriteRecipeByTag() {
 }
 
 function searchHomeRecipeByName() {
-    allRecipes.innerHTML= ''
-   const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
-   filteredRecipes.forEach((current) => {
-       displayRecipePreview(current, allRecipes)
-   })
+    allRecipes.innerHTML = ''
+    const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
+    filteredRecipes.forEach((current) => {
+        displayRecipePreview(current, allRecipes)
+    })
     searchBar.value = ''
 }
 
 function searchFavoriteRecipeByName() {
     favoritesView.innerHTML = ''
-   const filteredFavorites = user.filterToCookByName(searchBar.value.toLowerCase())
-   filteredFavorites.forEach((current) => {
-       displayRecipePreview(current, favoritesView)
-   })
+    const filteredFavorites = user.filterToCookByName(searchBar.value.toLowerCase())
+    filteredFavorites.forEach((current) => {
+        displayRecipePreview(current, favoritesView)
+    })
     searchBar.value = ''
 }
 
@@ -236,9 +237,9 @@ function addRecipeToFavorites() {
 }
 
 function removeRecipeFromFavorites() {
-    if(user.recipesToCook.includes(foundRecipe)) {
+    if (user.recipesToCook.includes(foundRecipe)) {
         user.removeRecipesToCook(foundRecipe)
-    resetView()
+        resetView()
     }
 }
 
@@ -258,17 +259,17 @@ function displayWelcomeMessage(user) {
     userName.innerText = `Welcome, ${user}!`
 }
 
-function determineSelectedTagValue(){
+function determineSelectedTagValue() {
     let messageType = ''
     radioButtons.forEach((currentRadioButton) => {
-        if(currentRadioButton.checked){
+        if (currentRadioButton.checked) {
             messageType = currentRadioButton.value
         }
     })
     return messageType
 }
 
-function findId(event){
+function findId(event) {
     let recipeId = Number(event.target.parentElement.id)
     hide(allRecipes)
     hide(filterSidebar)
@@ -278,9 +279,9 @@ function findId(event){
 }
 
 function resetView() {
-    if(user.recipesToCook.length > 0) {
+    if (user.recipesToCook.length > 0) {
         displayFavoritesPage()
-    } 
+    }
     else {
         displayHomePage()
     }
