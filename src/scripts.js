@@ -32,14 +32,13 @@ function fetchData() {
         recipeRepository = new RecipeRepository(apiRecipes.recipeData, apiIngredients.ingredientsData);
         //console.log("recipeRepository", recipeRepository)
         displayAllRecipes()
-        randomUser = apiUsers.usersData[Math.floor(Math.random() * apiUsers.usersData.length)]
         randomizeUser(apiUsers.usersData)
         //console.log("apiIngredient.ingredientsData", apiIngredients.ingredientsData)
     
     })
 }
-fetchData()
 
+window.addEventListener('load', fetchData);
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector("#recipeRepository");
@@ -189,7 +188,8 @@ function viewRecipeTotalCost(event) {
     totalCost.innerText = `$ ${foundRecipe.calculateCost(recipeRepository.ingredients)}`
   };
 
-function randomizeUser() {
+function randomizeUser(data) {
+    randomUser = data[Math.floor(Math.random() * data.length)]
     user = new User(randomUser);
     displayWelcomeMessage(user.name)
     return user
