@@ -2,8 +2,8 @@
 import {getRecipeData, getIngredientsData, getUserData} from './apiCalls'
 import RecipeRepository from './classes/RecipeRepository'
 import Ingredients from './classes/Ingredients'
-import Recipe from "./classes/Recipe"
-import User from "./classes/User"
+import Recipe from './classes/Recipe'
+import User from './classes/User'
 import './styles.css'
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
@@ -18,17 +18,17 @@ let apiRecipes
 let apiIngredients 
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
-const allRecipes = document.querySelector("#recipeRepository")
-const singleRecipe = document.querySelector("#recipe")
-const filterSidebar = document.querySelector("#filterSection")
-const ingredientSidebar = document.querySelector("#ingredientSection")
+const allRecipes = document.querySelector('#recipeRepository')
+const singleRecipe = document.querySelector('#recipe')
+const filterSidebar = document.querySelector('#filterSection')
+const ingredientSidebar = document.querySelector('#ingredientSection')
 const userName = document.querySelector('#user-info')
 const favoritesView = document.querySelector('#favorites-view')
 const savedButton = document.querySelector('#saved-recipe-button')
 const totalCost = document.querySelector('#totalCost')
 const ingredientList = document.querySelector('#ingredientList')
 let radioButtons = document.querySelectorAll('.food-category')
-let submitTagButton = document.querySelector("#submitTagButton")
+let submitTagButton = document.querySelector('#submitTagButton')
 const saveRecipeButton = document.querySelector('#favorite-recipe-button')
 const homeButton = document.querySelector('#home-button')
 const submitButton = document.querySelector('#submit-search-button')
@@ -128,15 +128,15 @@ function displayFavorites() {
     })
 
     let instructionsArray = foundRecipe.getInstructions()
-    let instructionElement = ""
+    let instructionElement = ''
 
     instructionsArray.forEach(curr => {
-      instructionElement += "<p>" + curr + "</p>"
+      instructionElement += '<p>' + curr + '</p>'
     })
 
     singleRecipe.innerHTML += `
-        <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
-        <section class="instructions">
+        <img src='${foundRecipe.image}' alt='${foundRecipe.name}'>
+        <section class='instructions'>
           <h2>${foundRecipe.name}</h2>
           ${instructionElement}`
           
@@ -150,8 +150,8 @@ function displayFavorites() {
         return current.id === findId(event)
     })
     singleRecipe.innerHTML = `
-        <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
-        <section class="instructions">
+        <img src='${foundRecipe.image}' alt='${foundRecipe.name}'>
+        <section class='instructions'>
           <h2>${foundRecipe.name}</h2>
           ${instructionElement}
         </section>`
@@ -183,9 +183,9 @@ function displayFilteredTag(){
     const tagSelected = checkTagType()
     const tagSelectedList = recipeRepository.filterTag(tagSelected)
 
-    allRecipes.innerHTML = ""
+    allRecipes.innerHTML = ''
 
-    if(tagSelected === "reset all"){
+    if(tagSelected === 'reset all'){
         displayAllRecipes()
     }
     else{
@@ -200,9 +200,9 @@ function displayFilteredFavorite() {
     const favList = user.recipesToCook
     const tagSelectedList = user.filterToCookByTag(tagSelected)
    
-    favoritesView.innerHTML = ""
+    favoritesView.innerHTML = ''
 
-    if(tagSelected === "reset all"){
+    if(tagSelected === 'reset all'){
         return favList.forEach((current) => {
             displayRecipePreview(current, favoritesView)
         })
@@ -248,9 +248,9 @@ function removeFromFavorites() {
 // ~~~~~~~~~~~~~~ Helper Functions ~~~~~~~~~~~~~~~~~~~~
 function displayRecipePreview(current, view) {
     view.innerHTML += `
-    <div class = "fullwrap" id="${current.id}">
-    <img src="${current.image}" alt="${current.name}">
-    <div class="fullcap">
+    <div class = 'fullwrap' id='${current.id}'>
+    <img src='${current.image}' alt='${current.name}'>
+    <div class='fullcap'>
         ${current.name}
     </div>
     </div>
@@ -263,7 +263,7 @@ function displayWelcomeMessage(user) {
 }
 
 function checkTagType(){
-    let messageType = ""
+    let messageType = ''
     radioButtons.forEach((currentRadioButton) => {
         if(currentRadioButton.checked){
             messageType = currentRadioButton.value
@@ -288,9 +288,9 @@ function resetView() {
 }
 
 function hide(element) {
-    element.classList.add("hidden")
+    element.classList.add('hidden')
   }
 
 function show(element) {
-    element.classList.remove("hidden")
+    element.classList.remove('hidden')
   }
