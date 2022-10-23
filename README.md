@@ -4,7 +4,7 @@
 What's Cookin is an interactive, web-based application that allows users to view a list of recipes they want to cook and plan their meals and shopping trips accordingly. Using HTML, CSS, JavaScript, and APIs, we built our app to allow users to view recipes, filter recipes by tag, search recipes by name, and save their favorite recipes in a single place. Users are able to filter recipes and search for recipes by name on their favorites page as well. When a user clicks on any recipe, they will be provided with a list of ingredients with their quantities, an estimate of the total cost to make this recipe, and step-by-step instructions for cooking.
 
 ### Preview of Application:
-Insert GIPH here!
+![Gif of home page, and recipe view](http://www.giphy.com/gifs/V4bSMD3CFTpIQhFgDd)
 
 ### Installation Instructions:
 1. Clone [this repo](https://github.com/Eleanorgruth/whats-cookin) to your local computer.
