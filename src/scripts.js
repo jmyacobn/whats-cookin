@@ -82,6 +82,102 @@ function randomizeUser(data) {
     return user
 };
 
+// ~~~~~~~~~~~~~~ Main View Functions ~~~~~~~~~~~~~~~~~~~~
+function displayHomePage() {
+    allRecipes.innerHTML = '';
+    hide(removeRecipeButton);
+    show(allRecipes);
+    hide(singleRecipe);
+    hide(favoritesView);
+    hide(saveRecipeButton);
+    show(savedButton);
+    show(filterSidebar);
+    hide(ingredientSidebar);
+    displayAllRecipes();
+    homeView = true;
+}
+
+function displayFavorites() {
+    hide(removeRecipeButton);
+    hide(allRecipes);
+    hide(singleRecipe);
+    show(favoritesView);
+    hide(saveRecipeButton);
+    hide(savedButton);
+    show(filterSidebar);
+    hide(ingredientSidebar);
+    favoritesView.innerHTML = '';
+    user.recipesToCook.forEach((current) => {
+     displayRecipePreview(current, favoritesView)
+     });
+     homeView = false;
+ }
+
+ function viewRecipeDetail(event) {
+    if (user.recipesToCook.length > 0) {
+         show(removeRecipeButton)};
+         show(savedButton);
+     viewRecipeInstructions(event);
+     viewRecipeTotalCost(event);
+     viewRecipeIngredients(event);
+ }
+
+ function viewRecipeInstructions(event) {
+    foundRecipe = recipeRepository.recipes.find((current) => {
+        return current.id === findId(event);
+    });
+
+    let instructionsArray = foundRecipe.getInstructions();
+    let instructionElement = "";
+
+    instructionsArray.forEach(curr => {
+      instructionElement += "<p>" + curr + "</p>"
+    });
+
+    singleRecipe.innerHTML += `
+        <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
+        <section class="instructions">
+          <h2>${foundRecipe.name}</h2>
+          ${instructionElement}`
+          
+    show(saveRecipeButton);
+    hide(favoritesView);
+    hide(allRecipes);
+    hide(filterSidebar);
+    show(singleRecipe);
+    show(ingredientSidebar);
+    foundRecipe = recipeRepository.recipes.find((current) => {
+        return current.id === findId(event);
+    })
+    singleRecipe.innerHTML = `
+        <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
+        <section class="instructions">
+          <h2>${foundRecipe.name}</h2>
+          ${instructionElement}
+        </section>`
+    return foundRecipe;
+};
+
+ // ~~~~~~~~~~~~~~ Sidebar View Functions ~~~~~~~~~~~~~~~~~~~~
+function viewRecipeIngredients(event) {
+  foundRecipe = recipeRepository.recipes.find((current) => {
+      return current.id === findId(event);
+  });
+
+    let listOfIngredients = foundRecipe.determineIngredients(ingredients.ingredients);
+  ingredientList.innerHTML = ''
+  listOfIngredients.forEach((item) => {
+        ingredientList.innerHTML += `<p>${item.ingredient}</p>`;
+  });
+};
+
+function viewRecipeTotalCost(event) {
+    foundRecipe = recipeRepository.recipes.find((current) => {
+        return current.id === findId(event);
+    })
+    totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredients.ingredients)}`
+  };
+
 // ~~~~~~~~~~~~~~ Filter Functions ~~~~~~~~~~~~~~~~~~~~
 function displayFilteredTag(){
     const tagSelected = checkTagType();
@@ -136,101 +232,6 @@ function searchFavorites() {
 searchBar.value = '';
 }
 
-// ~~~~~~~~~~~~~~ View Functions ~~~~~~~~~~~~~~~~~~~~
-function displayHomePage() {
-    allRecipes.innerHTML = '';
-    hide(removeRecipeButton);
-    show(allRecipes);
-    hide(singleRecipe);
-    hide(favoritesView);
-    hide(saveRecipeButton);
-    show(savedButton);
-    show(filterSidebar);
-    hide(ingredientSidebar);
-    displayAllRecipes();
-    homeView = true;
-}
-
-function displayFavorites() {
-    hide(removeRecipeButton);
-    hide(allRecipes);
-    hide(singleRecipe);
-    show(favoritesView);
-    hide(saveRecipeButton);
-    hide(savedButton);
-    show(filterSidebar);
-    hide(ingredientSidebar);
-    favoritesView.innerHTML = '';
-    user.recipesToCook.forEach((current) => {
-     displayRecipePreview(current, favoritesView)
-     });
-     homeView = false;
- }
-
-function viewRecipeDetail(event) {
-   if (user.recipesToCook.length > 0) {
-        show(removeRecipeButton)};
-        show(savedButton);
-    viewRecipeInstructions(event);
-    viewRecipeTotalCost(event);
-    viewRecipeIngredients(event);
-}
-
-function viewRecipeIngredients(event) {
-  foundRecipe = recipeRepository.recipes.find((current) => {
-      return current.id === findId(event);
-  });
-
-    let listOfIngredients = foundRecipe.determineIngredients(ingredients.ingredients);
-  ingredientList.innerHTML = ''
-  listOfIngredients.forEach((item) => {
-        ingredientList.innerHTML += `<p>${item.ingredient}</p>`;
-  });
-};
-
-function viewRecipeInstructions(event) {
-    foundRecipe = recipeRepository.recipes.find((current) => {
-        return current.id === findId(event);
-    });
-
-    let instructionsArray = foundRecipe.getInstructions();
-    let instructionElement = "";
-
-    instructionsArray.forEach(curr => {
-      instructionElement += "<p>" + curr + "</p>"
-    });
-
-    singleRecipe.innerHTML += `
-        <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
-        <section class="instructions">
-          <h2>${foundRecipe.name}</h2>
-          ${instructionElement}`
-          
-    show(saveRecipeButton);
-    hide(favoritesView);
-    hide(allRecipes);
-    hide(filterSidebar);
-    show(singleRecipe);
-    show(ingredientSidebar);
-    foundRecipe = recipeRepository.recipes.find((current) => {
-        return current.id === findId(event);
-    })
-    singleRecipe.innerHTML = `
-        <img src="${foundRecipe.image}" alt="${foundRecipe.name}">
-        <section class="instructions">
-          <h2>${foundRecipe.name}</h2>
-          ${instructionElement}
-        </section>`
-    return foundRecipe;
-};
-
-function viewRecipeTotalCost(event) {
-    foundRecipe = recipeRepository.recipes.find((current) => {
-        return current.id === findId(event);
-    })
-    totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredients.ingredients)}`
-  };
-
 // ~~~~~~~~~~~~~~ Add/Delete Functions ~~~~~~~~~~~~~~~~~~~~
 function addRecipeToFavorites() {
     return user.addRecipesToCook(foundRecipe);
@@ -239,11 +240,12 @@ function addRecipeToFavorites() {
 function removeFromFavorites() {
     if(user.recipesToCook.includes(foundRecipe)) {
         user.removeRecipesToCook(foundRecipe)
+        
     resetView();
     }
 }
 
-// ~~~~~~~ Helper Functions ~~~~~~~
+// ~~~~~~~~~~~~~~ Helper Functions ~~~~~~~~~~~~~~~~~~~~
 function displayRecipePreview(current, view) {
     view.innerHTML += `
     <div class = "fullwrap" id="${current.id}">
