@@ -50,7 +50,8 @@ submitButton.addEventListener('click', () => {
         searchForRecipe()
     }
     else {
-        searchFavorites()}
+        searchFavorites()
+    }
 })
 
 // ~~~~~~~~~~~~~~ Setup Functions ~~~~~~~~~~~~~~~~~~~~
@@ -66,7 +67,6 @@ function fetchData() {
         randomizeUser(apiUsers.usersData)
     })
     .catch(err => console.log(err))
-
 }
 
 function displayAllRecipes() {
@@ -160,11 +160,10 @@ function displayFavorites() {
 
  // ~~~~~~~~~~~~~~ Sidebar View Functions ~~~~~~~~~~~~~~~~~~~~
 function viewRecipeIngredients(event) {
-  foundRecipe = recipeRepository.recipes.find((current) => {
+    foundRecipe = recipeRepository.recipes.find((current) => {
       return current.id === findId(event)
   })
-
-    let listOfIngredients = foundRecipe.determineIngredients(ingredients.ingredients)
+  let listOfIngredients = foundRecipe.determineIngredients(ingredients.ingredients)
   ingredientList.innerHTML = ''
   listOfIngredients.forEach((item) => {
         ingredientList.innerHTML += `<p>${item.ingredient}</p>`
@@ -176,7 +175,7 @@ function viewRecipeTotalCost(event) {
         return current.id === findId(event)
     })
     totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredients.ingredients)}`
-  }
+}
 
 // ~~~~~~~~~~~~~~ Filter Functions ~~~~~~~~~~~~~~~~~~~~
 function displayFilteredTag(){
@@ -220,7 +219,7 @@ function searchForRecipe() {
    filteredRecipes.forEach((current) => {
        displayRecipePreview(current, allRecipes)
    })
-searchBar.value = ''
+    searchBar.value = ''
 }
 
 function searchFavorites() {
@@ -229,7 +228,7 @@ function searchFavorites() {
    filteredFavorites.forEach((current) => {
        displayRecipePreview(current, favoritesView)
    })
-searchBar.value = ''
+    searchBar.value = ''
 }
 
 // ~~~~~~~~~~~~~~ Add/Delete Functions ~~~~~~~~~~~~~~~~~~~~
@@ -240,7 +239,6 @@ function addRecipeToFavorites() {
 function removeFromFavorites() {
     if(user.recipesToCook.includes(foundRecipe)) {
         user.removeRecipesToCook(foundRecipe)
-        
     resetView()
     }
 }
@@ -259,7 +257,6 @@ function displayRecipePreview(current, view) {
 
 function displayWelcomeMessage(user) {
     userName.innerText = `Welcome, ${user}!`
-   
 }
 
 function checkTagType(){
@@ -283,8 +280,11 @@ function findId(event){
 
 function resetView() {
     if(user.recipesToCook.length > 0) {
-        displayFavorites()} 
-    else {displayHomePage()}
+        displayFavorites()
+    } 
+    else {
+        displayHomePage()
+    }
 }
 
 function hide(element) {
