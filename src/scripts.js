@@ -136,12 +136,36 @@ function searchFavorites() {
 searchBar.value = '';
 }
 
+// ~~~~~~~~~~~~~~ View Functions ~~~~~~~~~~~~~~~~~~~~
+function displayHomePage() {
+    allRecipes.innerHTML = '';
+    hide(removeRecipeButton);
+    show(allRecipes);
+    hide(singleRecipe);
+    hide(favoritesView);
+    hide(saveRecipeButton);
+    show(savedButton);
+    show(filterSidebar);
+    hide(ingredientSidebar);
+    displayAllRecipes();
+    homeView = true;
+}
 
-
-
-
-// ~~~~~~~~~~~~~~ Other Functions ~~~~~~~~~~~~~~~~~~~~
-
+function displayFavorites() {
+    hide(removeRecipeButton);
+    hide(allRecipes);
+    hide(singleRecipe);
+    show(favoritesView);
+    hide(saveRecipeButton);
+    hide(savedButton);
+    show(filterSidebar);
+    hide(ingredientSidebar);
+    favoritesView.innerHTML = '';
+    user.recipesToCook.forEach((current) => {
+     displayRecipePreview(current, favoritesView)
+     });
+     homeView = false;
+ }
 
 function viewRecipeDetail(event) {
    if (user.recipesToCook.length > 0) {
@@ -207,47 +231,17 @@ function viewRecipeTotalCost(event) {
     totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredients.ingredients)}`
   };
 
+// ~~~~~~~~~~~~~~ Add/Delete Functions ~~~~~~~~~~~~~~~~~~~~
 function addRecipeToFavorites() {
     return user.addRecipesToCook(foundRecipe);
 };
 
-function displayFavorites() {
-   hide(removeRecipeButton);
-   hide(allRecipes);
-   hide(singleRecipe);
-   show(favoritesView);
-   hide(saveRecipeButton);
-   hide(savedButton);
-   show(filterSidebar);
-   hide(ingredientSidebar);
-   favoritesView.innerHTML = '';
-   user.recipesToCook.forEach((current) => {
-    displayRecipePreview(current, favoritesView)
-    });
-    homeView = false;
-}
-
-function displayHomePage() {
-    allRecipes.innerHTML = '';
-    hide(removeRecipeButton);
-    show(allRecipes);
-    hide(singleRecipe);
-    hide(favoritesView);
-    hide(saveRecipeButton);
-    show(savedButton);
-    show(filterSidebar);
-    hide(ingredientSidebar);
-    displayAllRecipes();
-    homeView = true;
-}
-
 function removeFromFavorites() {
     if(user.recipesToCook.includes(foundRecipe)) {
         user.removeRecipesToCook(foundRecipe)
+    resetView();
     }
 }
-
-
 
 // ~~~~~~~ Helper Functions ~~~~~~~
 function displayRecipePreview(current, view) {
@@ -284,6 +278,12 @@ function findId(event){
     show(ingredientSidebar);
     return recipeId;
 };
+
+function resetView() {
+    if(user.recipesToCook.length > 0) {
+        displayFavorites()} 
+    else {displayHomePage()};
+}
 
 function hide(element) {
     element.classList.add("hidden");
