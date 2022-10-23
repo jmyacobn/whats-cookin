@@ -1,12 +1,13 @@
 import Recipe from "./Recipe";
-import { recipeData } from "../data/recipes";
+//import { recipeData } from "../data/recipes";
 
 class RecipeRepository {
-  constructor(recipes) {
+  constructor(recipes, ingredients) {
     this.recipes = this.createRecipes(recipes)
+    this.ingredients = ingredients
   }
-  createRecipes(data) {
-    return data.map((recipeInfo)=>{
+  createRecipes(recipes) {
+    return recipes.map((recipeInfo) => {
       return new Recipe(recipeInfo);
     })
   }
