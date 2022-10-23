@@ -46,11 +46,15 @@ saveRecipeButton.addEventListener('click', addRecipeToFavorites);
 removeRecipeButton.addEventListener('click', removeFromFavorites);
 savedButton.addEventListener('click', displayFavorites);
 submitButton.addEventListener('click', () => {
-    if(homeView) {searchForRecipe()}
-    else {searchFavorites()}
+    if(homeView) {
+        searchForRecipe()
+    }
+    else {
+        searchFavorites()
+    }
 });
-// ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 
+// ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
 function fetchData() {
     Promise.all([getUserData, getRecipeData, getIngredientsData])
     .then(data => {
