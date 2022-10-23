@@ -53,7 +53,7 @@ submitButton.addEventListener('click', () => {
         searchFavorites()}
 });
 
-// ~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~ Setup Functions ~~~~~~~~~~~~~~~~~~~~
 function fetchData() {
     Promise.all([getUserData, getRecipeData, getIngredientsData])
     .then(data => {
@@ -67,16 +67,20 @@ function fetchData() {
     })
 }
 
-function checkTagType(){
-    let messageType = "";
-    radioButtons.forEach((currentRadioButton) => {
-        if(currentRadioButton.checked){
-            messageType = currentRadioButton.value;
-        }
+function displayAllRecipes() {
+    return recipeRepository.recipes.forEach((current) => {
+        displayRecipePreview(current, allRecipes)
     })
-    return messageType;
 }
 
+function randomizeUser(data) {
+    randomUser = data[Math.floor(Math.random() * data.length)]
+    user = new User(randomUser);
+    displayWelcomeMessage(user.name)
+    return user
+};
+
+// ~~~~~~~~~~~~~~ Filter Functions ~~~~~~~~~~~~~~~~~~~~
 function displayFilteredTag(){
     const tagSelected = checkTagType();
     const tagSelectedList = recipeRepository.filterTag(tagSelected)
@@ -111,6 +115,31 @@ function displayFilteredFavorite() {
         });
     };
 }
+
+function searchForRecipe() {
+    allRecipes.innerHTML= '';
+   const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
+   filteredRecipes.forEach((current) => {
+       displayRecipePreview(current, allRecipes)
+   });
+searchBar.value = '';
+};
+
+function searchFavorites() {
+    favoritesView.innerHTML = '';
+   const filteredFavorites = user.filterToCookByName(searchBar.value.toLowerCase())
+   filteredFavorites.forEach((current) => {
+       displayRecipePreview(current, favoritesView)
+   })
+searchBar.value = '';
+}
+
+
+
+
+
+// ~~~~~~~~~~~~~~ Other Functions ~~~~~~~~~~~~~~~~~~~~
+
 
 function viewRecipeDetail(event) {
    if (user.recipesToCook.length > 0) {
@@ -175,11 +204,6 @@ function viewRecipeTotalCost(event) {
     totalCost.innerText = `$ ${foundRecipe.calculateCost(ingredients.ingredients)}`
   };
 
-function displayWelcomeMessage(user) {
-    userName.innerText = `Welcome, ${user}!`
-   
-};
-
 function addRecipeToFavorites() {
     return user.addRecipesToCook(foundRecipe);
 };
@@ -222,46 +246,9 @@ function removeFromFavorites() {
     else {displayHomePage()};
 }
 
-function searchForRecipe() {
-    allRecipes.innerHTML= '';
-   const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
-   filteredRecipes.forEach((current) => {
-       displayRecipePreview(current, allRecipes)
-   });
-searchBar.value = '';
-};
 
-function searchFavorites() {
-    favoritesView.innerHTML = '';
-   const filteredFavorites = user.filterToCookByName(searchBar.value.toLowerCase())
-   filteredFavorites.forEach((current) => {
-       displayRecipePreview(current, favoritesView)
-   })
-searchBar.value = '';
-}
 
 // ~~~~~~~ Helper Functions ~~~~~~~
-function displayAllRecipes() {
-    return recipeRepository.recipes.forEach((current) => {
-        displayRecipePreview(current, allRecipes)
-    })
-}
-
-function randomizeUser(data) {
-    randomUser = data[Math.floor(Math.random() * data.length)]
-    user = new User(randomUser);
-    displayWelcomeMessage(user.name)
-    return user
-};
-
-function hide(element) {
-    element.classList.add("hidden");
-  };
-
-function show(element) {
-    element.classList.remove("hidden");
-  };
-
 function displayRecipePreview(current, view) {
     view.innerHTML += `
     <div class = "fullwrap" id="${current.id}">
@@ -273,7 +260,22 @@ function displayRecipePreview(current, view) {
     `
 };
 
- function findId(event){
+function displayWelcomeMessage(user) {
+    userName.innerText = `Welcome, ${user}!`
+   
+};
+
+function checkTagType(){
+    let messageType = "";
+    radioButtons.forEach((currentRadioButton) => {
+        if(currentRadioButton.checked){
+            messageType = currentRadioButton.value;
+        }
+    })
+    return messageType;
+}
+
+function findId(event){
     let recipeId = Number(event.target.parentElement.id);
     hide(allRecipes);
     hide(filterSidebar);
@@ -281,3 +283,11 @@ function displayRecipePreview(current, view) {
     show(ingredientSidebar);
     return recipeId;
 };
+
+function hide(element) {
+    element.classList.add("hidden");
+  };
+
+function show(element) {
+    element.classList.remove("hidden");
+  };
