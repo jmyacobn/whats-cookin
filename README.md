@@ -47,3 +47,4 @@ HTML | CSS | JavaScript | Figma | Webpack | API | Mocha and Chai | Chrome Dev To
 ## Future Features
 - Allow users to select multiple tags on both the home and saved recipe views
 - Allow users to customize the recipe details by choosing a serving size
+- Allow users to rate recipes and leave comments
