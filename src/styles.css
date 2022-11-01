@@ -17,10 +17,6 @@ body {
   margin-left: 10px;
 }
 
-.reset-button {
-  margin-top: 15px;
-}
-
 .image-and-name {
   display: flex;
   flex-direction: column;
