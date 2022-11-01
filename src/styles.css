@@ -1,6 +1,11 @@
 * {
   font-family: 'Roboto', sans-serif;
 }
+
+button{
+  cursor: pointer;
+}
+
 body {
   background: white;
   background-size: cover;
