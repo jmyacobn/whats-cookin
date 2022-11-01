@@ -127,6 +127,10 @@ function displayRecipeDetailPage(event) {
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
     displayRecipeIngredients(event)
+    if(user.recipesToCook.includes(foundRecipe)) {
+      hide(favoriteRecipeButton)
+      recipe.insertAdjacentHTML("afterBegin", `<p class=recipe-message>This recipe has been added to favorites!</p>`)
+    }
 }
 
 function displayRecipeInstructions() {
