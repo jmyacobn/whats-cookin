@@ -216,6 +216,7 @@ function searchFavoriteRecipeByName() {
 // ~~~~~~~~~~~~~~ Add/Delete Functions ~~~~~~~~~~~~~~~~~~~~
 function addRecipeToFavorites() {
     hide(favoriteRecipeButton)
+    recipe.innerHTML += `<p>This recipe has been added to favorites!</p>`
     return user.addRecipesToCook(foundRecipe)
 }
 
