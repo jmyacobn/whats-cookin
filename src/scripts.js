@@ -23,12 +23,12 @@ const filterSidebar = document.querySelector('#filterSection')
 const ingredientSidebar = document.querySelector('#ingredientSection')
 const userName = document.querySelector('#user-info')
 const favoritesView = document.querySelector('#favorites-view')
-const savedButton = document.querySelector('#saved-recipe-button')
+const favoriteButton = document.querySelector('#favorited-recipe-button')
 const totalCost = document.querySelector('#totalCost')
 const ingredientList = document.querySelector('#ingredientList')
 const radioButtons = document.querySelectorAll('.food-category')
 const submitTagButton = document.querySelector('#submitTagButton')
-const saveRecipeButton = document.querySelector('#favorite-recipe-button')
+const favoriteRecipeButton = document.querySelector('#favorite-recipe-button')
 const homeButton = document.querySelector('#home-button')
 const submitButton = document.querySelector('#submit-search-button')
 const searchBar = document.querySelector('#search-bar')
@@ -41,9 +41,9 @@ homeButton.addEventListener('click', displayHomePage)
 favoritesView.addEventListener('click', displayRecipeDetailPage)
 submitTagButton.addEventListener('click', searchHomeRecipeByTag)
 submitTagButton.addEventListener('click', searchFavoriteRecipeByTag)
-saveRecipeButton.addEventListener('click', addRecipeToFavorites)
+favoriteRecipeButton.addEventListener('click', addRecipeToFavorites)
 removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
-savedButton.addEventListener('click', displayFavoritesPage)
+favoriteButton.addEventListener('click', displayFavoritesPage)
 submitButton.addEventListener('click', () => {
     if (homeView) {
         searchHomeRecipeByName()
@@ -88,8 +88,8 @@ function displayHomePage() {
     show(allRecipes)
     hide(singleRecipe)
     hide(favoritesView)
-    hide(saveRecipeButton)
-    show(savedButton)
+    hide(favoriteRecipeButton)
+    show(favoriteButton)
     show(filterSidebar)
     hide(ingredientSidebar)
     displayAllRecipes()
@@ -101,8 +101,8 @@ function displayFavoritesPage() {
     hide(allRecipes)
     hide(singleRecipe)
     show(favoritesView)
-    hide(saveRecipeButton)
-    hide(savedButton)
+    hide(favoriteRecipeButton)
+    hide(favoriteButton)
     show(filterSidebar)
     hide(ingredientSidebar)
     favoritesView.innerHTML = ''
@@ -116,10 +116,10 @@ function displayRecipeDetailPage(event) {
     foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event)
     })
-    if (user.recipesToCook.length > 0) {
+    if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
         show(removeRecipeButton)
-    }
-    show(savedButton)
+    } else {hide(removeRecipeButton)}
+    show(favoriteButton)
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
     displayRecipeIngredients(event)
@@ -131,7 +131,7 @@ function displayRecipeInstructions() {
     instructionsArray.forEach(curr => {
         instructionElement += '<p>' + curr + '</p>'
     })
-    show(saveRecipeButton)
+    show(favoriteRecipeButton)
     hide(favoritesView)
     hide(allRecipes)
     hide(filterSidebar)
