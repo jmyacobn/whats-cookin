@@ -69,7 +69,7 @@ function fetchData(urls) {
             displayAllRecipes()
             randomizeUser(apiUsers.usersData)
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log('Fetch Error: ', err))
 }
 
 function displayAllRecipes() {
