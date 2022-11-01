@@ -1,5 +1,5 @@
 // ~~~~~~~~~~~~~~ File Imports ~~~~~~~~~~~~~~~~~~~~
-import { getRecipeData, getIngredientsData, getUserData } from './apiCalls'
+import getData from './apiCalls'
 import RecipeRepository from './classes/RecipeRepository'
 import Ingredients from './classes/Ingredients'
 import User from './classes/User'
@@ -15,6 +15,10 @@ let homeView = true
 let apiUsers
 let apiRecipes
 let apiIngredients
+
+const usersURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/users'
+const recipesURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes'
+const ingredientsURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients'
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector('#recipeRepository')
@@ -35,7 +39,7 @@ const searchBar = document.querySelector('#search-bar')
 const removeRecipeButton = document.querySelector('#remove-recipe-button')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
-window.addEventListener('load', fetchData)
+window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
 allRecipes.addEventListener('click', displayRecipeDetailPage)
 homeButton.addEventListener('click', displayHomePage)
 favoritesView.addEventListener('click', displayRecipeDetailPage)
@@ -54,8 +58,8 @@ submitButton.addEventListener('click', () => {
 })
 
 // ~~~~~~~~~~~~~~ Setup Functions ~~~~~~~~~~~~~~~~~~~~
-function fetchData() {
-    Promise.all([getUserData, getRecipeData, getIngredientsData])
+function fetchData(urls) {
+    Promise.all([getData(urls[0]), getData(urls[1]), getData(urls[2])])
         .then(data => {
             apiUsers = data[0]
             apiRecipes = data[1]
