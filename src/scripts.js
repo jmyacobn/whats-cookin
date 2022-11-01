@@ -273,62 +273,28 @@ function show(element) {
     element.classList.remove('hidden')
 }
 
-
-
-
-//Radio Button Filter
-// function searchHomeRecipeByTag() {
-//     const tagSelected = determineSelectedTagValue()
-//     const tagSelectedList = recipeRepository.filterTag(tagSelected)
-//     allRecipes.innerHTML = ''
-//     if (tagSelected === 'reset all') {
-//         displayAllRecipes()
-//     }
-//     else {
-//         return tagSelectedList.forEach((current) => {
-//             displayRecipePreview(current, allRecipes)
-//         })
-//     }
-// }
-
-// function searchFavoriteRecipeByTag() {
-//     const tagSelected = determineSelectedTagValue()
-//     const favList = user.recipesToCook
-//     const tagSelectedList = user.filterToCookByTag(tagSelected)
-//     favoritesView.innerHTML = ''
-//     if (tagSelected === 'reset all') {
-//         return favList.forEach((current) => {
-//             displayRecipePreview(current, favoritesView)
-//         })
-//     }
-//     else {
-//         return tagSelectedList.forEach((current) => {
-//             displayRecipePreview(current, favoritesView)
-//         })
-//     }
-// }
-
+//RADIO BUTTON FILTER
 radioButtons.forEach(button => {
     button.addEventListener('click', () => {
-       allRecipes.innerHTML = ''
-       recipeRepository.filterTag(button.value).forEach(current => {
+        if(homeView) {
+            allRecipes.innerHTML = ''
+            recipeRepository.filterTag(button.value).forEach(current => {
             displayRecipePreview(current, allRecipes)
-       })
-    })
-})
-
-radioButtons.forEach(button => {
-    button.addEventListener('click', () => {
-       favoritesView.innerHTML = ''
-       recipeRepository.filterTag(button.value).forEach(current => {
+            })  
+        }
+        else if(!homeView)
+            favoritesView.innerHTML = ''
+            user.filterToCookByTag(button.value).forEach(current => {
             displayRecipePreview(current, favoritesView)
-       })
+     })
     })
 })
 
 submitTagButton.addEventListener('click', resetFilter)
 
 function resetFilter() {
+    radioButtons.forEach(button => {
+        button.checked = false})
     if(homeView) {
         allRecipes.innerHTML = ''
         displayAllRecipes()
