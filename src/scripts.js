@@ -31,7 +31,7 @@ const favoriteButton = document.querySelector('#favorited-recipe-button')
 const totalCost = document.querySelector('#totalCost')
 const ingredientList = document.querySelector('#ingredientList')
 const radioButtons = document.querySelectorAll('.food-category')
-const submitTagButton = document.querySelector('#submitTagButton')
+const resetButton = document.querySelector('#resetButton')
 const favoriteRecipeButton = document.querySelector('#favorite-recipe-button')
 const homeButton = document.querySelector('#home-button')
 const submitButton = document.querySelector('#submit-search-button')
@@ -43,8 +43,7 @@ window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]
 allRecipes.addEventListener('click', displayRecipeDetailPage)
 homeButton.addEventListener('click', displayHomePage)
 favoritesView.addEventListener('click', displayRecipeDetailPage)
-submitTagButton.addEventListener('click', searchHomeRecipeByTag)
-submitTagButton.addEventListener('click', searchFavoriteRecipeByTag)
+resetButton.addEventListener('click', resetFilter)
 favoriteRecipeButton.addEventListener('click', addRecipeToFavorites)
 removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
 favoriteButton.addEventListener('click', displayFavoritesPage)
@@ -164,34 +163,32 @@ function displayRecipeTotalCost() {
 }
 
 // ~~~~~~~~~~~~~~ Filter Functions ~~~~~~~~~~~~~~~~~~~~
-function searchHomeRecipeByTag() {
-    const tagSelected = determineSelectedTagValue()
-    const tagSelectedList = recipeRepository.filterTag(tagSelected)
-    allRecipes.innerHTML = ''
-    if (tagSelected === 'reset all') {
-        displayAllRecipes()
-    }
-    else {
-        return tagSelectedList.forEach((current) => {
+radioButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        if(homeView) {
+            allRecipes.innerHTML = ''
+            recipeRepository.filterTag(button.value).forEach(current => {
             displayRecipePreview(current, allRecipes)
-        })
-    }
-}
+            })  
+        }
+        else if(!homeView)
+            favoritesView.innerHTML = ''
+            user.filterToCookByTag(button.value).forEach(current => {
+            displayRecipePreview(current, favoritesView)
+     })
+    })
+})
 
-function searchFavoriteRecipeByTag() {
-    const tagSelected = determineSelectedTagValue()
-    const favList = user.recipesToCook
-    const tagSelectedList = user.filterToCookByTag(tagSelected)
-    favoritesView.innerHTML = ''
-    if (tagSelected === 'reset all') {
-        return favList.forEach((current) => {
-            displayRecipePreview(current, favoritesView)
-        })
-    }
+function resetFilter() {
+    radioButtons.forEach(button => {
+        button.checked = false})
+    if(homeView) {
+        allRecipes.innerHTML = ''
+        displayAllRecipes()
+    } 
     else {
-        return tagSelectedList.forEach((current) => {
-            displayRecipePreview(current, favoritesView)
-        })
+        favoritesView.innerHTML = ''
+        displayFavoritesPage()
     }
 }
 
@@ -247,15 +244,6 @@ function displayWelcomeMessage(user) {
     userName.innerText = `Welcome, ${user}!`
 }
 
-function determineSelectedTagValue() {
-    let messageType = ''
-    radioButtons.forEach((currentRadioButton) => {
-        if (currentRadioButton.checked) {
-            messageType = currentRadioButton.value
-        }
-    })
-    return messageType
-}
 
 function findId(event) {
     let recipeId = Number(event.target.parentElement.id)
@@ -278,3 +266,4 @@ function hide(element) {
 function show(element) {
     element.classList.remove('hidden')
 }
+
