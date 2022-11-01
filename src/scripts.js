@@ -317,10 +317,24 @@ radioButtons.forEach(button => {
     })
 })
 
+radioButtons.forEach(button => {
+    button.addEventListener('click', () => {
+       favoritesView.innerHTML = ''
+       recipeRepository.filterTag(button.value).forEach(current => {
+            displayRecipePreview(current, favoritesView)
+       })
+    })
+})
 
 submitTagButton.addEventListener('click', resetFilter)
 
 function resetFilter() {
-    allRecipes.innerHTML = ''
-    displayAllRecipes()
+    if(homeView) {
+        allRecipes.innerHTML = ''
+        displayAllRecipes()
+    } 
+    else {
+        favoritesView.innerHTML = ''
+        displayFavoritesPage()
+    }
 }
