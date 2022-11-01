@@ -124,6 +124,32 @@ ul {
   justify-content: space-evenly;
 }
 
+.pantry {
+  background: #E3D3D3;
+}
+
+.pantryContents {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+}
+
+.pantryItems {
+  display: flex;
+  justify-content: space-around;
+  width: 70vw;
+  height: 100vh;
+}
+
+.missingItems {
+  height: 100vh;
+  width: 30vw;
+  border: 5px solid white;
+  display: flex;
+  justify-content: center;
+}
+
 .recipe {
   width: 75vw;
   min-height: 100vh;
