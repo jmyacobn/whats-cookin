@@ -193,6 +193,14 @@ export const sampleUsersData = [
     "id": 2,
     "pantry": [
       {
+        "ingredient": 1009016,
+        "amount": 6
+      },
+      {
+          "ingredient": 1002046,
+          "amount": 2
+      },
+      {
         "ingredient": 6150,
         "amount": 3
       },
