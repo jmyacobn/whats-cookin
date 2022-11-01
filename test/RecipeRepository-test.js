@@ -43,4 +43,7 @@ describe('RecipeRepo', () => {
     expect(recipeRepository.filterName('calamari')).to.deep.equal([])
     expect(recipeRepository.filterName('hamburger')).to.deep.equal([])
   })
+  it('Should return all recipes if an empty string is passed in.', () => {
+    expect(recipeRepository.filterName('')).to.deep.equal([recipe1, recipe2])
+  })
 })
