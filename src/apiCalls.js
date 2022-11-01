@@ -1,10 +1,7 @@
-const getRecipeData = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes")
+function getData(url) {
+  return fetch(url)
     .then(response => response.json())
+    .catch(err => console.log('Fetch Error: ', err)) 
+}
 
-const getIngredientsData = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients")
-    .then(response => response.json())
-
-const getUserData = fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/users")
-    .then(response => response.json())
-
-export {getRecipeData, getIngredientsData, getUserData}
+export default getData
