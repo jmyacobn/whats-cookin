@@ -2,7 +2,7 @@
   font-family: 'Roboto', sans-serif;
 }
 
-button, .food-category{
+button, .food-category, .fullcap{
   cursor: pointer;
 }
 
