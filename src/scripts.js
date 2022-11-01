@@ -201,6 +201,9 @@ function searchHomeRecipeByName() {
     filteredRecipes.forEach((current) => {
         displayRecipePreview(current, allRecipes)
     })
+    if(filteredRecipes.length === 0 || searchBar.value === '') {
+       allRecipes.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
+    }
     searchBar.value = ''
 }
 
@@ -210,6 +213,9 @@ function searchFavoriteRecipeByName() {
     filteredFavorites.forEach((current) => {
         displayRecipePreview(current, favoritesView)
     })
+    if(filteredFavorites.length === 0 || searchBar.value === '') {
+       favoritesView.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
+    }
     searchBar.value = ''
 }
 
