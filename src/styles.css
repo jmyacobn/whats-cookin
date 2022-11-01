@@ -139,6 +139,11 @@ ul {
   margin-top: 5vh;
 }
 
+.recipe-message {
+  font-size: 1.25em;
+  margin-top: 0;
+}
+
 h2 {
   padding-left: 0;
   text-align: center;
