@@ -116,9 +116,9 @@ function displayRecipeDetailPage(event) {
     foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event)
     })
-    if (user.recipesToCook.length > 0) {
+    if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
         show(removeRecipeButton)
-    }
+    } else {hide(removeRecipeButton)}
     show(favoriteButton)
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
