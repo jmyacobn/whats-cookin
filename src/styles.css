@@ -18,7 +18,7 @@ body {
   padding-left: 2vw;
 }
 
-.home-button, .favorited-recipe-button, .favorite-recipe-button, .remove-recipe-button {
+.home-button, .favorited-recipe-button, .favorite-recipe-button, .remove-recipe-button, .pantry-button {
   margin-left: 10px;
 }
 
