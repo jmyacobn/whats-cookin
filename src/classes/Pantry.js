@@ -41,7 +41,6 @@ checkPantryForIngredients(recipe) {
     this.userCanCook = false
   }
 }
-
 }
 export default Pantry
 
