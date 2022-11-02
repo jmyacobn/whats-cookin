@@ -186,7 +186,7 @@ radioButtons.forEach(button => {
             navMessage.innerText = capitalizeFirstLetter(button.value) + " Recipes"
             recipeRepository.filterTag(button.value).forEach(current => {
             displayRecipePreview(current, allRecipes)
-            })  
+            })
         }
         else if(!homeView){
             favoritesView.innerHTML = ''
@@ -205,7 +205,7 @@ function resetFilter() {
         allRecipes.innerHTML = ''
         navMessage.innerText = 'All Recipes'
         displayAllRecipes()
-    } 
+    }
     else {
         favoritesView.innerHTML = ''
         navMessage.innerText = 'All Favorite Recipes'
@@ -327,7 +327,7 @@ function capitalizeFirstLetter(string) {
 }
 
 function displayIngredientDropDown() {
-    const sortedIngredients = apiIngredients.ingredientsData.sort((a, b) => a.name.localeCompare(b.name))
+    const sortedIngredients = apiIngredients.sort((a, b) => a.name.localeCompare(b.name))
     selectIngredient.innerHTML = ''
     selectIngredient.innerHTML = `<option value="Choose Ingredient">Choose Ingredient...</option>`
     sortedIngredients.forEach(ingredient => {
@@ -335,3 +335,4 @@ function displayIngredientDropDown() {
         <option value="Choose Ingredient">${ingredient.name}</option>`
     })
 }
+
