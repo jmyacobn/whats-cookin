@@ -199,6 +199,9 @@ select {
   height: 2.5vh;
   width: 2.5vw;
   border-radius: 10px;
+  display: flex;
+  align-items: center; 
+  justify-content: center;
 }
 
 .recipe {
