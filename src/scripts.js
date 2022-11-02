@@ -190,7 +190,7 @@ radioButtons.forEach(button => {
         }
         else if(!homeView){
             favoritesView.innerHTML = ''
-            navMessage.innerText = "OOO Favorite " + capitalizeFirstLetter(button.value) + " Recipes"
+            navMessage.innerText = "All Favorite " + capitalizeFirstLetter(button.value) + " Recipes"
             user.filterToCookByTag(button.value).forEach(current => {
             displayRecipePreview(current, favoritesView)
             })     
@@ -208,7 +208,7 @@ function resetFilter() {
     } 
     else {
         favoritesView.innerHTML = ''
-        // navMessage.innerText = 'All Favorite Recipes'
+        navMessage.innerText = 'All Favorite Recipes'
         displayFavoritesPage()
     }
 }
@@ -219,19 +219,22 @@ function searchHomeRecipeByName() {
     const filtersByNameList = recipeRepository.filterName(searchBar.value.toLowerCase())
     const filtersByTagList = recipeRepository.filterTag(searchBar.value.toLowerCase())
     if(filtersByNameList.length > 0 && searchBar.value != ''){
+        navMessage.innerText = capitalizeFirstLetter(searchBar.value) + " Recipes"
         filteredList = filtersByNameList
         filteredList.forEach((currentRecipe) => {
             displayRecipePreview(currentRecipe, allRecipes)
         })
     }
     else if(filtersByTagList.length > 0 && searchBar.value != ''){
+        navMessage.innerText = capitalizeFirstLetter(searchBar.value) + " Recipes"
         filteredList = filtersByTagList
         filteredList.forEach((currentRecipe) => {
             displayRecipePreview(currentRecipe, allRecipes)
         })
     }
     else{
-       allRecipes.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
+        navMessage.innerText = "Oops!"
+        allRecipes.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
     }
     searchBar.value = ''
 }
@@ -242,19 +245,22 @@ function searchFavoriteRecipeByName() {
     const filtersByNameList = user.filterToCookByName(searchBar.value.toLowerCase())
     const filtersByTagList = user.filterToCookByTag(searchBar.value.toLowerCase())
     if(filtersByNameList.length > 0 && searchBar.value != ''){
+        navMessage.innerText = "All Favorite " + capitalizeFirstLetter(searchBar.value) + " Recipes"
         filteredList = filtersByNameList
         filteredList.forEach((currentRecipe) => {
             displayRecipePreview(currentRecipe, favoritesView)
         })
     }
     else if(filtersByTagList.length > 0 && searchBar.value != ''){
+        navMessage.innerText = "All Favorite " + capitalizeFirstLetter(searchBar.value) + " Recipes"
         filteredList = filtersByTagList
         filteredList.forEach((currentRecipe) => {
             displayRecipePreview(currentRecipe, favoritesView)
         })
     }
     else{
-       favoritesView.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
+        navMessage.innerText = "Oops!"
+        favoritesView.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
     }
     searchBar.value = ''
 }
