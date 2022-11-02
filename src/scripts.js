@@ -203,16 +203,32 @@ function resetFilter() {
         displayFavoritesPage()
     }
 }
-
+//////////////WIP
 function searchHomeRecipeByName() {
     allRecipes.innerHTML = ''
+    let recipeResultList = []
     const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
-    filteredRecipes.forEach((current) => {
-        displayRecipePreview(current, allRecipes)
-    })
-    if(filteredRecipes.length === 0 || searchBar.value === '') {
+    const tagRecipes = recipeRepository.filterTag(searchBar.value.toLowerCase())
+
+    console.log("filteredRecipes: ",filteredRecipes)
+    console.log("tagRecipes: ",tagRecipes)
+
+    if(filteredRecipes.length > 0 && searchBar.value != ''){
+        recipeResultList = filteredRecipes
+        recipeResultList.forEach((current) => {
+            displayRecipePreview(current, allRecipes)
+        })
+    }
+    else if(tagRecipes.length > 0 && searchBar.value != ''){
+        recipeResultList = tagRecipes
+        recipeResultList.forEach((current) => {
+            displayRecipePreview(current, allRecipes)
+        })
+    }
+    else{
        allRecipes.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
     }
+    console.log("recipeResultList", recipeResultList)
     searchBar.value = ''
 }
 
