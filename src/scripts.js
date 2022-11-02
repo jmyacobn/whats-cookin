@@ -16,9 +16,9 @@ let apiUsers
 let apiRecipes
 let apiIngredients
 
-const usersURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/users'
-const recipesURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes'
-const ingredientsURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients'
+const usersURL = 'http://localhost:3001/api/v1/users'
+const recipesURL = 'http://localhost:3001/api/v1/recipes'
+const ingredientsURL = 'http://localhost:3001/api/v1/ingredients'
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector('#recipeRepository')
@@ -37,6 +37,10 @@ const homeButton = document.querySelector('#home-button')
 const submitButton = document.querySelector('#submit-search-button')
 const searchBar = document.querySelector('#search-bar')
 const removeRecipeButton = document.querySelector('#remove-recipe-button')
+const pantryButton = document.querySelector('#pantry-button')
+const pantryView = document.querySelector('#pantry-view')
+const addButton = document.querySelector('#add-button')
+const selectIngredient = document.querySelector('#ingredient-drop-down-menu')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
@@ -47,11 +51,20 @@ resetButton.addEventListener('click', resetFilter)
 favoriteRecipeButton.addEventListener('click', addRecipeToFavorites)
 removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
 favoriteButton.addEventListener('click', displayFavoritesPage)
+pantryButton.addEventListener('click', displayPantryPage)
+searchBar.addEventListener('keypress', (event) => {
+    if (event.key === "Enter" && homeView) {
+        event.preventDefault()
+        searchHomeRecipeByName()
+    } else if (event.key === "Enter" && !homeView) {
+        event.preventDefault()
+        searchFavoriteRecipeByName()
+    }
+})
 submitButton.addEventListener('click', () => {
     if (homeView) {
         searchHomeRecipeByName()
-    }
-    else {
+    } else {
         searchFavoriteRecipeByName()
     }
 })
@@ -63,10 +76,11 @@ function fetchData(urls) {
             apiUsers = data[0]
             apiRecipes = data[1]
             apiIngredients = data[2]
-            recipeRepository = new RecipeRepository(apiRecipes.recipeData)
-            ingredients = new Ingredients(apiIngredients.ingredientsData)
+            recipeRepository = new RecipeRepository(apiRecipes)
+            ingredients = new Ingredients(apiIngredients)
             displayAllRecipes()
-            randomizeUser(apiUsers.usersData)
+            randomizeUser(apiUsers)
+            displayIngredientDropDown()
         })
         .catch(err => console.log('Fetch Error: ', err))
 }
@@ -87,31 +101,25 @@ function randomizeUser(data) {
 // ~~~~~~~~~~~~~~ Main View Functions ~~~~~~~~~~~~~~~~~~~~
 function displayHomePage() {
     allRecipes.innerHTML = ''
-    hide(removeRecipeButton)
-    show(allRecipes)
-    hide(singleRecipe)
-    hide(favoritesView)
-    hide(favoriteRecipeButton)
-    show(favoriteButton)
-    show(filterSidebar)
-    hide(ingredientSidebar)
+    hide([removeRecipeButton, singleRecipe, favoritesView, favoriteRecipeButton, ingredientSidebar, pantryView])
+    show([allRecipes, favoriteButton, filterSidebar, pantryButton])
     displayAllRecipes()
     homeView = true
 }
 
 function displayFavoritesPage() {
-    hide(removeRecipeButton)
-    hide(allRecipes)
-    hide(singleRecipe)
-    show(favoritesView)
-    hide(favoriteRecipeButton)
-    hide(favoriteButton)
-    show(filterSidebar)
-    hide(ingredientSidebar)
+    hide([removeRecipeButton, allRecipes, singleRecipe, favoriteRecipeButton, favoriteButton, ingredientSidebar])
+    show([favoritesView, filterSidebar])
     favoritesView.innerHTML = ''
     user.recipesToCook.forEach((current) => {
         displayRecipePreview(current, favoritesView)
     })
+    homeView = false
+}
+
+function displayPantryPage() {
+    hide([removeRecipeButton, pantryButton, allRecipes, singleRecipe, favoritesView, favoriteRecipeButton, favoriteButton, ingredientSidebar, filterSidebar])
+    show([pantryView])
     homeView = false
 }
 
@@ -120,30 +128,29 @@ function displayRecipeDetailPage(event) {
         return current.id === findId(event)
     })
     if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
-        show(removeRecipeButton)
-    } else {hide(removeRecipeButton)}
-    show(favoriteButton)
+        show([removeRecipeButton])
+    } 
+    else {
+        hide([removeRecipeButton])
+    }
+    show([favoriteButton])
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
     displayRecipeIngredients(event)
     if(user.recipesToCook.includes(foundRecipe)) {
-      hide(favoriteRecipeButton)
-      recipe.insertAdjacentHTML("afterBegin", `<p class=recipe-message>This recipe has been added to favorites!</p>`)
+        hide([favoriteRecipeButton])
+        recipe.insertAdjacentHTML("afterBegin", `<p class=recipe-message>This recipe has been added to favorites!</p>`)
     }
 }
 
 function displayRecipeInstructions() {
     let instructionsArray = foundRecipe.getInstructions()
     let instructionElement = ''
+    hide([favoritesView, allRecipes, filterSidebar])
+    show([favoriteRecipeButton, singleRecipe, ingredientSidebar])
     instructionsArray.forEach(curr => {
         instructionElement += '<p>' + curr + '</p>'
     })
-    show(favoriteRecipeButton)
-    hide(favoritesView)
-    hide(allRecipes)
-    hide(filterSidebar)
-    show(singleRecipe)
-    show(ingredientSidebar)
     singleRecipe.innerHTML = `
         <img src='${foundRecipe.image}' alt='${foundRecipe.name}'>
         <section class='instructions'>
@@ -198,11 +205,22 @@ function resetFilter() {
 
 function searchHomeRecipeByName() {
     allRecipes.innerHTML = ''
-    const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
-    filteredRecipes.forEach((current) => {
-        displayRecipePreview(current, allRecipes)
-    })
-    if(filteredRecipes.length === 0 || searchBar.value === '') {
+    let filteredList = []
+    const filtersByNameList = recipeRepository.filterName(searchBar.value.toLowerCase())
+    const filtersByTagList = recipeRepository.filterTag(searchBar.value.toLowerCase())
+    if(filtersByNameList.length > 0 && searchBar.value != ''){
+        filteredList = filtersByNameList
+        filteredList.forEach((currentRecipe) => {
+            displayRecipePreview(currentRecipe, allRecipes)
+        })
+    }
+    else if(filtersByTagList.length > 0 && searchBar.value != ''){
+        filteredList = filtersByTagList
+        filteredList.forEach((currentRecipe) => {
+            displayRecipePreview(currentRecipe, allRecipes)
+        })
+    }
+    else{
        allRecipes.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
     }
     searchBar.value = ''
@@ -210,11 +228,22 @@ function searchHomeRecipeByName() {
 
 function searchFavoriteRecipeByName() {
     favoritesView.innerHTML = ''
-    const filteredFavorites = user.filterToCookByName(searchBar.value.toLowerCase())
-    filteredFavorites.forEach((current) => {
-        displayRecipePreview(current, favoritesView)
-    })
-    if(filteredFavorites.length === 0 || searchBar.value === '') {
+    let filteredList = []
+    const filtersByNameList = user.filterToCookByName(searchBar.value.toLowerCase())
+    const filtersByTagList = user.filterToCookByTag(searchBar.value.toLowerCase())
+    if(filtersByNameList.length > 0 && searchBar.value != ''){
+        filteredList = filtersByNameList
+        filteredList.forEach((currentRecipe) => {
+            displayRecipePreview(currentRecipe, favoritesView)
+        })
+    }
+    else if(filtersByTagList.length > 0 && searchBar.value != ''){
+        filteredList = filtersByTagList
+        filteredList.forEach((currentRecipe) => {
+            displayRecipePreview(currentRecipe, favoritesView)
+        })
+    }
+    else{
        favoritesView.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
     }
     searchBar.value = ''
@@ -222,7 +251,7 @@ function searchFavoriteRecipeByName() {
 
 // ~~~~~~~~~~~~~~ Add/Delete Functions ~~~~~~~~~~~~~~~~~~~~
 function addRecipeToFavorites() {
-    hide(favoriteRecipeButton)
+    hide([favoriteRecipeButton])
     recipe.insertAdjacentHTML("afterBegin", `<p class=recipe-message>This recipe has been added to favorites!</p>`)
     return user.addRecipesToCook(foundRecipe)
 }
@@ -265,10 +294,24 @@ function resetView() {
     }
 }
 
-function hide(element) {
-    element.classList.add('hidden')
+function hide(elementList) {
+    elementList.forEach((currentElement) => {
+        currentElement.classList.add('hidden')
+    })
 }
 
-function show(element) {
-    element.classList.remove('hidden')
+function show(elementList) {
+    elementList.forEach((currentElement) => {
+        currentElement.classList.remove('hidden')
+    })
+}
+
+function displayIngredientDropDown() {
+    const sortedIngredients = apiIngredients.ingredientsData.sort((a, b) => a.name.localeCompare(b.name))
+    selectIngredient.innerHTML = ''
+    selectIngredient.innerHTML = `<option value="Choose Ingredient">Choose Ingredient...</option>`
+    sortedIngredients.forEach(ingredient => {
+        selectIngredient.innerHTML += `
+        <option value="Choose Ingredient">${ingredient.name}</option>`
+    })
 }
