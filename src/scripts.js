@@ -95,27 +95,38 @@ function randomizeUser(data) {
 // ~~~~~~~~~~~~~~ Main View Functions ~~~~~~~~~~~~~~~~~~~~
 function displayHomePage() {
     allRecipes.innerHTML = ''
-    hide(removeRecipeButton)
-    show(allRecipes)
-    hide(singleRecipe)
-    hide(favoritesView)
-    hide(favoriteRecipeButton)
-    show(favoriteButton)
-    show(filterSidebar)
-    hide(ingredientSidebar)
+    const hideElementsList = [removeRecipeButton, singleRecipe, favoritesView, favoriteRecipeButton, ingredientSidebar]
+    const showElementsList = [allRecipes, favoriteButton, filterSidebar]
+
+    hide(hideElementsList)
+    show(showElementsList)
+    // hide(removeRecipeButton)
+    // show(allRecipes)
+    // hide(singleRecipe)
+    // hide(favoritesView)
+    // hide(favoriteRecipeButton)
+    // show(favoriteButton)
+    // show(filterSidebar)
+    // hide(ingredientSidebar)
     displayAllRecipes()
     homeView = true
 }
 
 function displayFavoritesPage() {
-    hide(removeRecipeButton)
-    hide(allRecipes)
-    hide(singleRecipe)
-    show(favoritesView)
-    hide(favoriteRecipeButton)
-    hide(favoriteButton)
-    show(filterSidebar)
-    hide(ingredientSidebar)
+    const hideElementsList = [removeRecipeButton, allRecipes, singleRecipe, favoriteRecipeButton, favoriteButton, ingredientSidebar]
+    const showElementsList = [favoritesView, filterSidebar]
+
+    hide(hideElementsList)
+    show(showElementsList)
+
+    // hide(removeRecipeButton)
+    // hide(allRecipes)
+    // hide(singleRecipe)
+    // show(favoritesView)
+    // hide(favoriteRecipeButton)
+    // hide(favoriteButton)
+    // show(filterSidebar)
+    // hide(ingredientSidebar)
     favoritesView.innerHTML = ''
     user.recipesToCook.forEach((current) => {
         displayRecipePreview(current, favoritesView)
@@ -273,11 +284,17 @@ function resetView() {
     }
 }
 
-function hide(element) {
-    element.classList.add('hidden')
+function hide(elementList) {
+    // element.classList.add('hidden')
+    elementList.forEach((currentElement) => {
+        currentElement.classList.add('hidden')
+    })
 }
 
-function show(element) {
-    element.classList.remove('hidden')
+function show(elementList) {
+    // element.classList.remove('hidden')
+    elementList.forEach((currentElement) => {
+        currentElement.classList.remove('hidden')
+    })
 }
 
