@@ -258,7 +258,7 @@ function searchFavoriteRecipeByName() {
 
 // ~~~~~~~~~~~~~~ Add/Delete Functions ~~~~~~~~~~~~~~~~~~~~
 function addRecipeToFavorites() {
-    hide(favoriteRecipeButton)
+    hide([favoriteRecipeButton])
     recipe.insertAdjacentHTML("afterBegin", `<p class=recipe-message>This recipe has been added to favorites!</p>`)
     return user.addRecipesToCook(foundRecipe)
 }
