@@ -350,7 +350,7 @@ function displayIngredientDropDown() {
 function addOrRemoveToPantry(user) {
     pantryTable.innerHTML = ''
     const amount = apiIngredients.reduce((acc, value) => {
-        user.pantry.forEach(current => {
+        user.pantry.pantryData.forEach(current => {
             if(value.id === current.ingredient) {
             var object = {['Ingredient']: value.name, ['Amount']: current.amount}
             acc.push(object)
