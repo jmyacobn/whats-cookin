@@ -211,14 +211,14 @@ function searchHomeRecipeByName() {
     const filtersByTagList = recipeRepository.filterTag(searchBar.value.toLowerCase())
     if(filtersByNameList.length > 0 && searchBar.value != ''){
         filteredList = filtersByNameList
-        filteredList.forEach((current) => {
-            displayRecipePreview(current, allRecipes)
+        filteredList.forEach((currentRecipe) => {
+            displayRecipePreview(currentRecipe, allRecipes)
         })
     }
     else if(filtersByTagList.length > 0 && searchBar.value != ''){
         filteredList = filtersByTagList
-        filteredList.forEach((current) => {
-            displayRecipePreview(current, allRecipes)
+        filteredList.forEach((currentRecipe) => {
+            displayRecipePreview(currentRecipe, allRecipes)
         })
     }
     else{
@@ -229,19 +229,19 @@ function searchHomeRecipeByName() {
 
 function searchFavoriteRecipeByName() {
     favoritesView.innerHTML = ''
-    let recipeResultList = []
-    const filteredFavorites = user.filterToCookByName(searchBar.value.toLowerCase())
-    const tagRecipes = user.filterToCookByTag(searchBar.value.toLowerCase())
-    if(filteredFavorites.length > 0 && searchBar.value != ''){
-        recipeResultList = filteredFavorites
-        recipeResultList.forEach((current) => {
-            displayRecipePreview(current, favoritesView)
+    let filteredList = []
+    const filtersByNameList = user.filterToCookByName(searchBar.value.toLowerCase())
+    const filtersByTagList = user.filterToCookByTag(searchBar.value.toLowerCase())
+    if(filtersByNameList.length > 0 && searchBar.value != ''){
+        filteredList = filtersByNameList
+        filteredList.forEach((currentRecipe) => {
+            displayRecipePreview(currentRecipe, favoritesView)
         })
     }
-    else if(tagRecipes.length > 0 && searchBar.value != ''){
-        recipeResultList = tagRecipes
-        recipeResultList.forEach((current) => {
-            displayRecipePreview(current, favoritesView)
+    else if(filtersByTagList.length > 0 && searchBar.value != ''){
+        filteredList = filtersByTagList
+        filteredList.forEach((currentRecipe) => {
+            displayRecipePreview(currentRecipe, favoritesView)
         })
     }
     else{
