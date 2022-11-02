@@ -1,9 +1,14 @@
+import Pantry from "./Pantry";
+
 class User {
     constructor(data) {
         this.name = data.name;
         this.id = data.id;
-        this.pantry = data.pantry;
+        this.pantry = createPantry(data.pantry);
         this.recipesToCook = [];
+    }
+    createPantry(test) {
+        return new Pantry(test)
     }
     addRecipesToCook(recipe) {
        if (!this.recipesToCook.includes(recipe)){
