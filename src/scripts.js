@@ -114,6 +114,9 @@ function displayFavoritesPage() {
     show([favoritesView, filterSidebar])
     favoritesView.innerHTML = ''
     navMessage.innerText = 'All Favorite Recipes'
+    if(user.recipesToCook.length === 0){
+        favoritesView.innerHTML = `<p>You have no saved recipes</p>`
+    }
     user.recipesToCook.forEach((current) => {
         displayRecipePreview(current, favoritesView)
     })
@@ -197,7 +200,7 @@ radioButtons.forEach(button => {
         }
         else{
             navMessage.innerText = "Oops!"
-            favoritesView.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
+            favoritesView.innerHTML = `<p>No recipe found. Please search by name or category to filter recipes.</p>`
         }
     })
 })
@@ -238,7 +241,7 @@ function searchHomeRecipeByName() {
     }
     else{
         navMessage.innerText = "Oops!"
-        allRecipes.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
+        allRecipes.innerHTML = `<p>No recipe found. Please search by name or category to filter recipes.</p>`
     }
     searchBar.value = ''
 }
@@ -264,7 +267,7 @@ function searchFavoriteRecipeByName() {
     }
     else{
         navMessage.innerText = "Oops!"
-        favoritesView.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
+        favoritesView.innerHTML = `<p>No recipe found. Please search by name or category to filter recipes.</p>`
     }
     searchBar.value = ''
 }
