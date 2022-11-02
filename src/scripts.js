@@ -307,7 +307,7 @@ function show(elementList) {
 }
 
 function displayIngredientDropDown() {
-    const sortedIngredients = apiIngredients.ingredientsData.sort((a, b) => a.name.localeCompare(b.name))
+    const sortedIngredients = apiIngredients.sort((a, b) => a.name.localeCompare(b.name))
     selectIngredient.innerHTML = ''
     selectIngredient.innerHTML = `<option value="Choose Ingredient">Choose Ingredient...</option>`
     sortedIngredients.forEach(ingredient => {
