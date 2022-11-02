@@ -180,7 +180,7 @@ radioButtons.forEach(button => {
             allRecipes.innerHTML = ''
             recipeRepository.filterTag(button.value).forEach(current => {
             displayRecipePreview(current, allRecipes)
-            })  
+            })
         }
         else if(!homeView)
             favoritesView.innerHTML = ''
@@ -196,7 +196,7 @@ function resetFilter() {
     if(homeView) {
         allRecipes.innerHTML = ''
         displayAllRecipes()
-    } 
+    }
     else {
         favoritesView.innerHTML = ''
         displayFavoritesPage()
@@ -315,6 +315,3 @@ function displayIngredientDropDown() {
         <option value="Choose Ingredient">${ingredient.name}</option>`
     })
 }
-
-
-
