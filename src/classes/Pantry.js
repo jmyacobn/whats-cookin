@@ -24,7 +24,7 @@ class Pantry {
       }
     })
     if (!userPantryIDList.includes(recipeID)) {
-      acc.push({ missingIngredient: recipeID, quantityNeeded: recipeIngredientToBeChecked.quantity.amount })
+      acc.push({missingIngredient: recipeID, quantityNeeded: recipeIngredientToBeChecked.quantity.amount})
       return acc
     } else if (userPantryIDList.includes(recipeID)) {
       if ([recipeIngredientToBeChecked.quantity.amount] > [pantryIngredientToBeChecked.amount]) {
@@ -44,5 +44,3 @@ checkPantryForIngredients(recipe) {
 }
 export default Pantry
 
-// Determine whether a user’s pantry has enough ingredients to cook a given recipe.
-// Determine the amount of missing ingredients still needed to cook a given recipe, based on what’s in the user’s pantry.
