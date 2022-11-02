@@ -206,18 +206,18 @@ function resetFilter() {
 
 function searchHomeRecipeByName() {
     allRecipes.innerHTML = ''
-    let recipeResultList = []
-    const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
-    const tagRecipes = recipeRepository.filterTag(searchBar.value.toLowerCase())
-    if(filteredRecipes.length > 0 && searchBar.value != ''){
-        recipeResultList = filteredRecipes
-        recipeResultList.forEach((current) => {
+    let filteredList = []
+    const filtersByNameList = recipeRepository.filterName(searchBar.value.toLowerCase())
+    const filtersByTagList = recipeRepository.filterTag(searchBar.value.toLowerCase())
+    if(filtersByNameList.length > 0 && searchBar.value != ''){
+        filteredList = filtersByNameList
+        filteredList.forEach((current) => {
             displayRecipePreview(current, allRecipes)
         })
     }
-    else if(tagRecipes.length > 0 && searchBar.value != ''){
-        recipeResultList = tagRecipes
-        recipeResultList.forEach((current) => {
+    else if(filtersByTagList.length > 0 && searchBar.value != ''){
+        filteredList = filtersByTagList
+        filteredList.forEach((current) => {
             displayRecipePreview(current, allRecipes)
         })
     }
