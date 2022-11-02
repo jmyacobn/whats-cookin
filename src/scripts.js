@@ -135,34 +135,51 @@ function displayFavoritesPage() {
 }
 
 function displayRecipeDetailPage(event) {
+    const hideElementsList = []
+    const showElementsList = []
+
+    console.log("showElementsList: ", showElementsList)
+
     foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event)
     })
     if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
-        show(removeRecipeButton)
-    } else {hide(removeRecipeButton)}
-    show(favoriteButton)
+        showElementsList.push(removeRecipeButton)
+        console.log("showElementsList: ", showElementsList)
+        show(showElementsList)
+    } 
+    else {
+        hideElementsList.push(removeRecipeButton)
+        console.log("hideElementsList: ", hideElementsList)
+        hide(hideElementsList)
+    }
+    show([favoriteButton])
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
     displayRecipeIngredients(event)
     if(user.recipesToCook.includes(foundRecipe)) {
-      hide(favoriteRecipeButton)
-      recipe.insertAdjacentHTML("afterBegin", `<p class=recipe-message>This recipe has been added to favorites!</p>`)
+        hideElementsList.push(favoriteRecipeButton)
+        hide(hideElementsList)
+        recipe.insertAdjacentHTML("afterBegin", `<p class=recipe-message>This recipe has been added to favorites!</p>`)
     }
 }
 
 function displayRecipeInstructions() {
     let instructionsArray = foundRecipe.getInstructions()
     let instructionElement = ''
+    const hideElementsList = [favoritesView, allRecipes, filterSidebar]
+    const showElementsList = [favoriteRecipeButton, singleRecipe, ingredientSidebar]
+    hide(hideElementsList)
+    show(showElementsList)
     instructionsArray.forEach(curr => {
         instructionElement += '<p>' + curr + '</p>'
     })
-    show(favoriteRecipeButton)
-    hide(favoritesView)
-    hide(allRecipes)
-    hide(filterSidebar)
-    show(singleRecipe)
-    show(ingredientSidebar)
+    // show(favoriteRecipeButton)
+    // hide(favoritesView)
+    // hide(allRecipes)
+    // hide(filterSidebar)
+    // show(singleRecipe)
+    // show(ingredientSidebar)
     singleRecipe.innerHTML = `
         <img src='${foundRecipe.image}' alt='${foundRecipe.name}'>
         <section class='instructions'>
