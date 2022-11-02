@@ -16,9 +16,9 @@ let apiUsers
 let apiRecipes
 let apiIngredients
 
-const usersURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/users'
-const recipesURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes'
-const ingredientsURL = 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients'
+const usersURL = 'http://localhost:3001/api/v1/users'
+const recipesURL = 'http://localhost:3001/api/v1/recipes'
+const ingredientsURL = 'http://localhost:3001/api/v1/ingredients'
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
 const allRecipes = document.querySelector('#recipeRepository')
@@ -76,10 +76,10 @@ function fetchData(urls) {
             apiUsers = data[0]
             apiRecipes = data[1]
             apiIngredients = data[2]
-            recipeRepository = new RecipeRepository(apiRecipes.recipeData)
-            ingredients = new Ingredients(apiIngredients.ingredientsData)
+            recipeRepository = new RecipeRepository(apiRecipes)
+            ingredients = new Ingredients(apiIngredients)
             displayAllRecipes()
-            randomizeUser(apiUsers.usersData)
+            randomizeUser(apiUsers)
             displayIngredientDropDown()
         })
         .catch(err => console.log('Fetch Error: ', err))
