@@ -70,7 +70,6 @@ function fetchData(urls) {
         .then(data => {
             apiUsers = data[0]
             apiRecipes = data[1]
-            console.log(apiRecipes)
             apiIngredients = data[2]
             recipeRepository = new RecipeRepository(apiRecipes)
             ingredients = new Ingredients(apiIngredients)
