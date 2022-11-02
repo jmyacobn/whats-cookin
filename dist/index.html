@@ -127,8 +127,11 @@
       <section class="pantryContents">
         <div class="dropDropMenu">
           <label for="ingredients">Add Ingredient to Pantry: </label>
-            <select name="ingredients" id="ingredient-drop-down-menu">
+            <select name="ingredients" id="ingredient-drop-down-menu" class="selectMenu">
             </select>
+            <form class="quantity">
+              <input type="text" placeholder="quantity" class="quantityInput" id="quantity-input">
+            </form>
             <button type="button" class="addButton" id="add-button">Add to Pantry</button>
         </div>
         <div class="pantryItems">
