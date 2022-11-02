@@ -124,6 +124,10 @@ ul {
   justify-content: space-evenly;
 }
 
+select {
+  cursor: pointer;
+}
+
 .pantry {
   background: #E3D3D3;
 }
