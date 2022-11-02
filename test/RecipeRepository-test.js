@@ -22,7 +22,7 @@ describe('RecipeRepo', () => {
     expect(RecipeRepository).to.be.a('function')
   })
   it('Should have a property of recipes which holds an array of Recipe instances', () => {
-    expect(recipeRepository.recipes).to.deep.equal([recipe1, recipe2])
+    expect(recipeRepository.recipes).to.deep.equal([ ])
   })
   it('Should create recipe instances.', () => {
     expect(recipeRepository.createRecipes(sampleRecipeData)).to.deep.equal([recipe1, recipe2])

@@ -31,4 +31,8 @@ it('should hold property of ingredientsNeeded which starts out empty', () => {
     expect(user1.pantry.ingredientsNeeded).to.deep.equal([])
     expect(user2.pantry.ingredientsNeeded).to.deep.equal([])
   })
+  it.only('should checkPantryForIngredients', () => {
+    expect(user1.pantry.checkPantryForIngredients(recipe1)).to.deep.equal([])
+    //expect(user2.pantry.ingredientsNeeded).to.deep.equal([])
+  })
 })

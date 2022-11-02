@@ -7,9 +7,9 @@ class Pantry {
       // console.log("recipe: ", recipe.ingredients)
       // console.log("pantry data: ", this.pantryData)
       this.pantryData.reduce((acc, pantryItem) => {
-        recipe.ingredients.forEach(ingredient => {
-          if(ingredient.id !== pantryItem.ingredient || ingredient.quantity.amount !== pantryItem.amount) {
-            acc.push(ingredient.quantity.amount-pantryItem.amount ingredient.id)
+        recipe.ingredients.forEach(recipeIngredient => {
+          if(!pantryItem.ingredient.includes(recipeIngredient.id) || recipeIngredient.quantity.amount < pantryItem.amount) {
+             acc.push({missingIngredient: recipeIngredient.id, quantityNeeded: (recipeIngredient.quantity.amount - pantryItem.amount)})
           }
         })
         return acc = this.ingredientsNeeded
