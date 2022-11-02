@@ -52,11 +52,19 @@ favoriteRecipeButton.addEventListener('click', addRecipeToFavorites)
 removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
 favoriteButton.addEventListener('click', displayFavoritesPage)
 pantryButton.addEventListener('click', displayPantryPage)
+searchBar.addEventListener('keypress', (event) => {
+    if (event.key === "Enter" && homeView) {
+        event.preventDefault()
+        searchHomeRecipeByName()
+    } else if (event.key === "Enter" && !homeView) {
+        event.preventDefault()
+        searchFavoriteRecipeByName()
+    }
+})
 submitButton.addEventListener('click', () => {
     if (homeView) {
         searchHomeRecipeByName()
-    }
-    else {
+    } else {
         searchFavoriteRecipeByName()
     }
 })
