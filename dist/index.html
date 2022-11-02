@@ -125,14 +125,32 @@
     </section>
     <section class="pantry hidden" id="pantry-view">
       <section class="pantryContents">
-        <div class="missingItems">
-          <h3>Ingredients Needed</h3>
+        <div class="dropDropMenu">
+          <label for="ingredients">Add Ingredient to Pantry: </label>
+            <select name="ingredients" id="ingredient-drop-down-menu">
+              <option value="Choose Ingredient">Choose Ingredient...</option>
+            </select>
+            <button type="button" class="addButton" id="add-button">Add to Pantry</button>
         </div>
         <div class="pantryItems">
-          <h3>Ingredients</h3>
-            <ul></ul>
-          <h3>Amount</h3>
-            <ul></ul>
+            <div class="ingredientsPantry">
+              <!-- <h3>Ingredients</h3>
+              <div class="boxI"></div>
+            </div> 
+            <div class="amountPantry">
+              <h3>Amount</h3>
+              <div class="boxA"></div>
+            </div> -->
+            <div class="pantryHeading">
+              <h3>Ingredients</h3>
+              <h3>Amount</h3>
+            </div>
+            <div class="table">
+              <div class="boxI"></div>
+              <div class="boxA"></div>
+              <button type="button" class="miniButtons">-</button>
+              <button type="button" class="miniButtons">+</button>
+            </div>  
         </div>
       </section>
     </section>

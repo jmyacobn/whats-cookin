@@ -129,25 +129,58 @@ ul {
 }
 
 .pantryContents {
-  display: flex;
   height: 100vh;
   width: 100vw;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  flex-direction: column;
   align-items: center;
 }
 
 .pantryItems {
   display: flex;
-  justify-content: space-around;
-  width: 70vw;
+  width: 32vw;
   height: 100vh;
+  justify-content: space-evenly;
+  margin-top: 15px;
 }
 
-.missingItems {
-  height: 100vh;
-  width: 30vw;
-  border: 5px solid white;
+.pantryHeading {
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 24vw;
+}
+
+.table {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 30vw;
+  align-items: center;
+}
+
+.addButton {
+  font-size: 1em;
+}
+
+.boxI {
+  border: 2px solid white;
+  height: 4vh;
+  width: 19vw;
+}
+
+.boxA {
+  border: 2px solid white;
+  height: 4vh;
+  width: 5vw;
+}
+
+.miniButtons {
+  height: 2.5vh;
+  width: 2.5vw;
+  border-radius: 10px;
 }
 
 .recipe {
