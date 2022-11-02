@@ -203,15 +203,12 @@ function resetFilter() {
         displayFavoritesPage()
     }
 }
-//////////////WIP
+
 function searchHomeRecipeByName() {
     allRecipes.innerHTML = ''
     let recipeResultList = []
     const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
     const tagRecipes = recipeRepository.filterTag(searchBar.value.toLowerCase())
-
-    console.log("filteredRecipes: ",filteredRecipes)
-    console.log("tagRecipes: ",tagRecipes)
 
     if(filteredRecipes.length > 0 && searchBar.value != ''){
         recipeResultList = filteredRecipes
@@ -228,7 +225,6 @@ function searchHomeRecipeByName() {
     else{
        allRecipes.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
     }
-    console.log("recipeResultList", recipeResultList)
     searchBar.value = ''
 }
 
