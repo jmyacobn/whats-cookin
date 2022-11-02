@@ -23,4 +23,12 @@ beforeEach(() => {
 it('Should be a function', () => {
     expect(Pantry).to.be.a('function')
   })
+it('should hold property of pantryData', () => {
+    expect(user1.pantry.pantryData).to.equal(sampleUsersData[0].pantry)
+    expect(user2.pantry.pantryData).to.equal(sampleUsersData[1].pantry)
+  })
+it('should hold property of ingredientsNeeded which starts out empty', () => {
+    expect(user1.pantry.ingredientsNeeded).to.deep.equal([])
+    expect(user2.pantry.ingredientsNeeded).to.deep.equal([])
+  })
 })
