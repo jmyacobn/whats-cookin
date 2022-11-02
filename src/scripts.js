@@ -39,6 +39,8 @@ const searchBar = document.querySelector('#search-bar')
 const removeRecipeButton = document.querySelector('#remove-recipe-button')
 const pantryButton = document.querySelector('#pantry-button')
 const pantryView = document.querySelector('#pantry-view')
+const addButton = document.querySelector('#add-button')
+const selectIngredient = document.querySelector('#ingredient-drop-down-menu')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
@@ -70,6 +72,7 @@ function fetchData(urls) {
             ingredients = new Ingredients(apiIngredients.ingredientsData)
             displayAllRecipes()
             randomizeUser(apiUsers.usersData)
+            displayIngredientDropDown()
         })
         .catch(err => console.log('Fetch Error: ', err))
 }
@@ -290,4 +293,16 @@ function hide(element) {
 function show(element) {
     element.classList.remove('hidden')
 }
+
+function displayIngredientDropDown() {
+    const sortedIngredients = apiIngredients.ingredientsData.sort((a, b) => a.name.localeCompare(b.name))
+    selectIngredient.innerHTML = ''
+    selectIngredient.innerHTML = `<option value="Choose Ingredient">Choose Ingredient...</option>`
+    sortedIngredients.forEach(ingredient => {
+        selectIngredient.innerHTML += `
+        <option value="Choose Ingredient">${ingredient.name}</option>`
+    })
+}
+
+
 
