@@ -209,7 +209,6 @@ function searchHomeRecipeByName() {
     let recipeResultList = []
     const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
     const tagRecipes = recipeRepository.filterTag(searchBar.value.toLowerCase())
-
     if(filteredRecipes.length > 0 && searchBar.value != ''){
         recipeResultList = filteredRecipes
         recipeResultList.forEach((current) => {
@@ -230,13 +229,34 @@ function searchHomeRecipeByName() {
 
 function searchFavoriteRecipeByName() {
     favoritesView.innerHTML = ''
+    let recipeResultList = []
+
     const filteredFavorites = user.filterToCookByName(searchBar.value.toLowerCase())
-    filteredFavorites.forEach((current) => {
-        displayRecipePreview(current, favoritesView)
-    })
-    if(filteredFavorites.length === 0 || searchBar.value === '') {
+    const tagRecipes = user.filterToCookByTag(searchBar.value.toLowerCase())
+    console.log("filteredFavorites: ", filteredFavorites)
+    console.log("tagRecipes: ", tagRecipes)
+
+
+    if(filteredFavorites.length > 0 && searchBar.value != ''){
+        recipeResultList = filteredFavorites
+        recipeResultList.forEach((current) => {
+            displayRecipePreview(current, favoritesView)
+        })
+    }
+    else if(tagRecipes.length > 0 && searchBar.value != ''){
+        recipeResultList = tagRecipes
+        recipeResultList.forEach((current) => {
+            displayRecipePreview(current, favoritesView)
+        })
+    }
+
+    // filteredFavorites.forEach((current) => {
+    //     displayRecipePreview(current, favoritesView)
+    // })
+    else{
        favoritesView.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
     }
+    console.log("recipeResultList: ", recipeResultList)
     searchBar.value = ''
 }
 
