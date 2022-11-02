@@ -101,8 +101,8 @@ function randomizeUser(data) {
 // ~~~~~~~~~~~~~~ Main View Functions ~~~~~~~~~~~~~~~~~~~~
 function displayHomePage() {
     allRecipes.innerHTML = ''
-    hide([removeRecipeButton, singleRecipe, favoritesView, favoriteRecipeButton, ingredientSidebar])
-    show([allRecipes, favoriteButton, filterSidebar])
+    hide([removeRecipeButton, singleRecipe, favoritesView, favoriteRecipeButton, ingredientSidebar, pantryView])
+    show([allRecipes, favoriteButton, filterSidebar, pantryButton])
     displayAllRecipes()
     homeView = true
 }
