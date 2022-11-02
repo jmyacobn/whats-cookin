@@ -31,8 +31,10 @@ it('should hold property of ingredientsNeeded which starts out empty', () => {
     expect(user1.pantry.ingredientsNeeded).to.deep.equal([])
     expect(user2.pantry.ingredientsNeeded).to.deep.equal([])
   })
-  it.only('should checkPantryForIngredients', () => {
-    expect(user1.pantry.checkPantryForIngredients(recipe1)).to.deep.equal([])
-    //expect(user2.pantry.ingredientsNeeded).to.deep.equal([])
+  it.only('should determineIngredientsNeeded', () => {
+    expect(user1.pantry.determineIngredientsNeeded(recipe1)).to.deep.equal([])
+    expect(user2.pantry.determineIngredientsNeeded(recipe1)).to.deep.equal([])
+    expect(user1.pantry.determineIngredientsNeeded(recipe2)).to.deep.equal([{missingIngredient: 1009016, quantityNeeded: 1.5 }, {missingIngredient: 20027, quantityNeeded: 1 }, {missingIngredient: 1002046, quantityNeeded: 1 }])
+    expect(user2.pantry.determineIngredientsNeeded(recipe2)).to.deep.equal([])
   })
 })
