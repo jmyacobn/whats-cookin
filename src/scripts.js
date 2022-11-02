@@ -97,17 +97,8 @@ function displayHomePage() {
     allRecipes.innerHTML = ''
     const hideElementsList = [removeRecipeButton, singleRecipe, favoritesView, favoriteRecipeButton, ingredientSidebar]
     const showElementsList = [allRecipes, favoriteButton, filterSidebar]
-
     hide(hideElementsList)
     show(showElementsList)
-    // hide(removeRecipeButton)
-    // show(allRecipes)
-    // hide(singleRecipe)
-    // hide(favoritesView)
-    // hide(favoriteRecipeButton)
-    // show(favoriteButton)
-    // show(filterSidebar)
-    // hide(ingredientSidebar)
     displayAllRecipes()
     homeView = true
 }
@@ -115,18 +106,8 @@ function displayHomePage() {
 function displayFavoritesPage() {
     const hideElementsList = [removeRecipeButton, allRecipes, singleRecipe, favoriteRecipeButton, favoriteButton, ingredientSidebar]
     const showElementsList = [favoritesView, filterSidebar]
-
     hide(hideElementsList)
     show(showElementsList)
-
-    // hide(removeRecipeButton)
-    // hide(allRecipes)
-    // hide(singleRecipe)
-    // show(favoritesView)
-    // hide(favoriteRecipeButton)
-    // hide(favoriteButton)
-    // show(filterSidebar)
-    // hide(ingredientSidebar)
     favoritesView.innerHTML = ''
     user.recipesToCook.forEach((current) => {
         displayRecipePreview(current, favoritesView)
@@ -135,31 +116,21 @@ function displayFavoritesPage() {
 }
 
 function displayRecipeDetailPage(event) {
-    const hideElementsList = []
-    const showElementsList = []
-
-    console.log("showElementsList: ", showElementsList)
-
     foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event)
     })
     if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
-        showElementsList.push(removeRecipeButton)
-        console.log("showElementsList: ", showElementsList)
-        show(showElementsList)
+        show([removeRecipeButton])
     } 
     else {
-        hideElementsList.push(removeRecipeButton)
-        console.log("hideElementsList: ", hideElementsList)
-        hide(hideElementsList)
+        hide([removeRecipeButton])
     }
     show([favoriteButton])
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
     displayRecipeIngredients(event)
     if(user.recipesToCook.includes(foundRecipe)) {
-        hideElementsList.push(favoriteRecipeButton)
-        hide(hideElementsList)
+        hide([favoriteRecipeButton])
         recipe.insertAdjacentHTML("afterBegin", `<p class=recipe-message>This recipe has been added to favorites!</p>`)
     }
 }
@@ -174,12 +145,6 @@ function displayRecipeInstructions() {
     instructionsArray.forEach(curr => {
         instructionElement += '<p>' + curr + '</p>'
     })
-    // show(favoriteRecipeButton)
-    // hide(favoritesView)
-    // hide(allRecipes)
-    // hide(filterSidebar)
-    // show(singleRecipe)
-    // show(ingredientSidebar)
     singleRecipe.innerHTML = `
         <img src='${foundRecipe.image}' alt='${foundRecipe.name}'>
         <section class='instructions'>
@@ -302,14 +267,12 @@ function resetView() {
 }
 
 function hide(elementList) {
-    // element.classList.add('hidden')
     elementList.forEach((currentElement) => {
         currentElement.classList.add('hidden')
     })
 }
 
 function show(elementList) {
-    // element.classList.remove('hidden')
     elementList.forEach((currentElement) => {
         currentElement.classList.remove('hidden')
     })
