@@ -101,29 +101,15 @@ function randomizeUser(data) {
 // ~~~~~~~~~~~~~~ Main View Functions ~~~~~~~~~~~~~~~~~~~~
 function displayHomePage() {
     allRecipes.innerHTML = ''
-    hide(removeRecipeButton)
-    show(allRecipes)
-    hide(singleRecipe)
-    hide(favoritesView)
-    hide(favoriteRecipeButton)
-    show(favoriteButton)
-    show(filterSidebar)
-    hide(ingredientSidebar)
-    hide(pantryView)
+    hide([removeRecipeButton, singleRecipe, favoritesView, favoriteRecipeButton, ingredientSidebar])
+    show([allRecipes, favoriteButton, filterSidebar])
     displayAllRecipes()
     homeView = true
 }
 
 function displayFavoritesPage() {
-    hide(removeRecipeButton)
-    hide(allRecipes)
-    hide(singleRecipe)
-    show(favoritesView)
-    hide(favoriteRecipeButton)
-    hide(favoriteButton)
-    show(filterSidebar)
-    hide(pantryView)
-    hide(ingredientSidebar)
+    hide([removeRecipeButton, allRecipes, singleRecipe, favoriteRecipeButton, favoriteButton, ingredientSidebar])
+    show([favoritesView, filterSidebar])
     favoritesView.innerHTML = ''
     user.recipesToCook.forEach((current) => {
         displayRecipePreview(current, favoritesView)
@@ -132,15 +118,8 @@ function displayFavoritesPage() {
 }
 
 function displayPantryPage() {
-    hide(removeRecipeButton)
-    hide(allRecipes)
-    hide(singleRecipe)
-    hide(favoritesView)
-    hide(favoriteRecipeButton)
-    hide(favoriteButton)
-    hide(ingredientSidebar)
-    hide(filterSidebar)
-    show(pantryView)
+    hide([removeRecipeButton, pantryButton, allRecipes, singleRecipe, favoritesView, favoriteRecipeButton, favoriteButton, ingredientSidebar, filterSidebar])
+    show([pantryView])
     homeView = false
 }
 
@@ -149,30 +128,29 @@ function displayRecipeDetailPage(event) {
         return current.id === findId(event)
     })
     if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
-        show(removeRecipeButton)
-    } else {hide(removeRecipeButton)}
-    show(favoriteButton)
+        show([removeRecipeButton])
+    } 
+    else {
+        hide([removeRecipeButton])
+    }
+    show([favoriteButton])
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
     displayRecipeIngredients(event)
     if(user.recipesToCook.includes(foundRecipe)) {
-      hide(favoriteRecipeButton)
-      recipe.insertAdjacentHTML("afterBegin", `<p class=recipe-message>This recipe has been added to favorites!</p>`)
+        hide([favoriteRecipeButton])
+        recipe.insertAdjacentHTML("afterBegin", `<p class=recipe-message>This recipe has been added to favorites!</p>`)
     }
 }
 
 function displayRecipeInstructions() {
     let instructionsArray = foundRecipe.getInstructions()
     let instructionElement = ''
+    hide([favoritesView, allRecipes, filterSidebar])
+    show([favoriteRecipeButton, singleRecipe, ingredientSidebar])
     instructionsArray.forEach(curr => {
         instructionElement += '<p>' + curr + '</p>'
     })
-    show(favoriteRecipeButton)
-    hide(favoritesView)
-    hide(allRecipes)
-    hide(filterSidebar)
-    show(singleRecipe)
-    show(ingredientSidebar)
     singleRecipe.innerHTML = `
         <img src='${foundRecipe.image}' alt='${foundRecipe.name}'>
         <section class='instructions'>
@@ -273,7 +251,7 @@ function searchFavoriteRecipeByName() {
 
 // ~~~~~~~~~~~~~~ Add/Delete Functions ~~~~~~~~~~~~~~~~~~~~
 function addRecipeToFavorites() {
-    hide(favoriteRecipeButton)
+    hide([favoriteRecipeButton])
     recipe.insertAdjacentHTML("afterBegin", `<p class=recipe-message>This recipe has been added to favorites!</p>`)
     return user.addRecipesToCook(foundRecipe)
 }
@@ -316,12 +294,16 @@ function resetView() {
     }
 }
 
-function hide(element) {
-    element.classList.add('hidden')
+function hide(elementList) {
+    elementList.forEach((currentElement) => {
+        currentElement.classList.add('hidden')
+    })
 }
 
-function show(element) {
-    element.classList.remove('hidden')
+function show(elementList) {
+    elementList.forEach((currentElement) => {
+        currentElement.classList.remove('hidden')
+    })
 }
 
 function displayIngredientDropDown() {
