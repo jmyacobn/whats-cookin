@@ -37,6 +37,10 @@ const homeButton = document.querySelector('#home-button')
 const submitButton = document.querySelector('#submit-search-button')
 const searchBar = document.querySelector('#search-bar')
 const removeRecipeButton = document.querySelector('#remove-recipe-button')
+const pantryButton = document.querySelector('#pantry-button')
+const pantryView = document.querySelector('#pantry-view')
+const addButton = document.querySelector('#add-button')
+const selectIngredient = document.querySelector('#ingredient-drop-down-menu')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
@@ -47,6 +51,7 @@ resetButton.addEventListener('click', resetFilter)
 favoriteRecipeButton.addEventListener('click', addRecipeToFavorites)
 removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
 favoriteButton.addEventListener('click', displayFavoritesPage)
+pantryButton.addEventListener('click', displayPantryPage)
 searchBar.addEventListener('keypress', (event) => {
     if (event.key === "Enter" && homeView) {
         event.preventDefault()
@@ -75,6 +80,7 @@ function fetchData(urls) {
             ingredients = new Ingredients(apiIngredients.ingredientsData)
             displayAllRecipes()
             randomizeUser(apiUsers.usersData)
+            displayIngredientDropDown()
         })
         .catch(err => console.log('Fetch Error: ', err))
 }
@@ -103,6 +109,7 @@ function displayHomePage() {
     show(favoriteButton)
     show(filterSidebar)
     hide(ingredientSidebar)
+    hide(pantryView)
     displayAllRecipes()
     homeView = true
 }
@@ -115,11 +122,25 @@ function displayFavoritesPage() {
     hide(favoriteRecipeButton)
     hide(favoriteButton)
     show(filterSidebar)
+    hide(pantryView)
     hide(ingredientSidebar)
     favoritesView.innerHTML = ''
     user.recipesToCook.forEach((current) => {
         displayRecipePreview(current, favoritesView)
     })
+    homeView = false
+}
+
+function displayPantryPage() {
+    hide(removeRecipeButton)
+    hide(allRecipes)
+    hide(singleRecipe)
+    hide(favoritesView)
+    hide(favoriteRecipeButton)
+    hide(favoriteButton)
+    hide(ingredientSidebar)
+    hide(filterSidebar)
+    show(pantryView)
     homeView = false
 }
 
@@ -280,4 +301,16 @@ function hide(element) {
 function show(element) {
     element.classList.remove('hidden')
 }
+
+function displayIngredientDropDown() {
+    const sortedIngredients = apiIngredients.ingredientsData.sort((a, b) => a.name.localeCompare(b.name))
+    selectIngredient.innerHTML = ''
+    selectIngredient.innerHTML = `<option value="Choose Ingredient">Choose Ingredient...</option>`
+    sortedIngredients.forEach(ingredient => {
+        selectIngredient.innerHTML += `
+        <option value="Choose Ingredient">${ingredient.name}</option>`
+    })
+}
+
+
 
