@@ -2,22 +2,41 @@ class Pantry {
   constructor(pantryData) {
     this.pantryData = pantryData;
     this.ingredientsNeeded = [];
+    this.userCanCook = true
   }
-  checkPantryForIngredients(recipe) {
-      // console.log("recipe: ", recipe.ingredients)
-      // console.log("pantry data: ", this.pantryData)
-      this.pantryData.reduce((acc, pantryItem) => {
-        recipe.ingredients.forEach(recipeIngredient => {
-          if(!pantryItem.ingredient.includes(recipeIngredient.id) || recipeIngredient.quantity.amount < pantryItem.amount) {
-             acc.push({missingIngredient: recipeIngredient.id, quantityNeeded: (recipeIngredient.quantity.amount - pantryItem.amount)})
-          }
-        })
-        return acc = this.ingredientsNeeded
-      }, [])
-    return this.ingredientsNeeded
-  }
+ determineIngredientsNeeded(recipe) {
+  const recipeIngredientIDList = recipe.ingredients.map((recipeIngredient) => {
+    return recipeIngredient.id
+  })
+  const userPantryIDList = this.pantryData.map((pantryIngredient) => {
+    return pantryIngredient.ingredient
+  })
+
+  this.ingredientsNeeded = recipeIngredientIDList.reduce((acc, recipeID) => {
+    var recipeIngredientToBeChecked = recipe.ingredients.find((ingredient) => {
+      if (ingredient.id === recipeID) {
+        return ingredient
+      }
+    })
+    var pantryIngredientToBeChecked = this.pantryData.find((ingredient) => {
+      if (ingredient.ingredient === recipeID) {
+        return ingredient
+      }
+    })
+    if (!userPantryIDList.includes(recipeID)) {
+      acc.push({ missingIngredient: recipeID, quantityNeeded: recipeIngredientToBeChecked.quantity.amount })
+      return acc
+    } else if (userPantryIDList.includes(recipeID)) {
+      if ([recipeIngredientToBeChecked.quantity.amount] > [pantryIngredientToBeChecked.amount]) {
+        acc.push({missingIngredient: recipeID, quantityNeeded: [recipeIngredientToBeChecked.quantity.amount] - [pantryIngredientToBeChecked.amount] })
+      }
+      return acc
+    }
+  }, [])
+  return this.ingredientsNeeded
 }
-  export default Pantry
+}
+export default Pantry
 
 // Determine whether a user’s pantry has enough ingredients to cook a given recipe.
 // Determine the amount of missing ingredients still needed to cook a given recipe, based on what’s in the user’s pantry.
