@@ -319,20 +319,6 @@ function displayIngredientDropDown() {
     })
 }
 
-// function addOrRemoveToPantry(user) {
-//     // console.log('user', user)
-//     pantryTable.innerHTML = ''
-//     apiIngredients.forEach(ingredient => {
-//         pantryTable.innerHTML += `
-//             <div class="boxI">${ingredient.name}</div>
-//             <div class="boxA">${user.pantry[0].amount}</div>
-//             <button type="button" class="miniButtons">-</button>
-//             <button type="button" class="miniButtons">+</button>
-//         `
-//     })
-// }
-
-
 function addOrRemoveToPantry(user) {
     pantryTable.innerHTML = ''
     const amount = apiIngredients.reduce((acc, value) => {
