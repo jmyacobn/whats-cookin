@@ -227,11 +227,22 @@ function resetFilter() {
 
 function searchHomeRecipeByName() {
     allRecipes.innerHTML = ''
-    const filteredRecipes = recipeRepository.filterName(searchBar.value.toLowerCase())
-    filteredRecipes.forEach((current) => {
-        displayRecipePreview(current, allRecipes)
-    })
-    if(filteredRecipes.length === 0 || searchBar.value === '') {
+    let filteredList = []
+    const filtersByNameList = recipeRepository.filterName(searchBar.value.toLowerCase())
+    const filtersByTagList = recipeRepository.filterTag(searchBar.value.toLowerCase())
+    if(filtersByNameList.length > 0 && searchBar.value != ''){
+        filteredList = filtersByNameList
+        filteredList.forEach((currentRecipe) => {
+            displayRecipePreview(currentRecipe, allRecipes)
+        })
+    }
+    else if(filtersByTagList.length > 0 && searchBar.value != ''){
+        filteredList = filtersByTagList
+        filteredList.forEach((currentRecipe) => {
+            displayRecipePreview(currentRecipe, allRecipes)
+        })
+    }
+    else{
        allRecipes.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
     }
     searchBar.value = ''
@@ -239,11 +250,22 @@ function searchHomeRecipeByName() {
 
 function searchFavoriteRecipeByName() {
     favoritesView.innerHTML = ''
-    const filteredFavorites = user.filterToCookByName(searchBar.value.toLowerCase())
-    filteredFavorites.forEach((current) => {
-        displayRecipePreview(current, favoritesView)
-    })
-    if(filteredFavorites.length === 0 || searchBar.value === '') {
+    let filteredList = []
+    const filtersByNameList = user.filterToCookByName(searchBar.value.toLowerCase())
+    const filtersByTagList = user.filterToCookByTag(searchBar.value.toLowerCase())
+    if(filtersByNameList.length > 0 && searchBar.value != ''){
+        filteredList = filtersByNameList
+        filteredList.forEach((currentRecipe) => {
+            displayRecipePreview(currentRecipe, favoritesView)
+        })
+    }
+    else if(filtersByTagList.length > 0 && searchBar.value != ''){
+        filteredList = filtersByTagList
+        filteredList.forEach((currentRecipe) => {
+            displayRecipePreview(currentRecipe, favoritesView)
+        })
+    }
+    else{
        favoritesView.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
     }
     searchBar.value = ''
