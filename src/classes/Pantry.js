@@ -35,6 +35,13 @@ class Pantry {
   }, [])
   return this.ingredientsNeeded
 }
+checkPantryForIngredients(recipe) {
+  this.determineIngredientsNeeded(recipe)
+  if(this.ingredientsNeeded.length > 0) {
+    this.userCanCook = false
+  }
+}
+
 }
 export default Pantry
 
