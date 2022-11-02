@@ -144,6 +144,7 @@ select {
 
 .pantry {
   background: #E3D3D3;
+  height: 300vh;
 }
 
 .pantryContents {
@@ -176,6 +177,7 @@ select {
   flex-direction: row;
   justify-content: space-between;
   width: 30vw;
+  flex-wrap: wrap;
   align-items: center;
 }
 

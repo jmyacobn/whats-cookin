@@ -41,7 +41,9 @@ const pantryButton = document.querySelector('#pantry-button')
 const pantryView = document.querySelector('#pantry-view')
 const addButton = document.querySelector('#add-button')
 const selectIngredient = document.querySelector('#ingredient-drop-down-menu')
+const pantryTable = document.querySelector('#pantry-table')
 const navMessage = document.querySelector('.current-view-message')
+
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
@@ -79,9 +81,11 @@ function fetchData(urls) {
             apiIngredients = data[2]
             recipeRepository = new RecipeRepository(apiRecipes)
             ingredients = new Ingredients(apiIngredients)
+            user = new User(apiUsers)
             displayAllRecipes()
             randomizeUser(apiUsers)
             displayIngredientDropDown()
+            addOrRemoveToPantry(user)
         })
         .catch(err => console.log('Fetch Error: ', err))
 }
@@ -341,5 +345,26 @@ function displayIngredientDropDown() {
         selectIngredient.innerHTML += `
         <option value="Choose Ingredient">${ingredient.name}</option>`
     })
+}
+
+function addOrRemoveToPantry(user) {
+    pantryTable.innerHTML = ''
+    const amount = apiIngredients.reduce((acc, value) => {
+        user.pantry.forEach(current => {
+            if(value.id === current.ingredient) {
+            var object = {['Ingredient']: value.name, ['Amount']: current.amount}
+            acc.push(object)
+            }
+        })
+        return acc
+    }, []).forEach(value => {
+        pantryTable.innerHTML += `
+            <div class="boxI">${value.Ingredient}</div>
+            <div class="boxA">${value.Amount}</div>
+            <button type="button" class="miniButtons">-</button>
+            <button type="button" class="miniButtons">+</button>
+            `
+    })
+    return amount
 }
 
