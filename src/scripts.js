@@ -181,19 +181,23 @@ function displayRecipeTotalCost() {
 // ~~~~~~~~~~~~~~ Filter Functions ~~~~~~~~~~~~~~~~~~~~
 radioButtons.forEach(button => {
     button.addEventListener('click', () => {
-        if(homeView) {
+        if(homeView){
             allRecipes.innerHTML = ''
             navMessage.innerText = capitalizeFirstLetter(button.value) + " Recipes"
             recipeRepository.filterTag(button.value).forEach(current => {
             displayRecipePreview(current, allRecipes)
             })  
         }
-        else if(!homeView){
+        else if(!homeView && user.filterToCookByTag(button.value).length > 0){
             favoritesView.innerHTML = ''
             navMessage.innerText = "All Favorite " + capitalizeFirstLetter(button.value) + " Recipes"
             user.filterToCookByTag(button.value).forEach(current => {
             displayRecipePreview(current, favoritesView)
             })     
+        }
+        else{
+            navMessage.innerText = "Oops!"
+            favoritesView.innerHTML = `<p>No recipes found. Please search by recipe name, or select a category to filter recipes.</p>`
         }
     })
 })
