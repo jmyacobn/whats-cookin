@@ -11,10 +11,10 @@ describe('Ingredients', () => {
     sampleIngredientsData
     ingredients = new Ingredients(sampleIngredientsData)
   })
-  it('Should be a function', () => {
+  it('should be a function', () => {
     expect(Ingredients).to.be.a('function')
   })
-  it('Should have a property of ingredients', () => {
+  it('should have a property of ingredients', () => {
     expect(ingredients.ingredients).to.deep.equal(sampleIngredientsData)
   })
 })
