@@ -15,6 +15,7 @@ let homeView = true
 let apiUsers
 let apiRecipes
 let apiIngredients
+let postItNote 
 
 const usersURL = 'http://localhost:3001/api/v1/users'
 const recipesURL = 'http://localhost:3001/api/v1/recipes'
@@ -39,10 +40,11 @@ const searchBar = document.querySelector('#search-bar')
 const removeRecipeButton = document.querySelector('#remove-recipe-button')
 const pantryButton = document.querySelector('#pantry-button')
 const pantryView = document.querySelector('#pantry-view')
-const addButton = document.querySelector('#add-button')
 const selectIngredient = document.querySelector('#ingredient-drop-down-menu')
 const pantryTable = document.querySelector('#pantry-table')
 const navMessage = document.querySelector('.current-view-message')
+const addButton = document.querySelector('#add-button')
+const inputQuantity = document.querySelector('#quantity-input')
 
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
@@ -55,6 +57,7 @@ favoriteRecipeButton.addEventListener('click', addRecipeToFavorites)
 removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
 favoriteButton.addEventListener('click', displayFavoritesPage)
 pantryButton.addEventListener('click', displayPantryPage)
+addButton.addEventListener('click', addItemToPantry)
 searchBar.addEventListener('keypress', (event) => {
     if (event.key === "Enter" && homeView) {
         event.preventDefault()
@@ -81,11 +84,8 @@ function fetchData(urls) {
             apiIngredients = data[2]
             recipeRepository = new RecipeRepository(apiRecipes)
             ingredients = new Ingredients(apiIngredients)
-            user = new User(apiUsers)
             displayAllRecipes()
             randomizeUser(apiUsers)
-            displayIngredientDropDown()
-            addOrRemoveToPantry(user)
         })
         .catch(err => console.log('Fetch Error: ', err))
 }
@@ -131,6 +131,8 @@ function displayPantryPage() {
     navMessage.innerText = 'Pantry'
     hide([removeRecipeButton, pantryButton, allRecipes, singleRecipe, favoritesView, favoriteRecipeButton, favoriteButton, ingredientSidebar, filterSidebar])
     show([pantryView])
+    displayIngredientDropDown()
+    addOrRemoveToPantry(user)
     homeView = false
 }
 
@@ -343,17 +345,17 @@ function displayIngredientDropDown() {
     selectIngredient.innerHTML = `<option value="Choose Ingredient">Choose Ingredient...</option>`
     sortedIngredients.forEach(ingredient => {
         selectIngredient.innerHTML += `
-        <option value="Choose Ingredient">${ingredient.name}</option>`
+        <option value="${ingredient.name}">${ingredient.name}</option>`
     })
 }
 
 function addOrRemoveToPantry(user) {
     pantryTable.innerHTML = ''
     const amount = apiIngredients.reduce((acc, value) => {
-        user.pantry.forEach(current => {
+        user.pantry.pantryData.forEach(current => {
             if(value.id === current.ingredient) {
-            var object = {['Ingredient']: value.name, ['Amount']: current.amount}
-            acc.push(object)
+            let pantryItem = {['Ingredient']: value.name, ['Amount']: current.amount}
+            acc.push(pantryItem)
             }
         })
         return acc
@@ -361,10 +363,19 @@ function addOrRemoveToPantry(user) {
         pantryTable.innerHTML += `
             <div class="boxI">${value.Ingredient}</div>
             <div class="boxA">${value.Amount}</div>
-            <button type="button" class="miniButtons">-</button>
-            <button type="button" class="miniButtons">+</button>
             `
     })
     return amount
+}
+
+function addItemToPantry() {
+    const foundIt = ingredients.ingredients.reduce((acc, element) => {
+        if(element.name === selectIngredient.value) {
+                acc = element.id
+        }
+            return acc
+        }, 0)
+        postItNote = {userID: user.id, ingredientID: foundIt, ingredientModification: Number(inputQuantity.value)}
+        return foundIt
 }
 
