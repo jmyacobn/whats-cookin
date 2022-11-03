@@ -375,7 +375,7 @@ function addItemToPantry() {
         }
             return acc
         }, 0)
-        postItNote = {userID: user.id, ingredientID: foundIt, ingredientModification: inputQuantity.value}
+        postItNote = {userID: user.id, ingredientID: foundIt, ingredientModification: Number(inputQuantity.value)}
         return foundIt
 }
 
