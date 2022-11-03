@@ -7,10 +7,13 @@ What's Cookin'? is an interactive, web-based application that allows users to vi
 ![Brief features gif](https://media.giphy.com/media/V4bSMD3CFTpIQhFgDd/giphy.gif)
 
 ## Installation Instructions
-1. Clone [this repo](https://github.com/Eleanorgruth/whats-cookin) to your local computer.
-2. `CD` into that directory, run `npm install`, and then `npm start`. You should see "Project is now running at http://localhost:8080/"
-3. Copy and paste the link that appears in your terminal in your browser.
-4. `Control + C` is the command to stop running the local server. Closing the terminal without stopping the server first could allow the server to continue to run in the background and cause problems.
+1. This website fetches data from an API, so you will need to clone down and run `git clone github@github.com:turingschool/What-s-cookin--starter-kit-API.git`.
+2. `CD` into that directory, run `npm install`, and then `npm start`. You should see "What's cookin-starter-kit API so now running at http://localhost:3001/".
+3. In a NEW terminal tab, `CD` to a directory outside of the API directory you cloned down to perform the subsequent steps. Do not close the terminal tab running the API.
+3. In your new terminal tab, clone [this repo](https://github.com/Eleanorgruth/whats-cookin) to your local computer.
+4. `CD` into that directory, run `npm install`, and then `npm start`. You should see "Project is now running at http://localhost:8080/"
+5. Copy and paste the link that appears in your terminal in your browser.
+6. `Control + C` is the command to stop running the local server. Closing the terminal without stopping the server first could allow the server to continue to run in the background and cause problems.
 
 ## Context
 What's Cookin'? is a two-part group project that is completed during Weeks 2 and 4 of Module 2 at Turing School of Software Development and Design. We worked as a team of four, implementing mob coding, driver-navigator paired coding, and some independent coding. Part 1 took us approximately 60 hours to complete. We used a thorough DTR, calendaring, GitHub project board, daily stand-ups, and the GitHub workflow to communicate while balancing project work with our full-time coursework and working across multiple time zones. The spec for this project can be found [here](https://frontend.turing.edu/projects/whats-cookin-part-one.html).
