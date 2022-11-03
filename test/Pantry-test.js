@@ -20,16 +20,20 @@ beforeEach(() => {
     sampleRecipeData
   })
 
-it('should be a function', () => {
+  it('should be a function', () => {
     expect(Pantry).to.be.a('function')
   })
-it('should hold property of pantryData', () => {
+  it('should hold property pantry data', () => {
     expect(user1.pantry.pantryData).to.equal(sampleUsersData[0].pantry)
     expect(user2.pantry.pantryData).to.equal(sampleUsersData[1].pantry)
   })
-it('should hold property of ingredientsNeeded which starts out empty', () => {
+  it('should hold property to store ingredients needed', () => {
     expect(user1.pantry.ingredientsNeeded).to.deep.equal([])
     expect(user2.pantry.ingredientsNeeded).to.deep.equal([])
+  })
+  it('should hold property user can cook that defaults to true', () => {
+    expect(user1.pantry.userCanCook).to.equal(true)
+    expect(user2.pantry.userCanCook).to.equal(true)
   })
   it('should determineIngredientsNeeded', () => {
     expect(user1.pantry.determineIngredientsNeeded(recipe1)).to.deep.equal([])
