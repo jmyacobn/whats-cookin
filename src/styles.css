@@ -169,14 +169,14 @@ select {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 24vw;
+  width: 26vw;
 }
 
 .table {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 30vw;
+  width: 25vw;
   flex-wrap: wrap;
   align-items: center;
 }

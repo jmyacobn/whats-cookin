@@ -363,8 +363,6 @@ function addOrRemoveToPantry(user) {
         pantryTable.innerHTML += `
             <div class="boxI">${value.Ingredient}</div>
             <div class="boxA">${value.Amount}</div>
-            <button type="button" class="miniButtons">-</button>
-            <button type="button" class="miniButtons">+</button>
             `
     })
     return amount
