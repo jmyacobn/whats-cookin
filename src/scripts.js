@@ -17,6 +17,7 @@ let apiRecipes
 let apiIngredients
 let postItNote 
 let foundIt
+let recipeView = false
 
 const usersURL = 'http://localhost:3001/api/v1/users'
 const recipesURL = 'http://localhost:3001/api/v1/recipes'
@@ -46,7 +47,6 @@ const pantryTable = document.querySelector('#pantry-table')
 const navMessage = document.querySelector('.current-view-message')
 const addButton = document.querySelector('#add-button')
 const inputQuantity = document.querySelector('#quantity-input')
-
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
@@ -112,6 +112,7 @@ function displayHomePage() {
     show([allRecipes, favoriteButton, filterSidebar, pantryButton])
     displayAllRecipes()
     homeView = true
+    recipeView = false
 }
 
 function displayFavoritesPage() {
@@ -126,6 +127,7 @@ function displayFavoritesPage() {
         displayRecipePreview(current, favoritesView)
     })
     homeView = false
+    recipeView = false
 }
 
 function displayPantryPage() {
@@ -135,9 +137,11 @@ function displayPantryPage() {
     displayIngredientDropDown()
     addOrRemoveToPantry(user)
     homeView = false
+    recipeView = false
 }
 
 function displayRecipeDetailPage(event) {
+    recipeView = true
     navMessage.innerText = ''
     foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === findId(event)
@@ -154,7 +158,6 @@ function displayRecipeDetailPage(event) {
     displayRecipeIngredients(event)
     if(user.recipesToCook.includes(foundRecipe)) {
         hide([favoriteRecipeButton])
-        recipe.insertAdjacentHTML("afterBegin", `<p class=recipe-message>This recipe has been added to favorites!</p>`)
     }
 }
 
@@ -207,7 +210,7 @@ radioButtons.forEach(button => {
         }
         else{
             navMessage.innerText = "Oops!"
-            favoritesView.innerHTML = `<p>No recipe found. Please search by name or category to filter recipes.</p>`
+            favoritesView.innerHTML = `<p class="unfound-recipe-message">No recipe found. Please search by name or category to filter recipes.</p>`
         }
     })
 })
@@ -248,7 +251,7 @@ function searchHomeRecipeByName() {
     }
     else{
         navMessage.innerText = "Oops!"
-        allRecipes.innerHTML = `<p>No recipe found. Please search by name or category to filter recipes.</p>`
+        allRecipes.innerHTML = `<p class="unfound-recipe-message">No recipe found. Please search by name or category to filter recipes.</p>`
     }
     searchBar.value = ''
 }
@@ -274,7 +277,7 @@ function searchFavoriteRecipeByName() {
     }
     else{
         navMessage.innerText = "Oops!"
-        favoritesView.innerHTML = `<p>No recipe found. Please search by name or category to filter recipes.</p>`
+        favoritesView.innerHTML = `<p class="unfound-recipe-message">No recipe found. Please search by name or category to filter recipes.</p>`
     }
     searchBar.value = ''
 }
@@ -282,7 +285,8 @@ function searchFavoriteRecipeByName() {
 // ~~~~~~~~~~~~~~ Add/Delete Functions ~~~~~~~~~~~~~~~~~~~~
 function addRecipeToFavorites() {
     hide([favoriteRecipeButton])
-    recipe.insertAdjacentHTML("afterBegin", `<p class=recipe-message>This recipe has been added to favorites!</p>`)
+    navMessage.innerText = "This recipe has been added to favorites!"
+    setTimeout(fadeOutNavMessage, 2000);
     return user.addRecipesToCook(foundRecipe)
 }
 
@@ -390,5 +394,16 @@ function addItemToPantry() {
         return foundIt
 }
 
+function fadeOutNavMessage(){
+    if(recipeView){
+        navMessage.classList.add("fade-out")
+        setTimeout(resetNavMessageAfterFade, 500);
+    }
+}
 
-
+function resetNavMessageAfterFade(){
+    if(recipeView){
+        navMessage.innerText = "";
+    }
+    navMessage.classList.remove("fade-out")
+}
