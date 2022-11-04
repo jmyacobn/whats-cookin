@@ -24,7 +24,7 @@ const recipesURL = 'http://localhost:3001/api/v1/recipes'
 const ingredientsURL = 'http://localhost:3001/api/v1/ingredients'
 
 // ~~~~~~~~~~~~~~ Query Selectors ~~~~~~~~~~~~~~~~~~~~
-const allRecipes = document.querySelector('#recipeRepository')
+export const allRecipes = document.querySelector('#recipeRepository')
 const singleRecipe = document.querySelector('#recipe')
 const filterSidebar = document.querySelector('#filterSection')
 const ingredientSidebar = document.querySelector('#ingredientSection')
@@ -47,6 +47,7 @@ const pantryTable = document.querySelector('#pantry-table')
 const navMessage = document.querySelector('.current-view-message')
 const addButton = document.querySelector('#add-button')
 const inputQuantity = document.querySelector('#quantity-input')
+const errorMessage = document.querySelector('#error-handling')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
@@ -88,7 +89,10 @@ function fetchData(urls) {
             displayAllRecipes()
             randomizeUser(apiUsers)
         })
-        .catch(err => console.log('Fetch Error: ', err))
+        .catch(err => {
+            allRecipes.innerHTML = `<h2>Oops, something went wrong. Try again later.</h2>`
+            console.log('Fetch Error: ', err)
+        })
 }
 
 function displayAllRecipes() {
@@ -395,9 +399,8 @@ function updatePantry() {
           headers: {'Content-Type': 'application/json'}
         })
         .then(response => {
-          console.log(response.status)
           if(!response.ok) {
-            throw new Error(`Sorry, something went wrong`)
+            throw new Error(`Sorry, something went wrong. ${response.status}: ${response.statusText}`)
           }
           return response.json()
         })
@@ -410,11 +413,13 @@ function updatePantry() {
             let sameUser = new User(currentUser)
             addOrRemoveToPantry(sameUser)
         })
-        .catch(err => console.log('Fetch Error: ', err)) 
+        .catch(err => {
+            console.log('Fetch Error: ', err)
+            errorMessage.innerHTML = `Oops, something went wrong. Try again later.`
+        }) 
 }
 
 function addItemToPantry() {
-    pantryTable.innerHTML = ""
     getIngredientID()
     getPostVariable()
     updatePantry()
