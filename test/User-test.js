@@ -55,24 +55,24 @@ describe('User', () => {
     user1.removeRecipesToCook(recipe1)
     expect(user1.recipesToCook).to.deep.equal([])
   })
-  it('should filter recipesToCook by tag', () => {
+  it('should filter recipes to cook by tag', () => {
     user1.addRecipesToCook(recipe1)
     user1.addRecipesToCook(recipe2)
     expect(user1.filterToCookByTag('hor d\'oeuvre')).to.deep.equal([recipe1])
     expect(user1.filterToCookByTag('main dish')).to.deep.equal([recipe2])
   })
-  it('should return nothing if item does not exist in recipesToCook', () => {
+  it('should not return anything if item does not exist in recipes to cook', () => {
     user2.addRecipesToCook(recipe1)
     user2.addRecipesToCook(recipe2)
     expect(user2.filterToCookByTag('breakfast')).to.deep.equal([])
   })
-  it('should filter recipesToCook by name', () => {
+  it('should filter recipes to cook by name', () => {
     user1.addRecipesToCook(recipe1)
     user1.addRecipesToCook(recipe2)
     expect(user1.filterToCookByName('loaded chocolate chip pudding cookie cups')).to.deep.equal([recipe1])
     expect(user1.filterToCookByName('maple dijon apple cider grilled pork chops')).to.deep.equal([recipe2])
   })
-  it('should return nothing if name does exist in recipesToCook', () => {
+  it('should not return anything if name does exist in recipesToCook', () => {
     user2.addRecipesToCook(recipe1)
     user2.addRecipesToCook(recipe2)
     expect(user2.filterToCookByName('suuushhhhhhiiii')).to.deep.equal([])
