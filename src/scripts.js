@@ -1,5 +1,5 @@
 // ~~~~~~~~~~~~~~ File Imports ~~~~~~~~~~~~~~~~~~~~
-import { getData, postData } from './apiCalls'
+import  getData  from './apiCalls'
 import RecipeRepository from './classes/RecipeRepository'
 import Ingredients from './classes/Ingredients'
 import User from './classes/User'
@@ -373,17 +373,36 @@ function displayIngredientDropDown() {
     return amount
 }
 
-function addItemToPantry() {
-    pantryTable.innerHTML = ""
+function getIngredientID() {
     foundIt = ingredients.ingredients.reduce((acc, element) => {
         if(element.name === selectIngredient.value) {
                 acc = element.id
         }
             return acc
         }, 0)
-        postItNote = {userID: user.id, ingredientID: foundIt, ingredientModification: Number(inputQuantity.value)}
-        postData(usersURL, postItNote)
-        Promise.resolve(getData(usersURL))
+        return foundIt
+    }
+
+function getPostVariable() {
+    postItNote = {userID: user.id, ingredientID: foundIt, ingredientModification: Number(inputQuantity.value)}
+    return postItNote
+} 
+
+function updatePantry() {
+        return fetch(usersURL, {
+          method: 'POST',
+          body: JSON.stringify(postItNote),
+          headers: {'Content-Type': 'application/json'}
+        })
+        .then(response => {
+          console.log(response.status)
+          if(!response.ok) {
+            throw new Error(`Sorry, something went wrong`)
+          }
+          return response.json()
+        })
+        .then(test => 
+        getData(usersURL))
         .then(data => {
             const currentUser = data.find((current)=> {
                 return postItNote.userID === current.id
@@ -391,7 +410,14 @@ function addItemToPantry() {
             let sameUser = new User(currentUser)
             addOrRemoveToPantry(sameUser)
         })
-        return foundIt
+        .catch(err => console.log('Fetch Error: ', err)) 
+}
+
+function addItemToPantry() {
+    pantryTable.innerHTML = ""
+    getIngredientID()
+    getPostVariable()
+    updatePantry()
 }
 
 function fadeOutNavMessage(){
