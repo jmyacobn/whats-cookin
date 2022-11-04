@@ -13,12 +13,14 @@ export const postData = (url, addedItemsInfo) => {
     headers: {'Content-Type': 'application/json'}
   })
   .then(response => {
+    console.log(response.status)
     if(!response.ok) {
       throw new Error(`Sorry, something went wrong`)
     }
     return response.json()
   })
   .then(test => {
+   // console.log(test.status)
     console.log("test", test)
     //addOrRemoveToPantry(test)
   })
