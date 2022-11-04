@@ -3,7 +3,9 @@
   <head>
     <html lang="en">
     <meta charset="UTF-8">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">    
     <title>What's Cookin'?</title>
   </head>
   <body>
@@ -22,12 +24,14 @@
     <main class="main">
       <form class="filter-section" id="filterSection">
         <fieldset class="search">
-            <input type="text" placeholder="Search..." id="search-bar">
+            <input type="text" class="search-field" placeholder="Search..." id="search-bar">
           <button type="button" class="submit-search-button" id="submit-search-button">Search</button>
         </fieldset>
         <datalist class = "tags" id="tags">
-          <h3>Categories</h3>
-          <button type="button" class="reset-button" id="resetButton">Reset</button>
+          <div class="category-and-reset-container">
+            <h2>Categories</h2>
+            <button type="button" class="reset-button" id="resetButton">Reset</button>
+          </div>
           <fieldset class="filter">
             <input type="radio" class="food-category" id="antipasti" name="tags" value="antipasti">
             <label for="antipasti">Antipasti</label>
@@ -113,7 +117,7 @@
           </ul>
         </article>
         <h2>Total Cost</h2>
-        <p id="totalCost"></p>
+        <p class="cost-amount" id="totalCost"></p>
       </section>
       <section class="recipe-repository" id="recipeRepository">
       </section>
