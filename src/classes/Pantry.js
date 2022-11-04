@@ -11,7 +11,6 @@ class Pantry {
   const userPantryIDList = this.pantryData.map((pantryIngredient) => {
     return pantryIngredient.ingredient
   })
-
   this.ingredientsNeeded = recipeIngredientIDList.reduce((acc, recipeID) => {
     var recipeIngredientToBeChecked = recipe.ingredients.find((ingredient) => {
       if (ingredient.id === recipeID) {
