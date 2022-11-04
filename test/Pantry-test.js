@@ -35,17 +35,22 @@ beforeEach(() => {
     expect(user1.pantry.userCanCook).to.equal(true)
     expect(user2.pantry.userCanCook).to.equal(true)
   })
-  it('should have a method to determine the ingredients and amounts a user needs to cook a recipe', () => {
-    expect(user1.pantry.determineIngredientsNeeded(recipe1)).to.deep.equal([])
-    expect(user2.pantry.determineIngredientsNeeded(recipe1)).to.deep.equal([])
+  it('should have a method that gives the ingredients and amounts a user needs to cook a recipe', () => {
     expect(user1.pantry.determineIngredientsNeeded(recipe2)).to.deep.equal([{missingIngredient: 1009016, quantityNeeded: 1.5 }, {missingIngredient: 20027, quantityNeeded: 1 }, {missingIngredient: 1002046, quantityNeeded: 1 }])
     expect(user2.pantry.determineIngredientsNeeded(recipe2)).to.deep.equal([{ missingIngredient: 11215, quantityNeeded: 1 }])
   })
-  it('should have a method that checks if the user has enough ingredients in their pantry to cook a recipe', () => {
+  it('should return an empty array if the user has all the ingredients needed to cook a recipe', () => {
+    expect(user1.pantry.determineIngredientsNeeded(recipe1)).to.deep.equal([])
+    expect(user2.pantry.determineIngredientsNeeded(recipe1)).to.deep.equal([])
+  })
+  it('should determine that a user can cook a recipe if the user has all the needed ingredients for a recipe in their pantry', () => {
     user1.pantry.checkPantryForIngredients(recipe1)
     expect(user1.pantry.userCanCook).to.equal(true)
     user2.pantry.checkPantryForIngredients(recipe1)
     expect(user2.pantry.userCanCook).to.equal(true)
+    user1.pantry.checkPantryForIngredients(recipe2)
+  })
+  it('should determine that user cannot cook a recipe if the user does not have all the needed ingredients in their pantry or if they do not have enough of an ingredient', () => {
     user1.pantry.checkPantryForIngredients(recipe2)
     expect(user1.pantry.userCanCook).to.equal(false)
     user2.pantry.checkPantryForIngredients(recipe2)
