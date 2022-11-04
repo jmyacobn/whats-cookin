@@ -243,7 +243,7 @@ function searchHomeRecipeByName() {
         })
     }
     else if(filtersByTagList.length > 0 && searchBar.value != ''){
-        navMessage.innerText = capitalizeFirstLetter(searchBar.value) + " Recipes"
+        navMessage.innerText = `Search Results: "${capitalizeFirstLetter(searchBar.value)}"`
         filteredList = filtersByTagList
         filteredList.forEach((currentRecipe) => {
             displayRecipePreview(currentRecipe, allRecipes)
