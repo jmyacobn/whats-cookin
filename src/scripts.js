@@ -295,12 +295,12 @@ function removeRecipeFromFavorites() {
 // ~~~~~~~~~~~~~~ Helper Functions ~~~~~~~~~~~~~~~~~~~~
 function displayRecipePreview(current, view) {
     view.innerHTML += `
-    <div class = 'fullwrap' id='${current.id}'>
+    <figure class = 'fullwrap' id='${current.id}'>
     <img src='${current.image}' alt='${current.name}'>
-    <div class='fullcap'>
+    <figcaption class='fullcap'>
         ${current.name}
-    </div>
-    </div>
+    </figcaption>
+    </figure>
     `
 }
 
@@ -361,8 +361,8 @@ function addOrRemoveToPantry(user) {
         return acc
     }, []).forEach(value => {
         pantryTable.innerHTML += `
-            <div class="boxI">${value.Ingredient}</div>
-            <div class="boxA">${value.Amount}</div>
+            <data class="boxI">${value.Ingredient}</data>
+            <data class="boxA">${value.Amount}</data>
             `
     })
     return amount
