@@ -16,7 +16,7 @@ describe('Recipe', () => {
     sampleRecipeData
   })
 
-  it('Should be a function', () => {
+  it('should be a function', () => {
     expect(Recipe).to.be.a('function')
   })
   it('should hold property of id', () => {

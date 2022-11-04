@@ -238,7 +238,7 @@ export const sampleUsersData = [
       },
       {
         "ingredient": 11215,
-        "amount": 12
+        "amount": 0
       },
       {
         "ingredient": 9152,
@@ -550,4 +550,3 @@ export const sampleRecipeData = [
     ]
   }
 ];
-
