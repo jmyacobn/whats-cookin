@@ -278,7 +278,7 @@ select {
   margin-top: 0;
 }
 
-.unfound-recipe-message{
+.unfound-recipe-message, .no-saved-message{
   font-size: 25px;
 }
 
@@ -312,7 +312,6 @@ button {
   font-size: 1.25em;
   background: #974343;
   color: white;
-  /* border-radius: 5px; */
   border: none;
 }
 

@@ -121,7 +121,7 @@ function displayFavoritesPage() {
     favoritesView.innerHTML = ''
     navMessage.innerText = 'All Favorite Recipes'
     if(user.recipesToCook.length === 0){
-        favoritesView.innerHTML = `<p>You have no saved recipes</p>`
+        favoritesView.innerHTML = `<p class="no-saved-message">You have no saved recipes</p>`
     }
     user.recipesToCook.forEach((current) => {
         displayRecipePreview(current, favoritesView)
