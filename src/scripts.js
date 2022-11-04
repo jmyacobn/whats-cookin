@@ -47,6 +47,7 @@ const pantryTable = document.querySelector('#pantry-table')
 const navMessage = document.querySelector('.current-view-message')
 const addButton = document.querySelector('#add-button')
 const inputQuantity = document.querySelector('#quantity-input')
+const cookRecipeButton = document.querySelector('#cook-recipe-button')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
@@ -59,6 +60,7 @@ removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
 favoriteButton.addEventListener('click', displayFavoritesPage)
 pantryButton.addEventListener('click', displayPantryPage)
 addButton.addEventListener('click', addItemToPantry)
+cookRecipeButton.addEventListener('click', removeIngredientsFromPantry)
 searchBar.addEventListener('keypress', (event) => {
     if (event.key === "Enter" && homeView) {
         event.preventDefault()
@@ -433,3 +435,15 @@ function resetNavMessageAfterFade(){
     }
     navMessage.classList.remove("fade-out")
 }
+
+
+
+function removeIngredientsFromPantry() {
+    const items = foundRecipe.ingredients.reduce((acc, value) => {
+        let itemRemoved = {userID: user.id, ingredientID: value.id, ingredientModification: -Number(value.quantity.amount)}
+        acc.push(itemRemoved)
+        return acc
+    }, [])
+    return items
+}
+
