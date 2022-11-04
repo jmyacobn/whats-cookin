@@ -1,5 +1,5 @@
 // ~~~~~~~~~~~~~~ File Imports ~~~~~~~~~~~~~~~~~~~~
-import getData from './apiCalls'
+import { getData, postData } from './apiCalls'
 import RecipeRepository from './classes/RecipeRepository'
 import Ingredients from './classes/Ingredients'
 import User from './classes/User'
@@ -16,6 +16,7 @@ let apiUsers
 let apiRecipes
 let apiIngredients
 let postItNote 
+let foundIt
 
 const usersURL = 'http://localhost:3001/api/v1/users'
 const recipesURL = 'http://localhost:3001/api/v1/recipes'
@@ -349,10 +350,10 @@ function displayIngredientDropDown() {
     })
 }
 
-function addOrRemoveToPantry(user) {
+ function addOrRemoveToPantry(test) {
     pantryTable.innerHTML = ''
     const amount = apiIngredients.reduce((acc, value) => {
-        user.pantry.pantryData.forEach(current => {
+        test.pantry.pantryData.forEach(current => {
             if(value.id === current.ingredient) {
             let pantryItem = {['Ingredient']: value.name, ['Amount']: current.amount}
             acc.push(pantryItem)
@@ -369,13 +370,25 @@ function addOrRemoveToPantry(user) {
 }
 
 function addItemToPantry() {
-    const foundIt = ingredients.ingredients.reduce((acc, element) => {
+    pantryTable.innerHTML = ""
+    foundIt = ingredients.ingredients.reduce((acc, element) => {
         if(element.name === selectIngredient.value) {
                 acc = element.id
         }
             return acc
         }, 0)
         postItNote = {userID: user.id, ingredientID: foundIt, ingredientModification: Number(inputQuantity.value)}
+        postData(usersURL, postItNote)
+        Promise.resolve(getData(usersURL))
+        .then(data => {
+            const currentUser = data.find((current)=> {
+                return postItNote.userID === current.id
+            })
+            let sameUser = new User(currentUser)
+            addOrRemoveToPantry(sameUser)
+        })
         return foundIt
 }
+
+
 
