@@ -350,10 +350,10 @@ function displayIngredientDropDown() {
     })
 }
 
- function addOrRemoveToPantry(user) {
+ function addOrRemoveToPantry(test) {
     pantryTable.innerHTML = ''
     const amount = apiIngredients.reduce((acc, value) => {
-        user.pantry.pantryData.forEach(current => {
+        test.pantry.pantryData.forEach(current => {
             if(value.id === current.ingredient) {
             let pantryItem = {['Ingredient']: value.name, ['Amount']: current.amount}
             acc.push(pantryItem)
@@ -370,6 +370,7 @@ function displayIngredientDropDown() {
 }
 
 function addItemToPantry() {
+    pantryTable.innerHTML = ""
     foundIt = ingredients.ingredients.reduce((acc, element) => {
         if(element.name === selectIngredient.value) {
                 acc = element.id
@@ -378,10 +379,16 @@ function addItemToPantry() {
         }, 0)
         postItNote = {userID: user.id, ingredientID: foundIt, ingredientModification: Number(inputQuantity.value)}
         postData(usersURL, postItNote)
-        getData(usersURL)
-        addOrRemoveToPantry(user)
-
-        //displayPantryPage()
+        Promise.resolve(getData(usersURL))
+        .then(data => {
+            const currentUser = data.find((current)=> {
+                return postItNote.userID === current.id
+            })
+            let sameUser = new User(currentUser)
+            addOrRemoveToPantry(sameUser)
+        })
         return foundIt
 }
+
+
 
