@@ -36,8 +36,8 @@ beforeEach(() => {
     expect(user2.pantry.userCanCook).to.equal(true)
   })
   it('should determine the ingredients and amounts a user needs to cook a recipe', () => {
-    expect(user1.pantry.determineIngredientsNeeded(recipe2)).to.deep.equal([{missingIngredient: 1009016, quantityNeeded: 1.5 }, {missingIngredient: 20027, quantityNeeded: 1 }, {missingIngredient: 1002046, quantityNeeded: 1 }])
-    expect(user2.pantry.determineIngredientsNeeded(recipe2)).to.deep.equal([{ missingIngredient: 11215, quantityNeeded: 1 }])
+    expect(user1.pantry.determineIngredientsNeeded(recipe2)).to.deep.equal([{missingIngredient: 1009016, quantityNeeded: 1.5}, {missingIngredient: 20027, quantityNeeded: 1}, {missingIngredient: 1002046, quantityNeeded: 1}])
+    expect(user2.pantry.determineIngredientsNeeded(recipe2)).to.deep.equal([{missingIngredient: 11215, quantityNeeded: 1}])
   })
   it('should return an empty array if the user has all the ingredients needed to cook a recipe', () => {
     expect(user1.pantry.determineIngredientsNeeded(recipe1)).to.deep.equal([])
