@@ -3,6 +3,7 @@ import  getData  from './apiCalls'
 import RecipeRepository from './classes/RecipeRepository'
 import Ingredients from './classes/Ingredients'
 import User from './classes/User'
+import Pantry from './classes/Pantry'
 import './styles.css'
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
@@ -15,7 +16,7 @@ let homeView = true
 let apiUsers
 let apiRecipes
 let apiIngredients
-let postItNote 
+let postItNote
 let foundIt
 let recipeView = false
 
@@ -47,6 +48,9 @@ const pantryTable = document.querySelector('#pantry-table')
 const navMessage = document.querySelector('.current-view-message')
 const addButton = document.querySelector('#add-button')
 const inputQuantity = document.querySelector('#quantity-input')
+const cookStatusSection = document.querySelector('#can-cook-section')
+const userCanCook = document.querySelector('#can-cook-notification')
+const ingredientsNeededToCook = document.querySelector('#ingredients-needed')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
@@ -148,7 +152,7 @@ function displayRecipeDetailPage(event) {
     })
     if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
         show([removeRecipeButton])
-    } 
+    }
     else {
         hide([removeRecipeButton])
     }
@@ -158,6 +162,18 @@ function displayRecipeDetailPage(event) {
     displayRecipeIngredients(event)
     if(user.recipesToCook.includes(foundRecipe)) {
         hide([favoriteRecipeButton])
+    }
+
+    user.pantry.checkPantryForIngredients(foundRecipe)
+    console.log(user.pantry.userCanCook)
+    user.pantry.determineIngredientsNeeded(foundRecipe)
+    if(user.recipesToCook.includes(foundRecipe) && user.pantry.userCanCook) {
+      console.log("BOO", user.pantry.userCanCook)
+        show([cookStatusSection])
+    } else if (user.recipesToCook.includes(foundRecipe) && !user.pantry.userCanCook) {
+        show([cookStatusSection])
+        hide([userCanCook])
+        show([ingredientsNeededToCook])
     }
 }
 
@@ -206,7 +222,7 @@ radioButtons.forEach(button => {
             navMessage.innerText = "All Favorite " + capitalizeFirstLetter(button.value) + " Recipes"
             user.filterToCookByTag(button.value).forEach(current => {
             displayRecipePreview(current, favoritesView)
-            })     
+            })
         }
         else{
             navMessage.innerText = "Oops!"
@@ -386,7 +402,7 @@ function getIngredientID() {
 function getPostVariable() {
     postItNote = {userID: user.id, ingredientID: foundIt, ingredientModification: Number(inputQuantity.value)}
     return postItNote
-} 
+}
 
 function updatePantry() {
         return fetch(usersURL, {
@@ -401,7 +417,7 @@ function updatePantry() {
           }
           return response.json()
         })
-        .then(test => 
+        .then(test =>
         getData(usersURL))
         .then(data => {
             const currentUser = data.find((current)=> {
@@ -410,7 +426,7 @@ function updatePantry() {
             let sameUser = new User(currentUser)
             addOrRemoveToPantry(sameUser)
         })
-        .catch(err => console.log('Fetch Error: ', err)) 
+        .catch(err => console.log('Fetch Error: ', err))
 }
 
 function addItemToPantry() {
