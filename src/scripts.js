@@ -3,7 +3,6 @@ import  getData  from './apiCalls'
 import RecipeRepository from './classes/RecipeRepository'
 import Ingredients from './classes/Ingredients'
 import User from './classes/User'
-import Pantry from './classes/Pantry'
 import './styles.css'
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
@@ -164,19 +163,31 @@ function displayRecipeDetailPage(event) {
     if(user.recipesToCook.includes(foundRecipe)) {
         hide([favoriteRecipeButton])
     }
-
     user.pantry.checkPantryForIngredients(foundRecipe)
-    console.log(user.pantry.userCanCook)
-
     user.pantry.determineIngredientsNeeded(foundRecipe)
-    console.log("BOO2", user.pantry.ingredientsNeeded)
-
     if(user.recipesToCook.includes(foundRecipe) && user.pantry.userCanCook) {
         show([cookStatusSection])
     } else if (user.recipesToCook.includes(foundRecipe) && !user.pantry.userCanCook) {
         missingIngredientList.innerHTML = ''
-        user.pantry.ingredientsNeeded.forEach(ingredient => {
-          missingIngredientList.innerHTML += `<li>${ingredient.quantityNeeded} ${ingredient.missingIngredient}</li>`
+        const indexOfNeededIng = foundRecipe.ingredients.reduce((acc, ingredient, index) => {
+            let indexedIngredient = foundRecipe.ingredientsList[index]
+            const obj = {"id" : ingredient.id, "ingredient" : indexedIngredient.ingredient}
+            acc.push(obj)
+            return acc
+        }, [])
+        const neededIngObj = indexOfNeededIng.reduce((acc, curr) => {
+            user.pantry.ingredientsNeeded.forEach(ingredient => { 
+                if(curr.id === ingredient.missingIngredient) {
+                    acc.push({"id": curr.id, "quantityNeeded": ingredient.quantityNeeded, "ingredient": curr.ingredient})
+               } 
+           })
+           return acc
+        }, [])
+            neededIngObj.map(elem => {
+            elem.ingredient = elem.ingredient.split(" ")
+            elem.ingredient.splice(0,1)
+            missingIngredientList.innerHTML += `<li>${elem.quantityNeeded} ${elem.ingredient.join(" ")}</li>`
+            return elem
         })
         show([cookStatusSection])
         hide([userCanCook])
