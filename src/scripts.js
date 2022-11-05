@@ -155,12 +155,14 @@ function displayRecipeDetailPage(event) {
         hide([removeRecipeButton])
     }
     show([favoriteButton])
+    hide([cookRecipeButton])
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
     displayRecipeIngredients(event)
     if(user.recipesToCook.includes(foundRecipe)) {
         hide([favoriteRecipeButton])
-    }
+        show([cookRecipeButton])
+    } 
 }
 
 function displayRecipeInstructions() {
@@ -286,6 +288,7 @@ function searchFavoriteRecipeByName() {
 
 // ~~~~~~~~~~~~~~ Add/Delete Functions ~~~~~~~~~~~~~~~~~~~~
 function addRecipeToFavorites() {
+    show([cookRecipeButton])
     hide([favoriteRecipeButton])
     navMessage.innerText = "This recipe has been added to favorites!"
     setTimeout(fadeOutNavMessage, 2000);
@@ -435,8 +438,6 @@ function resetNavMessageAfterFade(){
     }
     navMessage.classList.remove("fade-out")
 }
-
-
 
 function removeIngredientsFromPantry() {
     const items = foundRecipe.ingredients.reduce((acc, value) => {
