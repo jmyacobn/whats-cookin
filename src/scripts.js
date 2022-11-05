@@ -37,8 +37,13 @@ const radioButtons = document.querySelectorAll('.food-category')
 const resetButton = document.querySelector('#resetButton')
 const favoriteRecipeButton = document.querySelector('#favorite-recipe-button')
 const homeButton = document.querySelector('#home-button')
-const submitButton = document.querySelector('#submit-search-button')
 const searchBar = document.querySelector('#search-bar')
+    if(!searchBar.value === "") {
+        submitButton.removeAttribute(disabled)
+    } else {
+        submitButton.setAttribute(disabled)
+    }
+const submitButton = document.querySelector('#submit-search-button')
 const removeRecipeButton = document.querySelector('#remove-recipe-button')
 const pantryButton = document.querySelector('#pantry-button')
 const pantryView = document.querySelector('#pantry-view')
@@ -478,4 +483,12 @@ function removeIngredientsFromPantry() {
         return acc
     }, [])
     return items
+}
+
+function buttonState() {
+    if(!searchBar.value === "") {
+        submitButton.disabled = false
+    } else {
+        submitButton.disabled = true
+    }
 }

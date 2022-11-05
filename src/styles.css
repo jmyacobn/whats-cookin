@@ -412,6 +412,10 @@ button {
   margin-bottom: 5vh;
 }
 
+:disabled {
+  background:rgba(169, 110, 110, 0.7)
+}
+
 .fade-out {
   animation: fadeOut 0.5s;
   -webkit-animation: fadeOut 0.5s;
