@@ -4,10 +4,11 @@ class Pantry {
     this.ingredientsNeeded = [];
     this.userCanCook
   }
-  determineIngredientsNeeded(recipe) {
-    const recipeIngredientIDList = recipe.ingredients.map((recipeIngredient) => {
-      return recipeIngredient.id
-    })
+  
+ determineIngredientsNeeded(recipe) {
+  const recipeIngredientIDList = recipe.ingredients.map((recipeIngredient) => {
+    return recipeIngredient.id
+  })
     const userPantryIDList = this.pantryData.map((pantryIngredient) => {
       return pantryIngredient.ingredient
     })
@@ -45,4 +46,3 @@ class Pantry {
   }
 }
 export default Pantry
-
