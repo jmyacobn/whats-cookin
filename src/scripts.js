@@ -47,6 +47,7 @@ const pantryTable = document.querySelector('#pantry-table')
 const navMessage = document.querySelector('.current-view-message')
 const addButton = document.querySelector('#add-button')
 const inputQuantity = document.querySelector('#quantity-input')
+const cookRecipeButton = document.querySelector('#cook-recipe-button')
 const errorMessage = document.querySelector('#error-handling')
 const cookStatusSection = document.querySelector('#can-cook-section')
 const userCanCook = document.querySelector('#can-cook-notification')
@@ -64,6 +65,7 @@ removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
 favoriteButton.addEventListener('click', displayFavoritesPage)
 pantryButton.addEventListener('click', displayPantryPage)
 addButton.addEventListener('click', addItemToPantry)
+cookRecipeButton.addEventListener('click', removeIngredientsFromPantry)
 searchBar.addEventListener('keypress', (event) => {
     if (event.key === "Enter" && homeView) {
         event.preventDefault()
@@ -161,11 +163,14 @@ function displayRecipeDetailPage(event) {
         hide([removeRecipeButton])
     }
     show([favoriteButton])
+    hide([cookRecipeButton])
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
     displayRecipeIngredients(event)
     if(user.recipesToCook.includes(foundRecipe)) {
         hide([favoriteRecipeButton])
+        show([cookRecipeButton])
+    } 
     } 
     hide([ingredientsNeededToCook])
     user.pantry.checkPantryForIngredients(foundRecipe)
@@ -316,6 +321,7 @@ function searchFavoriteRecipeByName() {
 
 // ~~~~~~~~~~~~~~ Add/Delete Functions ~~~~~~~~~~~~~~~~~~~~
 function addRecipeToFavorites() {
+    show([cookRecipeButton])
     hide([favoriteRecipeButton])
     navMessage.innerText = "This recipe has been added to favorites!"
     setTimeout(fadeOutNavMessage, 2000);
@@ -465,4 +471,13 @@ function resetNavMessageAfterFade(){
         navMessage.innerText = "";
     }
     navMessage.classList.remove("fade-out")
+}
+
+function removeIngredientsFromPantry() {
+    const items = foundRecipe.ingredients.reduce((acc, value) => {
+        let itemRemoved = {userID: user.id, ingredientID: value.id, ingredientModification: -Number(value.quantity.amount)}
+        acc.push(itemRemoved)
+        return acc
+    }, [])
+    return items
 }
