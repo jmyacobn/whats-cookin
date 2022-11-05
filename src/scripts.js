@@ -4,11 +4,13 @@ import RecipeRepository from './classes/RecipeRepository'
 import Ingredients from './classes/Ingredients'
 import User from './classes/User'
 import './styles.css'
+import Pantry from './classes/Pantry'
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
 let recipeRepository
 let ingredients
 let randomUser
+//let sameUser
 let user
 let foundRecipe
 let homeView = true
@@ -172,32 +174,51 @@ function displayRecipeDetailPage(event) {
         show([cookRecipeButton])
     } 
     hide([ingredientsNeededToCook])
-    console.log('pantry', user.pantry)
-    user.pantry.checkPantryForIngredients(foundRecipe)
-    user.pantry.determineIngredientsNeeded(foundRecipe)
-    missingIngredientList.innerHTML = ''
-    if(user.recipesToCook.includes(foundRecipe) && user.pantry.userCanCook) {
-        show([cookStatusSection])
-    } else if (user.recipesToCook.includes(foundRecipe) && !user.pantry.userCanCook) {
-        console.log("HERE", user.pantry.ingredientsNeeded)
-        const displayThese = user.pantry.ingredientsNeeded.map((ingredientNeed)=>{
-           let ingredientName = ingredients.ingredients.reduce((name, ingredient)=>{
-               if (ingredientNeed.missingIngredient === ingredient.id) {
-                name = ingredient.name
-               }
-               return name
-            }, "")
-            return {name: ingredientName, quantity: ingredientNeed.quantityNeeded, unit:ingredientNeed.units} 
-        })
-        displayThese.forEach((missing)=>{
+    // user.pantry.checkPantryForIngredients(foundRecipe)
+    // user.pantry.determineIngredientsNeeded(foundRecipe)
+    // missingIngredientList.innerHTML = ''
+    // if(user.recipesToCook.includes(foundRecipe) && user.pantry.userCanCook) {
+    //     show([cookStatusSection])
+    // } else if (user.recipesToCook.includes(foundRecipe) && !user.pantry.userCanCook) {
+        //++++++++++++
+        console.log("USER", user)
+        displayMissingIngr(user).forEach((missing)=>{
             missingIngredientList.innerHTML += `<li>${missing.quantity} ${missing.unit} ${missing.name}</li>`
         })
+        //+++++++++++=
+        // const displayThese = user.pantry.ingredientsNeeded.map((ingredientNeed)=>{
+        //    let ingredientName = ingredients.ingredients.reduce((name, ingredient)=>{
+        //        if (ingredientNeed.missingIngredient === ingredient.id) {
+        //         name = ingredient.name
+        //        }
+        //        return name
+        //     }, "")
+        //     return {name: ingredientName, quantity: ingredientNeed.quantityNeeded, unit:ingredientNeed.units} 
+        // })
+        // displayThese.forEach((missing)=>{
+        //     missingIngredientList.innerHTML += `<li>${missing.quantity} ${missing.unit} ${missing.name}</li>`
+        // })
         show([cookStatusSection])
         hide([userCanCook])
         show([ingredientsNeededToCook])
     }
-}
 
+function displayMissingIngr(param) {
+    //console.log("PARAM", param)
+    missingIngredientList.innerHTML = ''
+    param.pantry.checkPantryForIngredients(foundRecipe)
+    param.pantry.determineIngredientsNeeded(foundRecipe)
+    const displayThese = param.pantry.ingredientsNeeded.map((ingredientNeed)=>{
+        let ingredientName = ingredients.ingredients.reduce((name, ingredient)=>{
+            if (ingredientNeed.missingIngredient === ingredient.id) {
+             name = ingredient.name
+            }
+            return name
+         }, "")
+         return {name: ingredientName, quantity: ingredientNeed.quantityNeeded, unit:ingredientNeed.units} 
+     })
+  return displayThese
+}
 function displayRecipeInstructions() {
     let instructionsArray = foundRecipe.getInstructions()
     let instructionElement = ''
@@ -441,16 +462,21 @@ function updatePantry() {
         .then(test =>
         getData(usersURL))
         .then(data => {
-            const currentUser = data.find((current)=> {
-                return postItNote.userID === current.id
-            })
-            let sameUser = new User(currentUser)
-            addOrRemoveToPantry(sameUser)
+            updateUser(data)
+            addOrRemoveToPantry(user)
+            displayMissingIngr(user)
         })
         .catch(err => {
             console.log('Fetch Error: ', err)
             errorMessage.innerHTML = `Oops, something went wrong. Try again later.`
         }) 
+}
+
+function updateUser(param) {
+    const updatedUser = param.find((updatedUser) => {
+        return user.id === updatedUser.id
+    })
+    user.pantry = new Pantry(updatedUser.pantry)
 }
 
 function addItemToPantry() {
