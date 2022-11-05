@@ -162,13 +162,14 @@ function displayRecipeDetailPage(event) {
     displayRecipeIngredients(event)
     if(user.recipesToCook.includes(foundRecipe)) {
         hide([favoriteRecipeButton])
-    }
+    } 
+    hide([ingredientsNeededToCook])
     user.pantry.checkPantryForIngredients(foundRecipe)
     user.pantry.determineIngredientsNeeded(foundRecipe)
+    missingIngredientList.innerHTML = ''
     if(user.recipesToCook.includes(foundRecipe) && user.pantry.userCanCook) {
         show([cookStatusSection])
     } else if (user.recipesToCook.includes(foundRecipe) && !user.pantry.userCanCook) {
-        missingIngredientList.innerHTML = ''
         const indexOfNeededIng = foundRecipe.ingredients.reduce((acc, ingredient, index) => {
             let indexedIngredient = foundRecipe.ingredientsList[index]
             const infoByIndex = {"id" : ingredient.id, "ingredient" : indexedIngredient.ingredient}
