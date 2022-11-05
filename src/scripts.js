@@ -195,7 +195,6 @@ function displayRecipeDetailPage(event) {
         show([cookStatusSection])
         hide([userCanCook])
         show([ingredientsNeededToCook])
-    }
 }
 
 function displayRecipeInstructions() {
