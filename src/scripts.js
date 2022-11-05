@@ -67,7 +67,7 @@ removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
 favoriteButton.addEventListener('click', displayFavoritesPage)
 pantryButton.addEventListener('click', displayPantryPage)
 addButton.addEventListener('click', addItemToPantry)
-cookRecipeButton.addEventListener('click', removeIngredientsFromPantry)
+cookRecipeButton.addEventListener('click', cookRecipe)
 searchBar.addEventListener('keypress', (event) => {
     if (event.key === "Enter" && homeView) {
         event.preventDefault()
@@ -174,30 +174,12 @@ function displayRecipeDetailPage(event) {
         show([cookRecipeButton])
     } 
     hide([ingredientsNeededToCook])
-    // user.pantry.checkPantryForIngredients(foundRecipe)
-    // user.pantry.determineIngredientsNeeded(foundRecipe)
-    // missingIngredientList.innerHTML = ''
-    // if(user.recipesToCook.includes(foundRecipe) && user.pantry.userCanCook) {
-    //     show([cookStatusSection])
-    // } else if (user.recipesToCook.includes(foundRecipe) && !user.pantry.userCanCook) {
-        //++++++++++++
+
         console.log("USER", user)
         displayMissingIngr(user).forEach((missing)=>{
             missingIngredientList.innerHTML += `<li>${missing.quantity} ${missing.unit} ${missing.name}</li>`
         })
-        //+++++++++++=
-        // const displayThese = user.pantry.ingredientsNeeded.map((ingredientNeed)=>{
-        //    let ingredientName = ingredients.ingredients.reduce((name, ingredient)=>{
-        //        if (ingredientNeed.missingIngredient === ingredient.id) {
-        //         name = ingredient.name
-        //        }
-        //        return name
-        //     }, "")
-        //     return {name: ingredientName, quantity: ingredientNeed.quantityNeeded, unit:ingredientNeed.units} 
-        // })
-        // displayThese.forEach((missing)=>{
-        //     missingIngredientList.innerHTML += `<li>${missing.quantity} ${missing.unit} ${missing.name}</li>`
-        // })
+
         show([cookStatusSection])
         hide([userCanCook])
         show([ingredientsNeededToCook])
@@ -447,10 +429,10 @@ function getPostVariable() {
     return postItNote
 }
 
-function updatePantry() {
+function updatePantry(postData) {
         return fetch(usersURL, {
           method: 'POST',
-          body: JSON.stringify(postItNote),
+          body: JSON.stringify(postData),
           headers: {'Content-Type': 'application/json'}
         })
         .then(response => {
@@ -481,8 +463,8 @@ function updateUser(param) {
 
 function addItemToPantry() {
     getIngredientID()
-    getPostVariable()
-    updatePantry()
+    // getPostVariable()
+    updatePantry(getPostVariable())
 }
 
 function fadeOutNavMessage(){
@@ -500,10 +482,16 @@ function resetNavMessageAfterFade(){
 }
 
 function removeIngredientsFromPantry() {
-    const items = foundRecipe.ingredients.reduce((acc, value) => {
-        let itemRemoved = {userID: user.id, ingredientID: value.id, ingredientModification: -Number(value.quantity.amount)}
+   const items = foundRecipe.ingredients.reduce((acc, value) => {
+        const itemRemoved = {userID: user.id, ingredientID: value.id, ingredientModification: -Number(value.quantity.amount)}
         acc.push(itemRemoved)
         return acc
     }, [])
     return items
+}
+
+function cookRecipe() {
+   removeIngredientsFromPantry().forEach(element => {
+        updatePantry(element)
+    })
 }
