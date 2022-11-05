@@ -171,8 +171,8 @@ function displayRecipeDetailPage(event) {
         hide([favoriteRecipeButton])
         show([cookRecipeButton])
     } 
-    } 
     hide([ingredientsNeededToCook])
+    console.log('pantry', user.pantry)
     user.pantry.checkPantryForIngredients(foundRecipe)
     user.pantry.determineIngredientsNeeded(foundRecipe)
     missingIngredientList.innerHTML = ''
@@ -195,6 +195,7 @@ function displayRecipeDetailPage(event) {
         show([cookStatusSection])
         hide([userCanCook])
         show([ingredientsNeededToCook])
+    }
 }
 
 function displayRecipeInstructions() {
