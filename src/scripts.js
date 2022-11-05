@@ -176,7 +176,7 @@ function displayRecipeDetailPage(event) {
     hide([ingredientsNeededToCook])
 
         console.log("USER", user)
-        displayMissingIngr(user).forEach((missing)=>{
+        displayMissingIngr().forEach((missing)=>{
             missingIngredientList.innerHTML += `<li>${missing.quantity} ${missing.unit} ${missing.name}</li>`
         })
 
@@ -185,11 +185,10 @@ function displayRecipeDetailPage(event) {
         show([ingredientsNeededToCook])
     }
 
-function displayMissingIngr(param) {
-    //console.log("PARAM", param)
+function displayMissingIngr() {
     missingIngredientList.innerHTML = ''
-    param.pantry.checkPantryForIngredients(foundRecipe)
-    param.pantry.determineIngredientsNeeded(foundRecipe)
+    user.pantry.checkPantryForIngredients(foundRecipe)
+    user.pantry.determineIngredientsNeeded(foundRecipe)
     const displayThese = param.pantry.ingredientsNeeded.map((ingredientNeed)=>{
         let ingredientName = ingredients.ingredients.reduce((name, ingredient)=>{
             if (ingredientNeed.missingIngredient === ingredient.id) {
@@ -445,8 +444,8 @@ function updatePantry(postData) {
         getData(usersURL))
         .then(data => {
             updateUser(data)
-            addOrRemoveToPantry(user)
-            displayMissingIngr(user)
+            addOrRemoveToPantry()
+            displayMissingIngr()
         })
         .catch(err => {
             console.log('Fetch Error: ', err)
@@ -463,7 +462,6 @@ function updateUser(param) {
 
 function addItemToPantry() {
     getIngredientID()
-    // getPostVariable()
     updatePantry(getPostVariable())
 }
 
