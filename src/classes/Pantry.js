@@ -24,12 +24,12 @@ class Pantry {
       }
     })
     if (!userPantryIDList.includes(recipeID)) {
-      acc.push({missingIngredient: recipeID, quantityNeeded: recipeIngredientToBeChecked.quantity.amount})
+      acc.push({missingIngredient: recipeID, quantityNeeded: recipeIngredientToBeChecked.quantity.amount, units: recipeIngredientToBeChecked.quantity.unit})
+      return acc
+    } else if (userPantryIDList.includes(recipeID) && recipeIngredientToBeChecked.quantity.amount > pantryIngredientToBeChecked.amount) {
+        acc.push({missingIngredient: recipeID, quantityNeeded: [recipeIngredientToBeChecked.quantity.amount] - [pantryIngredientToBeChecked.amount], units: recipeIngredientToBeChecked.quantity.unit})
       return acc
     } else if (userPantryIDList.includes(recipeID)) {
-      if ([recipeIngredientToBeChecked.quantity.amount] > [pantryIngredientToBeChecked.amount]) {
-        acc.push({missingIngredient: recipeID, quantityNeeded: [recipeIngredientToBeChecked.quantity.amount] - [pantryIngredientToBeChecked.amount] })
-      }
       return acc
     }
   }, [])
