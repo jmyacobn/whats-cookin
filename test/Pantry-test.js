@@ -5,12 +5,12 @@ import Recipe from '../src/classes/Recipe'
 import { sampleIngredientsData, sampleUsersData, sampleRecipeData } from '../src/data/sample-data'
 
 describe('Pantry', () => {
-    sampleIngredientsData
-    sampleUsersData
-    sampleRecipeData
-    let recipe1, recipe2, user1, user2
+  sampleIngredientsData
+  sampleUsersData
+  sampleRecipeData
+  let recipe1, recipe2, user1, user2
 
-beforeEach(() => {
+  beforeEach(() => {
     user1 = new User(sampleUsersData[0])
     user2 = new User(sampleUsersData[1])
     recipe1 = new Recipe(sampleRecipeData[0])
@@ -31,13 +31,13 @@ beforeEach(() => {
     expect(user1.pantry.ingredientsNeeded).to.deep.equal([])
     expect(user2.pantry.ingredientsNeeded).to.deep.equal([])
   })
-  it('should hold property user can cook that defaults to true', () => {
-    expect(user1.pantry.userCanCook).to.equal(true)
-    expect(user2.pantry.userCanCook).to.equal(true)
+  it('should hold property user can cook that defaults to undefined', () => {
+    expect(user1.pantry.userCanCook).to.equal(undefined)
+    expect(user2.pantry.userCanCook).to.equal(undefined)
   })
   it('should determine the ingredients and amounts a user needs to cook a recipe', () => {
-    expect(user1.pantry.determineIngredientsNeeded(recipe2)).to.deep.equal([{missingIngredient: 1009016, quantityNeeded: 1.5}, {missingIngredient: 20027, quantityNeeded: 1}, {missingIngredient: 1002046, quantityNeeded: 1}])
-    expect(user2.pantry.determineIngredientsNeeded(recipe2)).to.deep.equal([{missingIngredient: 11215, quantityNeeded: 1}])
+    expect(user1.pantry.determineIngredientsNeeded(recipe2)).to.deep.equal([{ missingIngredient: 1009016, quantityNeeded: 1.5 }, { missingIngredient: 20027, quantityNeeded: 1 }, { missingIngredient: 1002046, quantityNeeded: 1 }])
+    expect(user2.pantry.determineIngredientsNeeded(recipe2)).to.deep.equal([{ missingIngredient: 11215, quantityNeeded: 1 }])
   })
   it('should return an empty array if the user has all the ingredients needed to cook a recipe', () => {
     expect(user1.pantry.determineIngredientsNeeded(recipe1)).to.deep.equal([])
