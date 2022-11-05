@@ -170,16 +170,14 @@ function displayRecipeDetailPage(event) {
     if(user.recipesToCook.includes(foundRecipe)) {
         hide([favoriteRecipeButton])
         show([cookRecipeButton])
-    } 
+    }
     hide([ingredientsNeededToCook])
-    console.log('pantry', user.pantry)
     user.pantry.checkPantryForIngredients(foundRecipe)
     user.pantry.determineIngredientsNeeded(foundRecipe)
     missingIngredientList.innerHTML = ''
     if(user.recipesToCook.includes(foundRecipe) && user.pantry.userCanCook) {
         show([cookStatusSection])
     } else if (user.recipesToCook.includes(foundRecipe) && !user.pantry.userCanCook) {
-        console.log("HERE", user.pantry.ingredientsNeeded)
         const displayThese = user.pantry.ingredientsNeeded.map((ingredientNeed)=>{
            let ingredientName = ingredients.ingredients.reduce((name, ingredient)=>{
                if (ingredientNeed.missingIngredient === ingredient.id) {
@@ -187,7 +185,7 @@ function displayRecipeDetailPage(event) {
                }
                return name
             }, "")
-            return {name: ingredientName, quantity: ingredientNeed.quantityNeeded, unit:ingredientNeed.units} 
+            return {name: ingredientName, quantity: ingredientNeed.quantityNeeded, unit:ingredientNeed.units}
         })
         displayThese.forEach((missing)=>{
             missingIngredientList.innerHTML += `<li>${missing.quantity} ${missing.unit} ${missing.name}</li>`
@@ -450,7 +448,7 @@ function updatePantry() {
         .catch(err => {
             console.log('Fetch Error: ', err)
             errorMessage.innerHTML = `Oops, something went wrong. Try again later.`
-        }) 
+        })
 }
 
 function addItemToPantry() {
