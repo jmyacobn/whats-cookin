@@ -15,7 +15,7 @@ let homeView = true
 let apiUsers
 let apiRecipes
 let apiIngredients
-let postItNote 
+let postItNote
 let foundIt
 let recipeView = false
 
@@ -48,6 +48,10 @@ const navMessage = document.querySelector('.current-view-message')
 const addButton = document.querySelector('#add-button')
 const inputQuantity = document.querySelector('#quantity-input')
 const errorMessage = document.querySelector('#error-handling')
+const cookStatusSection = document.querySelector('#can-cook-section')
+const userCanCook = document.querySelector('#can-cook-notification')
+const ingredientsNeededToCook = document.querySelector('#ingredients-needed')
+const missingIngredientList = document.querySelector('#missing-ingredient-list')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
@@ -152,7 +156,7 @@ function displayRecipeDetailPage(event) {
     })
     if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
         show([removeRecipeButton])
-    } 
+    }
     else {
         hide([removeRecipeButton])
     }
@@ -162,6 +166,36 @@ function displayRecipeDetailPage(event) {
     displayRecipeIngredients(event)
     if(user.recipesToCook.includes(foundRecipe)) {
         hide([favoriteRecipeButton])
+    }
+    user.pantry.checkPantryForIngredients(foundRecipe)
+    user.pantry.determineIngredientsNeeded(foundRecipe)
+    if(user.recipesToCook.includes(foundRecipe) && user.pantry.userCanCook) {
+        show([cookStatusSection])
+    } else if (user.recipesToCook.includes(foundRecipe) && !user.pantry.userCanCook) {
+        missingIngredientList.innerHTML = ''
+        const indexOfNeededIng = foundRecipe.ingredients.reduce((acc, ingredient, index) => {
+            let indexedIngredient = foundRecipe.ingredientsList[index]
+            const obj = {"id" : ingredient.id, "ingredient" : indexedIngredient.ingredient}
+            acc.push(obj)
+            return acc
+        }, [])
+        const neededIngObj = indexOfNeededIng.reduce((acc, curr) => {
+            user.pantry.ingredientsNeeded.forEach(ingredient => { 
+                if(curr.id === ingredient.missingIngredient) {
+                    acc.push({"id": curr.id, "quantityNeeded": ingredient.quantityNeeded, "ingredient": curr.ingredient})
+               } 
+           })
+           return acc
+        }, [])
+            neededIngObj.map(elem => {
+            elem.ingredient = elem.ingredient.split(" ")
+            elem.ingredient.splice(0,1)
+            missingIngredientList.innerHTML += `<li>${elem.quantityNeeded} ${elem.ingredient.join(" ")}</li>`
+            return elem
+        })
+        show([cookStatusSection])
+        hide([userCanCook])
+        show([ingredientsNeededToCook])
     }
 }
 
@@ -187,7 +221,7 @@ function displayRecipeIngredients() {
     let listOfIngredients = foundRecipe.determineIngredients(ingredients.ingredients)
     ingredientList.innerHTML = ''
     listOfIngredients.forEach((item) => {
-        ingredientList.innerHTML += `<p>${item.ingredient}</p>`
+        ingredientList.innerHTML += `<li>${item.ingredient}</li>`
     })
 }
 
@@ -210,7 +244,7 @@ radioButtons.forEach(button => {
             navMessage.innerText = "All Favorite " + capitalizeFirstLetter(button.value) + " Recipes"
             user.filterToCookByTag(button.value).forEach(current => {
             displayRecipePreview(current, favoritesView)
-            })     
+            })
         }
         else{
             navMessage.innerText = "Oops!"
@@ -390,7 +424,7 @@ function getIngredientID() {
 function getPostVariable() {
     postItNote = {userID: user.id, ingredientID: foundIt, ingredientModification: Number(inputQuantity.value)}
     return postItNote
-} 
+}
 
 function updatePantry() {
         return fetch(usersURL, {
@@ -404,7 +438,7 @@ function updatePantry() {
           }
           return response.json()
         })
-        .then(test => 
+        .then(test =>
         getData(usersURL))
         .then(data => {
             const currentUser = data.find((current)=> {
