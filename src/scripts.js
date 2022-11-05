@@ -171,11 +171,11 @@ function displayRecipeDetailPage(event) {
         missingIngredientList.innerHTML = ''
         const indexOfNeededIng = foundRecipe.ingredients.reduce((acc, ingredient, index) => {
             let indexedIngredient = foundRecipe.ingredientsList[index]
-            const obj = {"id" : ingredient.id, "ingredient" : indexedIngredient.ingredient}
-            acc.push(obj)
+            const infoByIndex = {"id" : ingredient.id, "ingredient" : indexedIngredient.ingredient}
+            acc.push(infoByIndex)
             return acc
         }, [])
-        const neededIngObj = indexOfNeededIng.reduce((acc, curr) => {
+        const infoByIndex = indexOfNeededIng.reduce((acc, curr) => {
             user.pantry.ingredientsNeeded.forEach(ingredient => { 
                 if(curr.id === ingredient.missingIngredient) {
                     acc.push({"id": curr.id, "quantityNeeded": ingredient.quantityNeeded, "ingredient": curr.ingredient})
@@ -183,7 +183,7 @@ function displayRecipeDetailPage(event) {
            })
            return acc
         }, [])
-            neededIngObj.map(elem => {
+            infoByIndex.map(elem => {
             elem.ingredient = elem.ingredient.split(" ")
             elem.ingredient.splice(0,1)
             missingIngredientList.innerHTML += `<li>${elem.quantityNeeded} ${elem.ingredient.join(" ")}</li>`
