@@ -51,6 +51,7 @@ const inputQuantity = document.querySelector('#quantity-input')
 const cookStatusSection = document.querySelector('#can-cook-section')
 const userCanCook = document.querySelector('#can-cook-notification')
 const ingredientsNeededToCook = document.querySelector('#ingredients-needed')
+const missingIngredientList = document.querySelector('#missing-ingredient-list')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
@@ -166,11 +167,17 @@ function displayRecipeDetailPage(event) {
 
     user.pantry.checkPantryForIngredients(foundRecipe)
     console.log(user.pantry.userCanCook)
+
     user.pantry.determineIngredientsNeeded(foundRecipe)
+    console.log("BOO2", user.pantry.ingredientsNeeded)
+
     if(user.recipesToCook.includes(foundRecipe) && user.pantry.userCanCook) {
-      console.log("BOO", user.pantry.userCanCook)
         show([cookStatusSection])
     } else if (user.recipesToCook.includes(foundRecipe) && !user.pantry.userCanCook) {
+        missingIngredientList.innerHTML = ''
+        user.pantry.ingredientsNeeded.forEach(ingredient => {
+          missingIngredientList.innerHTML += `<li>${ingredient.quantityNeeded} ${ingredient.missingIngredient}</li>`
+        })
         show([cookStatusSection])
         hide([userCanCook])
         show([ingredientsNeededToCook])
@@ -199,7 +206,7 @@ function displayRecipeIngredients() {
     let listOfIngredients = foundRecipe.determineIngredients(ingredients.ingredients)
     ingredientList.innerHTML = ''
     listOfIngredients.forEach((item) => {
-        ingredientList.innerHTML += `<p>${item.ingredient}</p>`
+        ingredientList.innerHTML += `<li>${item.ingredient}</li>`
     })
 }
 
