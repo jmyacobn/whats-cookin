@@ -12,7 +12,7 @@ class Pantry {
     const userPantryIDList = this.pantryData.map((pantryIngredient) => {
       return pantryIngredient.ingredient
     })
-
+    
     this.ingredientsNeeded = recipeIngredientIDList.reduce((acc, recipeID) => {
       var recipeIngredientToBeChecked = recipe.ingredients.find((ingredient) => {
         if (ingredient.id === recipeID) {
@@ -24,14 +24,14 @@ class Pantry {
           return ingredient
         }
       })
-      if (!userPantryIDList.includes(recipeID)) {
-        acc.push({ missingIngredient: recipeID, quantityNeeded: recipeIngredientToBeChecked.quantity.amount })
-        return acc
-      } else if (userPantryIDList.includes(recipeID)) {
-        if ([recipeIngredientToBeChecked.quantity.amount] > [pantryIngredientToBeChecked.amount]) {
-          acc.push({ missingIngredient: recipeID, quantityNeeded: [recipeIngredientToBeChecked.quantity.amount] - [pantryIngredientToBeChecked.amount] })
-        }
-        return acc
+     if (!userPantryIDList.includes(recipeID)) {
+      acc.push({missingIngredient: recipeID, quantityNeeded: recipeIngredientToBeChecked.quantity.amount, units: recipeIngredientToBeChecked.quantity.unit})
+      return acc
+    } else if (userPantryIDList.includes(recipeID) && recipeIngredientToBeChecked.quantity.amount > pantryIngredientToBeChecked.amount) {
+        acc.push({missingIngredient: recipeID, quantityNeeded: [recipeIngredientToBeChecked.quantity.amount] - [pantryIngredientToBeChecked.amount], units: recipeIngredientToBeChecked.quantity.unit})
+      return acc
+    } else if (userPantryIDList.includes(recipeID)) {
+      return acc
       }
     }, [])
     return this.ingredientsNeeded

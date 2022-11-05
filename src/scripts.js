@@ -166,32 +166,26 @@ function displayRecipeDetailPage(event) {
     displayRecipeIngredients(event)
     if(user.recipesToCook.includes(foundRecipe)) {
         hide([favoriteRecipeButton])
-    }
+    } 
+    hide([ingredientsNeededToCook])
     user.pantry.checkPantryForIngredients(foundRecipe)
     user.pantry.determineIngredientsNeeded(foundRecipe)
+    missingIngredientList.innerHTML = ''
     if(user.recipesToCook.includes(foundRecipe) && user.pantry.userCanCook) {
         show([cookStatusSection])
     } else if (user.recipesToCook.includes(foundRecipe) && !user.pantry.userCanCook) {
-        missingIngredientList.innerHTML = ''
-        const indexOfNeededIng = foundRecipe.ingredients.reduce((acc, ingredient, index) => {
-            let indexedIngredient = foundRecipe.ingredientsList[index]
-            const obj = {"id" : ingredient.id, "ingredient" : indexedIngredient.ingredient}
-            acc.push(obj)
-            return acc
-        }, [])
-        const neededIngObj = indexOfNeededIng.reduce((acc, curr) => {
-            user.pantry.ingredientsNeeded.forEach(ingredient => { 
-                if(curr.id === ingredient.missingIngredient) {
-                    acc.push({"id": curr.id, "quantityNeeded": ingredient.quantityNeeded, "ingredient": curr.ingredient})
-               } 
-           })
-           return acc
-        }, [])
-            neededIngObj.map(elem => {
-            elem.ingredient = elem.ingredient.split(" ")
-            elem.ingredient.splice(0,1)
-            missingIngredientList.innerHTML += `<li>${elem.quantityNeeded} ${elem.ingredient.join(" ")}</li>`
-            return elem
+        console.log("HERE", user.pantry.ingredientsNeeded)
+        const displayThese = user.pantry.ingredientsNeeded.map((ingredientNeed)=>{
+           let ingredientName = ingredients.ingredients.reduce((name, ingredient)=>{
+               if (ingredientNeed.missingIngredient === ingredient.id) {
+                name = ingredient.name
+               }
+               return name
+            }, "")
+            return {name: ingredientName, quantity: ingredientNeed.quantityNeeded, unit:ingredientNeed.units} 
+        })
+        displayThese.forEach((missing)=>{
+            missingIngredientList.innerHTML += `<li>${missing.quantity} ${missing.unit} ${missing.name}</li>`
         })
         show([cookStatusSection])
         hide([userCanCook])
