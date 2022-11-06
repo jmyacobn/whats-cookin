@@ -57,6 +57,9 @@ const missingIngredientList = document.querySelector('#missing-ingredient-list')
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
 allRecipes.addEventListener('click', displayRecipeDetailPage)
+/////////////////////////WIP
+allRecipes.addEventListener('keydown', focusClick)
+///////////////////////////
 homeButton.addEventListener('click', displayHomePage)
 favoritesView.addEventListener('click', displayRecipeDetailPage)
 resetButton.addEventListener('click', resetFilter)
@@ -338,7 +341,7 @@ function removeRecipeFromFavorites() {
 // ~~~~~~~~~~~~~~ Helper Functions ~~~~~~~~~~~~~~~~~~~~
 function displayRecipePreview(current, view) {
     view.innerHTML += `
-    <figure class = 'fullwrap' id='${current.id}'>
+    <figure class = 'fullwrap' id='${current.id}' tabindex="0">
     <img src='${current.image}' alt='${current.name}'>
     <figcaption class='fullcap'>
         ${current.name}
@@ -480,4 +483,11 @@ function removeIngredientsFromPantry() {
         return acc
     }, [])
     return items
+}
+
+function focusClick(event){
+    // console.log(typeof event.keyCode)
+    if(event.keyCode === 32){
+        console.log("you hit spacebar")
+    }
 }

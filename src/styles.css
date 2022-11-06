@@ -1,6 +1,18 @@
 * {
   font-family: 'Roboto', sans-serif;
-  /* border: solid 1px green; */
+}
+
+button:focus, .search-field:focus, .food-category:focus, 
+.selectMenu:focus, .quantityInput:focus{
+  outline-width: 4px;
+  outline-style: solid;
+  outline-color: #3c40c6;
+}
+
+figure:focus{
+  outline-width: 10px;
+  outline-style: solid;
+  outline-color: #3c40c6;
 }
 
 button {
