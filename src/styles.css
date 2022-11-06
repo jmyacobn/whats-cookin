@@ -200,6 +200,12 @@ ul {
   margin-bottom: 30px;
 }
 
+.pantry-message {
+ padding-top: 2vh;
+ color:#974343;
+ text-align: center;
+}
+
 .recipe-repository,
 .favorite {
   width: 75vw;
