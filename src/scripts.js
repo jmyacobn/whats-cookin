@@ -325,7 +325,7 @@ function searchFavoriteRecipeByName() {
 function addRecipeToFavorites() {
     hide([favoriteRecipeButton])
     navMessage.innerText = "This recipe has been added to favorites!"
-    setTimeout(fadeOutNavMessage, 2000);
+    setTimeout(fadeOutNavMessage, 2000)
     return user.addRecipesToCook(foundRecipe)
 }
 
@@ -502,4 +502,6 @@ function cookRecipe() {
    removeIngredientsFromPantry().forEach(element => {
         updatePantry(element)
     })
+    hide([cookRecipeButton])
+    setTimeout()
 }
