@@ -61,7 +61,7 @@ window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]
 allRecipes.addEventListener('click', findRecipeOnClick)
 allRecipes.addEventListener('keydown', findRecipeOnTab)
 homeButton.addEventListener('click', displayHomePage)
-favoritesView.addEventListener('click', displayRecipeDetailPage)
+favoritesView.addEventListener('click', findRecipeOnClick)
 favoritesView.addEventListener('keydown', findRecipeOnTab)
 resetButton.addEventListener('click', resetFilter)
 favoriteRecipeButton.addEventListener('click', addRecipeToFavorites)
@@ -122,7 +122,7 @@ function randomizeUser(data) {
 function displayHomePage() {
     allRecipes.innerHTML = ''
     navMessage.innerText = 'All Recipes'
-    hide([removeRecipeButton, singleRecipe, favoritesView, favoriteRecipeButton, ingredientSidebar, pantryView])
+    hide([removeRecipeButton, singleRecipe, favoritesView, favoriteRecipeButton, ingredientSidebar, pantryView, userCanCook, cookStatusSection, ingredientsNeededToCook])
     show([allRecipes, favoriteButton, filterSidebar, pantryButton])
     displayAllRecipes()
     homeView = true
@@ -157,9 +157,11 @@ function displayPantryPage() {
 function displayRecipeDetailPage(event) {
     recipeView = true
     navMessage.innerText = ''
-    if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
+    // if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
+        if (user.recipesToCook.includes(foundRecipe)) {
         show([removeRecipeButton])
         hide([favoriteRecipeButton])
+        hideYourKids()
     }
     else {
         hide([removeRecipeButton])
@@ -167,24 +169,20 @@ function displayRecipeDetailPage(event) {
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
     displayRecipeIngredients(event)
-    hideYourKids()
+    show([favoriteButton])
 }
 
 function hideYourKids() {
-    if(user.recipesToCook.includes(foundRecipe)) {
-        hide([favoriteRecipeButton])
-        show([cookRecipeButton])
-    } 
-    hide([ingredientsNeededToCook, userCanCook, cookRecipeButton])
-    show([cookStatusSection, ingredientsNeededToCook, favoriteButton])
     user.pantry.checkPantryForIngredients(foundRecipe)
     user.pantry.determineIngredientsNeeded(foundRecipe)
-    if(user.pantry.userCanCook) {
-        show([cookRecipeButton])
-        hide([ingredientsNeededToCook])
-    } else {
+    if(!user.pantry.userCanCook) {
         displayMissingIngr()
-        show([ingredientsNeededToCook])
+        hide([userCanCook, cookRecipeButton, favoriteRecipeButton])
+        show([cookStatusSection, ingredientsNeededToCook, removeRecipeButton, favoriteButton])
+    } 
+    else if(user.pantry.userCanCook) {
+        show([cookRecipeButton, favoriteButton])
+        hide([ingredientsNeededToCook, cookStatusSection, userCanCook, favoriteRecipeButton])
     }
 }
 
@@ -511,5 +509,8 @@ function cookRecipe() {
     })
     hide([cookRecipeButton])
     show([cookMessage])
+    setTimeout( () => {
+        hide([cookMessage])
+    }, 2000)
     user.removeRecipesToCook(foundRecipe)
 }
