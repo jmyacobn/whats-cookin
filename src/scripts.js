@@ -68,8 +68,18 @@ favoriteRecipeButton.addEventListener('click', addRecipeToFavorites)
 removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
 favoriteButton.addEventListener('click', displayFavoritesPage)
 pantryButton.addEventListener('click', displayPantryPage)
-addButton.addEventListener('click', addItemToPantry)
+addButton.addEventListener('click', () => {
+    addButton.disabled = true
+    addItemToPantry()
+})
 cookRecipeButton.addEventListener('click', cookRecipe)
+inputQuantity.addEventListener('input', () => {
+    if(!inputQuantity.value === '') {
+        addButton.disabled = true
+    }else {
+        addButton.disabled = false
+    }
+}) 
 inputQuantity.addEventListener('keypress', (event) => {
     if(event.key === "Enter"){
         event.preventDefault();
