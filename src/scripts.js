@@ -55,6 +55,7 @@ const cookStatusSection = document.querySelector('#can-cook-section')
 const userCanCook = document.querySelector('#can-cook-notification')
 const ingredientsNeededToCook = document.querySelector('#ingredients-needed')
 const missingIngredientList = document.querySelector('#missing-ingredient-list')
+const cookMessage = document.querySelector('#cook-message')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
@@ -503,5 +504,5 @@ function cookRecipe() {
         updatePantry(element)
     })
     hide([cookRecipeButton])
-    setTimeout()
+    show([cookMessage])
 }
