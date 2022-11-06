@@ -130,7 +130,7 @@ function displayHomePage() {
 }
 
 function displayFavoritesPage() {
-    hide([removeRecipeButton, allRecipes, singleRecipe, favoriteRecipeButton, favoriteButton, ingredientSidebar])
+    hide([removeRecipeButton, allRecipes, singleRecipe, favoriteRecipeButton, favoriteButton, ingredientSidebar, pantryView])
     show([favoritesView, filterSidebar])
     favoritesView.innerHTML = ''
     navMessage.innerText = 'All Favorite Recipes'
@@ -147,7 +147,7 @@ function displayFavoritesPage() {
 function displayPantryPage() {
     navMessage.innerText = 'Pantry'
     hide([removeRecipeButton, pantryButton, allRecipes, singleRecipe, favoritesView, favoriteRecipeButton, favoriteButton, ingredientSidebar, filterSidebar])
-    show([pantryView])
+    show([pantryView, favoriteButton])
     displayIngredientDropDown()
     addOrRemoveToPantry(user)
     homeView = false
