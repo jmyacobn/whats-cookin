@@ -20,7 +20,6 @@ let apiIngredients
 let postItNote
 let foundIt
 let recipeView = false
-
 const usersURL = 'http://localhost:3001/api/v1/users'
 const recipesURL = 'http://localhost:3001/api/v1/recipes'
 const ingredientsURL = 'http://localhost:3001/api/v1/ingredients'
@@ -49,6 +48,7 @@ const pantryTable = document.querySelector('#pantry-table')
 const navMessage = document.querySelector('.current-view-message')
 const addButton = document.querySelector('#add-button')
 const inputQuantity = document.querySelector('#quantity-input')
+let pantryInputs = [inputQuantity, selectIngredient]
 const cookRecipeButton = document.querySelector('#cook-recipe-button')
 const errorMessage = document.querySelector('#error-handling')
 const cookStatusSection = document.querySelector('#can-cook-section')
@@ -73,13 +73,16 @@ addButton.addEventListener('click', () => {
     addItemToPantry()
 })
 cookRecipeButton.addEventListener('click', cookRecipe)
-inputQuantity.addEventListener('input', () => {
-    if(!inputQuantity.value === '') {
-        addButton.disabled = true
-    }else {
-        addButton.disabled = false
-    }
-}) 
+pantryInputs.forEach(input => {
+    input.addEventListener('input', () => {
+        console.log(inputQuantity.value, selectIngredient.value)
+        if(inputQuantity.value !== '' && selectIngredient.value !== 'Choose Ingredient') {
+            addButton.disabled = false
+        }else {
+            addButton.disabled = true
+        }
+    }) 
+})
 inputQuantity.addEventListener('keypress', (event) => {
     if(event.key === "Enter"){
         event.preventDefault();
@@ -87,10 +90,10 @@ inputQuantity.addEventListener('keypress', (event) => {
     }
 })
 searchBar.addEventListener('input', () => {
-    if(!searchBar.value === '') {
-        submitButton.disabled = true
-    }else {
+    if(searchBar.value !== '') {
         submitButton.disabled = false
+    }else {
+        submitButton.disabled = true
     }
 }) 
 searchBar.addEventListener('keypress', (event) => {
