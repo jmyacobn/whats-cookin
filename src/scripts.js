@@ -59,10 +59,10 @@ const missingIngredientList = document.querySelector('#missing-ingredient-list')
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
 allRecipes.addEventListener('click', findRecipeOnClick)
-allRecipes.addEventListener('keydown', findRecipeOnTab)
+allRecipes.addEventListener('keypress', findRecipeOnTab)
 homeButton.addEventListener('click', displayHomePage)
 favoritesView.addEventListener('click', displayRecipeDetailPage)
-favoritesView.addEventListener('keydown', findRecipeOnTab)
+favoritesView.addEventListener('keypress', findRecipeOnTab)
 resetButton.addEventListener('click', resetFilter)
 favoriteRecipeButton.addEventListener('click', addRecipeToFavorites)
 removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
@@ -70,7 +70,12 @@ favoriteButton.addEventListener('click', displayFavoritesPage)
 pantryButton.addEventListener('click', displayPantryPage)
 addButton.addEventListener('click', addItemToPantry)
 cookRecipeButton.addEventListener('click', cookRecipe)
-inputQuantity.addEventListener('keydown', fixEnter)
+inputQuantity.addEventListener('keypress', (event) => {
+    if(event.key === "Enter"){
+        event.preventDefault();
+        addItemToPantry()
+    }
+})
 searchBar.addEventListener('keypress', (event) => {
     if (event.key === "Enter" && homeView) {
         event.preventDefault()
@@ -346,7 +351,7 @@ function findRecipeOnClick(event){
 }
 
 function findRecipeOnTab(event){
-    if(event.keyCode === 32 || event.keyCode === 13){
+    if(event.key === " " || event.key === "Enter"){
         event.preventDefault();
         foundRecipe = recipeRepository.recipes.find((current) => {
             return current.id === Number(event.target.id)
@@ -503,11 +508,4 @@ function cookRecipe() {
    removeIngredientsFromPantry().forEach(element => {
         updatePantry(element)
     })
-}
-
-function fixEnter(event){
-    if(event.keyCode === 13){
-        event.preventDefault();
-        addItemToPantry()
-    }
 }
