@@ -128,7 +128,8 @@
           </ul>
         <h2>Total Cost</h2>
         <p class="cost-amount" id="totalCost"></p>
-        <button type="button" class="cookButton" id="cook-recipe-button">Cook Recipe</button>
+        <button type="button" class="cookButton hidden" id="cook-recipe-button">Cook Recipe</button>
+        <p class="cook-message hidden" id="cook-message">You cooked your recipe! Ingredients have been removed from your pantry.</p>
       </section>
       <section class="recipe-repository" id="recipeRepository">
       </section>
@@ -162,8 +163,6 @@
             <datalist class="table" id="pantry-table">
               <data class="boxI"></data>
               <data class="boxA"></data>
-              <button type="button" class="miniButtons">-</button>
-              <button type="button" class="miniButtons">+</button>
             </datalist>
           </section>
         </section>

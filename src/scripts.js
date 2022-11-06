@@ -1,5 +1,5 @@
 // ~~~~~~~~~~~~~~ File Imports ~~~~~~~~~~~~~~~~~~~~
-import  getData  from './apiCalls'
+import getData from './apiCalls'
 import RecipeRepository from './classes/RecipeRepository'
 import Ingredients from './classes/Ingredients'
 import User from './classes/User'
@@ -11,7 +11,6 @@ import Pantry from './classes/Pantry'
 let recipeRepository
 let ingredients
 let randomUser
-//let sameUser
 let user
 let foundRecipe
 let homeView = true
@@ -56,13 +55,14 @@ const cookStatusSection = document.querySelector('#can-cook-section')
 const userCanCook = document.querySelector('#can-cook-notification')
 const ingredientsNeededToCook = document.querySelector('#ingredients-needed')
 const missingIngredientList = document.querySelector('#missing-ingredient-list')
+const cookMessage = document.querySelector('#cook-message')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
 allRecipes.addEventListener('click', findRecipeOnClick)
 allRecipes.addEventListener('keypress', findRecipeOnTab)
 homeButton.addEventListener('click', displayHomePage)
-favoritesView.addEventListener('click', displayRecipeDetailPage)
+favoritesView.addEventListener('click', findRecipeOnClick)
 favoritesView.addEventListener('keypress', findRecipeOnTab)
 resetButton.addEventListener('click', resetFilter)
 favoriteRecipeButton.addEventListener('click', addRecipeToFavorites)
@@ -78,10 +78,10 @@ inputQuantity.addEventListener('keypress', (event) => {
     }
 })
 searchBar.addEventListener('keypress', (event) => {
-    if (event.key === "Enter" && homeView) {
+    if (event.key === 'Enter' && homeView) {
         event.preventDefault()
         searchHomeRecipeByName()
-    } else if (event.key === "Enter" && !homeView) {
+    } else if (event.key === 'Enter' && !homeView) {
         event.preventDefault()
         searchFavoriteRecipeByName()
     }
@@ -129,7 +129,7 @@ function randomizeUser(data) {
 function displayHomePage() {
     allRecipes.innerHTML = ''
     navMessage.innerText = 'All Recipes'
-    hide([removeRecipeButton, singleRecipe, favoritesView, favoriteRecipeButton, ingredientSidebar, pantryView])
+    hide([removeRecipeButton, singleRecipe, favoritesView, favoriteRecipeButton, ingredientSidebar, pantryView, userCanCook, cookStatusSection, ingredientsNeededToCook])
     show([allRecipes, favoriteButton, filterSidebar, pantryButton])
     displayAllRecipes()
     homeView = true
@@ -137,12 +137,12 @@ function displayHomePage() {
 }
 
 function displayFavoritesPage() {
-    hide([removeRecipeButton, allRecipes, singleRecipe, favoriteRecipeButton, favoriteButton, ingredientSidebar])
+    hide([removeRecipeButton, allRecipes, singleRecipe, favoriteRecipeButton, favoriteButton, ingredientSidebar, pantryView])
     show([favoritesView, filterSidebar])
     favoritesView.innerHTML = ''
     navMessage.innerText = 'All Favorite Recipes'
-    if(user.recipesToCook.length === 0){
-        favoritesView.innerHTML = `<p class="no-saved-message">You have no saved recipes</p>`
+    if (user.recipesToCook.length === 0) {
+        favoritesView.innerHTML = `<p class='no-saved-message'>You have no saved recipes</p>`
     }
     user.recipesToCook.forEach((current) => {
         displayRecipePreview(current, favoritesView)
@@ -154,7 +154,7 @@ function displayFavoritesPage() {
 function displayPantryPage() {
     navMessage.innerText = 'Pantry'
     hide([removeRecipeButton, pantryButton, allRecipes, singleRecipe, favoritesView, favoriteRecipeButton, favoriteButton, ingredientSidebar, filterSidebar])
-    show([pantryView])
+    show([pantryView, favoriteButton])
     displayIngredientDropDown()
     addOrRemoveToPantry(user)
     homeView = false
@@ -162,48 +162,50 @@ function displayPantryPage() {
 }
 
 function displayRecipeDetailPage(event) {
+    console.log('FOUND RECIPE', foundRecipe)
+    console.log('FAVORITES', user.recipesToCook)
     recipeView = true
     navMessage.innerText = ''
-    if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
-        show([removeRecipeButton])
+    if(!user.recipesToCook.includes(foundRecipe)) {
+        show([favoriteRecipeButton])
+        hide([removeRecipeButton])
     }
     else {
-        hide([removeRecipeButton])
+        hide([removeRecipeButton, favoriteRecipeButton])
+        giveCookingFeedback()
     }
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
     displayRecipeIngredients(event)
-    if(user.recipesToCook.includes(foundRecipe)) {
-        hide([favoriteRecipeButton])
-        show([cookRecipeButton])
-    } 
-    hide([ingredientsNeededToCook, userCanCook, cookRecipeButton])
-    show([cookStatusSection, ingredientsNeededToCook, favoriteButton])
+    show([favoriteButton, pantryButton])
+}
+
+function giveCookingFeedback() {
     user.pantry.checkPantryForIngredients(foundRecipe)
     user.pantry.determineIngredientsNeeded(foundRecipe)
-    if(user.pantry.userCanCook) {
-        show([cookRecipeButton])
-        hide([ingredientsNeededToCook])
-    } else {
+    if(!user.pantry.userCanCook) {
         displayMissingIngr()
-        show([ingredientsNeededToCook])
+        hide([userCanCook, cookRecipeButton, favoriteRecipeButton])
+        show([cookStatusSection, ingredientsNeededToCook, removeRecipeButton, favoriteButton])
+    } 
+    else if(user.pantry.userCanCook) {
+        show([cookRecipeButton, favoriteButton])
+        hide([ingredientsNeededToCook, cookStatusSection, userCanCook, favoriteRecipeButton])
     }
 }
 
 function displayMissingIngr() {
     missingIngredientList.innerHTML = ''
-    // user.pantry.checkPantryForIngredients(foundRecipe)
-    // user.pantry.determineIngredientsNeeded(foundRecipe)
-    return user.pantry.ingredientsNeeded.map((ingredientNeed)=>{
-        let ingredientName = ingredients.ingredients.reduce((name, ingredient)=>{
+    return user.pantry.ingredientsNeeded.map((ingredientNeed) => {
+        let ingredientName = ingredients.ingredients.reduce((name, ingredient) => {
             if (ingredientNeed.missingIngredient === ingredient.id) {
-             name = ingredient.name
+                name = ingredient.name
             }
             return name
-         }, "")
-         return {name: ingredientName, quantity: ingredientNeed.quantityNeeded, unit:ingredientNeed.units} 
-     }).forEach((missing)=>{
-        missingIngredientList.innerHTML += `<li>${missing.quantity} ${missing.unit} ${missing.name}</li>`
+        }, '')
+        return { name: ingredientName, quantity: ingredientNeed.quantityNeeded, unit: ingredientNeed.units }
+    }).forEach((missing) => {
+        missingIngredientList.innerHTML += `<li>${missing.quantity.toFixed(2)} ${missing.unit.toLowerCase()} ${missing.name}</li>`
     })
 }
 
@@ -211,7 +213,7 @@ function displayRecipeInstructions() {
     let instructionsArray = foundRecipe.getInstructions()
     let instructionElement = ''
     hide([favoritesView, allRecipes, filterSidebar])
-    show([favoriteRecipeButton, singleRecipe, ingredientSidebar])
+    show([singleRecipe, ingredientSidebar])
     instructionsArray.forEach(curr => {
         instructionElement += '<p>' + curr + '</p>'
     })
@@ -240,31 +242,32 @@ function displayRecipeTotalCost() {
 // ~~~~~~~~~~~~~~ Filter Functions ~~~~~~~~~~~~~~~~~~~~
 radioButtons.forEach(button => {
     button.addEventListener('click', () => {
-        if(homeView){
+        if (homeView) {
             allRecipes.innerHTML = ''
-            navMessage.innerText = capitalizeFirstLetter(button.value) + " Recipes"
+            navMessage.innerText = capitalizeFirstLetter(button.value) + ' Recipes'
             recipeRepository.filterTag(button.value).forEach(current => {
-            displayRecipePreview(current, allRecipes)
+                displayRecipePreview(current, allRecipes)
             })
         }
-        else if(!homeView && user.filterToCookByTag(button.value).length > 0){
+        else if (!homeView && user.filterToCookByTag(button.value).length > 0) {
             favoritesView.innerHTML = ''
-            navMessage.innerText = "All Favorite " + capitalizeFirstLetter(button.value) + " Recipes"
+            navMessage.innerText = 'All Favorite ' + capitalizeFirstLetter(button.value) + ' Recipes'
             user.filterToCookByTag(button.value).forEach(current => {
-            displayRecipePreview(current, favoritesView)
+                displayRecipePreview(current, favoritesView)
             })
         }
-        else{
-            navMessage.innerText = "Oops!"
-            favoritesView.innerHTML = `<p class="unfound-recipe-message">No recipe found. Please search by name or category to filter recipes.</p>`
+        else {
+            navMessage.innerText = 'Oops!'
+            favoritesView.innerHTML = `<p class='unfound-recipe-message'>No recipe found. Please search by name or category to filter recipes.</p>`
         }
     })
 })
 
 function resetFilter() {
     radioButtons.forEach(button => {
-        button.checked = false})
-    if(homeView) {
+        button.checked = false
+    })
+    if (homeView) {
         allRecipes.innerHTML = ''
         navMessage.innerText = 'All Recipes'
         displayAllRecipes()
@@ -281,23 +284,23 @@ function searchHomeRecipeByName() {
     let filteredList = []
     const filtersByNameList = recipeRepository.filterName(searchBar.value.toLowerCase())
     const filtersByTagList = recipeRepository.filterTag(searchBar.value.toLowerCase())
-    if(filtersByNameList.length > 0 && searchBar.value != ''){
+    if (filtersByNameList.length > 0 && searchBar.value != '') {
         navMessage.innerText = `Search Results: "${capitalizeFirstLetter(searchBar.value)}"`
         filteredList = filtersByNameList
         filteredList.forEach((currentRecipe) => {
             displayRecipePreview(currentRecipe, allRecipes)
         })
     }
-    else if(filtersByTagList.length > 0 && searchBar.value != ''){
+    else if (filtersByTagList.length > 0 && searchBar.value != '') {
         navMessage.innerText = `Search Results: "${capitalizeFirstLetter(searchBar.value)}"`
         filteredList = filtersByTagList
         filteredList.forEach((currentRecipe) => {
             displayRecipePreview(currentRecipe, allRecipes)
         })
     }
-    else{
-        navMessage.innerText = "Oops!"
-        allRecipes.innerHTML = `<p class="unfound-recipe-message">No recipe found. Please search by name or category to filter recipes.</p>`
+    else {
+        navMessage.innerText = 'Oops!'
+        allRecipes.innerHTML = `<p class='unfound-recipe-message'>No recipe found. Please search by name or category to filter recipes.</p>`
     }
     searchBar.value = ''
 }
@@ -307,23 +310,23 @@ function searchFavoriteRecipeByName() {
     let filteredList = []
     const filtersByNameList = user.filterToCookByName(searchBar.value.toLowerCase())
     const filtersByTagList = user.filterToCookByTag(searchBar.value.toLowerCase())
-    if(filtersByNameList.length > 0 && searchBar.value != ''){
-        navMessage.innerText = "All Favorite " + capitalizeFirstLetter(searchBar.value) + " Recipes"
+    if (filtersByNameList.length > 0 && searchBar.value != '') {
+        navMessage.innerText = 'All Favorite ' + capitalizeFirstLetter(searchBar.value) + ' Recipes'
         filteredList = filtersByNameList
         filteredList.forEach((currentRecipe) => {
             displayRecipePreview(currentRecipe, favoritesView)
         })
     }
-    else if(filtersByTagList.length > 0 && searchBar.value != ''){
-        navMessage.innerText = "All Favorite " + capitalizeFirstLetter(searchBar.value) + " Recipes"
+    else if (filtersByTagList.length > 0 && searchBar.value != '') {
+        navMessage.innerText = 'All Favorite ' + capitalizeFirstLetter(searchBar.value) + ' Recipes'
         filteredList = filtersByTagList
         filteredList.forEach((currentRecipe) => {
             displayRecipePreview(currentRecipe, favoritesView)
         })
     }
-    else{
-        navMessage.innerText = "Oops!"
-        favoritesView.innerHTML = `<p class="unfound-recipe-message">No recipe found. Please search by name or category to filter recipes.</p>`
+    else {
+        navMessage.innerText = 'Oops!'
+        favoritesView.innerHTML = `<p class='unfound-recipe-message'>No recipe found. Please search by name or category to filter recipes.</p>`
     }
     searchBar.value = ''
 }
@@ -331,8 +334,8 @@ function searchFavoriteRecipeByName() {
 // ~~~~~~~~~~~~~~ Add/Delete Functions ~~~~~~~~~~~~~~~~~~~~
 function addRecipeToFavorites() {
     hide([favoriteRecipeButton])
-    navMessage.innerText = "This recipe has been added to favorites!"
-    setTimeout(fadeOutNavMessage, 2000);
+    navMessage.innerText = 'This recipe has been added to favorites!'
+    setTimeout(fadeOutNavMessage, 2000)
     return user.addRecipesToCook(foundRecipe)
 }
 
@@ -344,7 +347,7 @@ function removeRecipeFromFavorites() {
 }
 
 // ~~~~~~~~~~~~~~ Helper Functions ~~~~~~~~~~~~~~~~~~~~
-function findRecipeOnClick(event){
+function findRecipeOnClick(event) {
     foundRecipe = recipeRepository.recipes.find((current) => {
         return current.id === Number(event.target.parentElement.id)
     })
@@ -363,7 +366,7 @@ function findRecipeOnTab(event){
 
 function displayRecipePreview(current, view) {
     view.innerHTML += `
-    <figure class = 'fullwrap' id='${current.id}' tabindex="0">
+    <figure class = 'fullwrap' id='${current.id}' tabindex='0'>
     <img src='${current.image}' alt='${current.name}'>
     <figcaption class='fullcap'>
         ${current.name}
@@ -398,33 +401,33 @@ function show(elementList) {
 }
 
 function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 function displayIngredientDropDown() {
     const sortedIngredients = apiIngredients.sort((a, b) => a.name.localeCompare(b.name))
     selectIngredient.innerHTML = ''
-    selectIngredient.innerHTML = `<option value="Choose Ingredient">Choose Ingredient...</option>`
+    selectIngredient.innerHTML = `<option value='Choose Ingredient'>Choose Ingredient...</option>`
     sortedIngredients.forEach(ingredient => {
         selectIngredient.innerHTML += `
-        <option value="${ingredient.name}">${ingredient.name}</option>`
+        <option value='${ingredient.name}'>${ingredient.name}</option>`
     })
 }
 
- function addOrRemoveToPantry() {
+function addOrRemoveToPantry() {
     pantryTable.innerHTML = ''
     const amount = apiIngredients.reduce((acc, value) => {
         user.pantry.pantryData.forEach(current => {
-            if(value.id === current.ingredient) {
-            let pantryItem = {['Ingredient']: value.name, ['Amount']: current.amount}
-            acc.push(pantryItem)
+            if (value.id === current.ingredient) {
+                let pantryItem = { ['Ingredient']: value.name, ['Amount']: current.amount }
+                acc.push(pantryItem)
             }
         })
         return acc
     }, []).forEach(value => {
         pantryTable.innerHTML += `
-            <data class="boxI">${value.Ingredient}</data>
-            <data class="boxA">${value.Amount}</data>
+            <data class='boxI'>${value.Ingredient}</data>
+            <data class='boxA'>${value.Amount}</data>
             `
     })
     return amount
@@ -432,33 +435,33 @@ function displayIngredientDropDown() {
 
 function getIngredientID() {
     foundIt = ingredients.ingredients.reduce((acc, element) => {
-        if(element.name === selectIngredient.value) {
-                acc = element.id
+        if (element.name === selectIngredient.value) {
+            acc = element.id
         }
-            return acc
-        }, 0)
-        return foundIt
-    }
+        return acc
+    }, 0)
+    return foundIt
+}
 
 function getPostVariable() {
-    postItNote = {userID: user.id, ingredientID: foundIt, ingredientModification: Number(inputQuantity.value)}
+    postItNote = { userID: user.id, ingredientID: foundIt, ingredientModification: Number(inputQuantity.value) }
     return postItNote
 }
 
 function updatePantry(postData) {
-        return fetch(usersURL, {
-          method: 'POST',
-          body: JSON.stringify(postData),
-          headers: {'Content-Type': 'application/json'}
-        })
+    return fetch(usersURL, {
+        method: 'POST',
+        body: JSON.stringify(postData),
+        headers: { 'Content-Type': 'application/json' }
+    })
         .then(response => {
-          if(!response.ok) {
-            throw new Error(`Sorry, something went wrong. ${response.status}: ${response.statusText}`)
-          }
-          return response.json()
+            if (!response.ok) {
+                throw new Error(`Sorry, something went wrong. ${response.status}: ${response.statusText}`)
+            }
+            return response.json()
         })
         .then(test =>
-        getData(usersURL))
+            getData(usersURL))
         .then(data => {
             updateUser(data)
             addOrRemoveToPantry()
@@ -480,25 +483,28 @@ function updateUser(param) {
 function addItemToPantry() {
     getIngredientID()
     updatePantry(getPostVariable())
+    displayIngredientDropDown()
+    inputQuantity.value = ''
+    inputQuantity.placeholder = 'quantity'
 }
 
-function fadeOutNavMessage(){
-    if(recipeView){
-        navMessage.classList.add("fade-out")
-        setTimeout(resetNavMessageAfterFade, 500);
+function fadeOutNavMessage() {
+    if (recipeView) {
+        navMessage.classList.add('fade-out')
+        setTimeout(resetNavMessageAfterFade, 500)
     }
 }
 
-function resetNavMessageAfterFade(){
-    if(recipeView){
-        navMessage.innerText = "";
+function resetNavMessageAfterFade() {
+    if (recipeView) {
+        navMessage.innerText = ''
     }
-    navMessage.classList.remove("fade-out")
+    navMessage.classList.remove('fade-out')
 }
 
 function removeIngredientsFromPantry() {
-   const items = foundRecipe.ingredients.reduce((acc, value) => {
-        const itemRemoved = {userID: user.id, ingredientID: value.id, ingredientModification: -Number(value.quantity.amount)}
+    const items = foundRecipe.ingredients.reduce((acc, value) => {
+        const itemRemoved = { userID: user.id, ingredientID: value.id, ingredientModification: -Number(value.quantity.amount) }
         acc.push(itemRemoved)
         return acc
     }, [])
@@ -506,7 +512,14 @@ function removeIngredientsFromPantry() {
 }
 
 function cookRecipe() {
-   removeIngredientsFromPantry().forEach(element => {
+    removeIngredientsFromPantry().forEach(element => {
         updatePantry(element)
     })
+    hide([cookRecipeButton])
+    show([cookMessage])
+    setTimeout( () => {
+        hide([cookMessage])
+    }, 2000)
+    user.removeRecipesToCook(foundRecipe)
 }
+
