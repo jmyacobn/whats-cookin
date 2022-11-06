@@ -155,16 +155,17 @@ function displayPantryPage() {
 }
 
 function displayRecipeDetailPage(event) {
+    console.log('FOUND RECIPE', foundRecipe)
+    console.log('FAVORITES', user.recipesToCook)
     recipeView = true
     navMessage.innerText = ''
-    // if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
-        if (user.recipesToCook.includes(foundRecipe)) {
-        show([removeRecipeButton])
-        hide([favoriteRecipeButton])
-        hideYourKids()
+    if(!user.recipesToCook.includes(foundRecipe)) {
+        show([favoriteRecipeButton])
+        hide([removeRecipeButton])
     }
     else {
-        hide([removeRecipeButton])
+        hide([removeRecipeButton, favoriteRecipeButton])
+        giveCookingFeedback()
     }
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
@@ -172,7 +173,7 @@ function displayRecipeDetailPage(event) {
     show([favoriteButton, pantryButton])
 }
 
-function hideYourKids() {
+function giveCookingFeedback() {
     user.pantry.checkPantryForIngredients(foundRecipe)
     user.pantry.determineIngredientsNeeded(foundRecipe)
     if(!user.pantry.userCanCook) {
@@ -205,7 +206,7 @@ function displayRecipeInstructions() {
     let instructionsArray = foundRecipe.getInstructions()
     let instructionElement = ''
     hide([favoritesView, allRecipes, filterSidebar])
-    show([favoriteRecipeButton, singleRecipe, ingredientSidebar])
+    show([singleRecipe, ingredientSidebar])
     instructionsArray.forEach(curr => {
         instructionElement += '<p>' + curr + '</p>'
     })
