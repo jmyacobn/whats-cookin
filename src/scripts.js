@@ -70,6 +70,7 @@ favoriteButton.addEventListener('click', displayFavoritesPage)
 pantryButton.addEventListener('click', displayPantryPage)
 addButton.addEventListener('click', addItemToPantry)
 cookRecipeButton.addEventListener('click', cookRecipe)
+inputQuantity.addEventListener('keydown', fixEnter)
 searchBar.addEventListener('keypress', (event) => {
     if (event.key === "Enter" && homeView) {
         event.preventDefault()
@@ -502,4 +503,11 @@ function cookRecipe() {
    removeIngredientsFromPantry().forEach(element => {
         updatePantry(element)
     })
+}
+
+function fixEnter(event){
+    if(event.keyCode === 13){
+        event.preventDefault();
+        addItemToPantry()
+    }
 }
