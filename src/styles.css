@@ -29,8 +29,8 @@ button,
 
 body {
   background: white;
-  background-size: cover;
   width: 100vw;
+  min-height: 100vh;
   margin: 0;
 }
 
@@ -242,11 +242,13 @@ select {
 
 .pantry {
   background: #E3D3D3;
-  height: fit-content;
+  background-size: cover;
+  min-height: 100vh;
 }
 
 .pantryContents {
   height: fit-content;
+  background-size: cover;
   width: 100vw;
   display: flex;
   justify-content: center;
@@ -268,6 +270,23 @@ select {
   flex-direction: row;
   justify-content: space-between;
   width: 24vw;
+}
+
+div {
+  display: flex;
+  width: 38vw;
+  justify-content:flex-end
+}
+
+span {
+  font-size: 1em;
+  color:#974343;
+  margin-left: 8vw;
+} 
+
+.quantity {
+  display: flex;
+  flex-direction: column;
 }
 
 .table {

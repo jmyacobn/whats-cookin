@@ -4,6 +4,7 @@ import RecipeRepository from './classes/RecipeRepository'
 import Ingredients from './classes/Ingredients'
 import User from './classes/User'
 import './styles.css'
+import './images/cooking.png'
 import Pantry from './classes/Pantry'
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
@@ -38,8 +39,8 @@ const radioButtons = document.querySelectorAll('.food-category')
 const resetButton = document.querySelector('#resetButton')
 const favoriteRecipeButton = document.querySelector('#favorite-recipe-button')
 const homeButton = document.querySelector('#home-button')
-const submitButton = document.querySelector('#submit-search-button')
 const searchBar = document.querySelector('#search-bar')
+const submitButton = document.querySelector('#submit-search-button')
 const removeRecipeButton = document.querySelector('#remove-recipe-button')
 const pantryButton = document.querySelector('#pantry-button')
 const pantryView = document.querySelector('#pantry-view')
@@ -59,10 +60,10 @@ const cookMessage = document.querySelector('#cook-message')
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
 allRecipes.addEventListener('click', findRecipeOnClick)
-allRecipes.addEventListener('keydown', findRecipeOnTab)
+allRecipes.addEventListener('keypress', findRecipeOnTab)
 homeButton.addEventListener('click', displayHomePage)
 favoritesView.addEventListener('click', findRecipeOnClick)
-favoritesView.addEventListener('keydown', findRecipeOnTab)
+favoritesView.addEventListener('keypress', findRecipeOnTab)
 resetButton.addEventListener('click', resetFilter)
 favoriteRecipeButton.addEventListener('click', addRecipeToFavorites)
 removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
@@ -70,6 +71,12 @@ favoriteButton.addEventListener('click', displayFavoritesPage)
 pantryButton.addEventListener('click', displayPantryPage)
 addButton.addEventListener('click', addItemToPantry)
 cookRecipeButton.addEventListener('click', cookRecipe)
+inputQuantity.addEventListener('keypress', (event) => {
+    if(event.key === "Enter"){
+        event.preventDefault();
+        addItemToPantry()
+    }
+})
 searchBar.addEventListener('keypress', (event) => {
     if (event.key === 'Enter' && homeView) {
         event.preventDefault()
@@ -347,9 +354,9 @@ function findRecipeOnClick(event) {
     displayRecipeDetailPage(event)
 }
 
-function findRecipeOnTab(event) {
-    if (event.keyCode === 32 || event.keyCode === 13) {
-        event.preventDefault()
+function findRecipeOnTab(event){
+    if(event.key === " " || event.key === "Enter"){
+        event.preventDefault();
         foundRecipe = recipeRepository.recipes.find((current) => {
             return current.id === Number(event.target.id)
         })
@@ -515,3 +522,4 @@ function cookRecipe() {
     }, 2000)
     user.removeRecipesToCook(foundRecipe)
 }
+
