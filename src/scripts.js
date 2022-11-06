@@ -185,8 +185,6 @@ function displayRecipeDetailPage(event) {
 
 function displayMissingIngr() {
     missingIngredientList.innerHTML = ''
-    // user.pantry.checkPantryForIngredients(foundRecipe)
-    // user.pantry.determineIngredientsNeeded(foundRecipe)
     return user.pantry.ingredientsNeeded.map((ingredientNeed) => {
         let ingredientName = ingredients.ingredients.reduce((name, ingredient) => {
             if (ingredientNeed.missingIngredient === ingredient.id) {
@@ -196,7 +194,7 @@ function displayMissingIngr() {
         }, "")
         return { name: ingredientName, quantity: ingredientNeed.quantityNeeded, unit: ingredientNeed.units }
     }).forEach((missing) => {
-        missingIngredientList.innerHTML += `<li>${missing.quantity} ${missing.unit} ${missing.name}</li>`
+        missingIngredientList.innerHTML += `<li>${missing.quantity.toFixed(2)} ${missing.unit.toLowerCase()} ${missing.name}</li>`
     })
 }
 
