@@ -58,9 +58,11 @@ const missingIngredientList = document.querySelector('#missing-ingredient-list')
 
 // ~~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData([usersURL, recipesURL, ingredientsURL]))
-allRecipes.addEventListener('click', displayRecipeDetailPage)
+allRecipes.addEventListener('click', findRecipeOnClick)
+allRecipes.addEventListener('keydown', findRecipeOnTab)
 homeButton.addEventListener('click', displayHomePage)
 favoritesView.addEventListener('click', displayRecipeDetailPage)
+favoritesView.addEventListener('keydown', findRecipeOnTab)
 resetButton.addEventListener('click', resetFilter)
 favoriteRecipeButton.addEventListener('click', addRecipeToFavorites)
 removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
@@ -155,9 +157,6 @@ function displayPantryPage() {
 function displayRecipeDetailPage(event) {
     recipeView = true
     navMessage.innerText = ''
-    foundRecipe = recipeRepository.recipes.find((current) => {
-        return current.id === findId(event)
-    })
     if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
         show([removeRecipeButton])
     }
@@ -338,9 +337,26 @@ function removeRecipeFromFavorites() {
 }
 
 // ~~~~~~~~~~~~~~ Helper Functions ~~~~~~~~~~~~~~~~~~~~
+function findRecipeOnClick(event){
+    foundRecipe = recipeRepository.recipes.find((current) => {
+        return current.id === Number(event.target.parentElement.id)
+    })
+    displayRecipeDetailPage(event)
+}
+
+function findRecipeOnTab(event){
+    if(event.keyCode === 32 || event.keyCode === 13){
+        event.preventDefault();
+        foundRecipe = recipeRepository.recipes.find((current) => {
+            return current.id === Number(event.target.id)
+        })
+        displayRecipeDetailPage(event)
+    }
+}
+
 function displayRecipePreview(current, view) {
     view.innerHTML += `
-    <figure class = 'fullwrap' id='${current.id}'>
+    <figure class = 'fullwrap' id='${current.id}' tabindex="0">
     <img src='${current.image}' alt='${current.name}'>
     <figcaption class='fullcap'>
         ${current.name}
@@ -351,12 +367,6 @@ function displayRecipePreview(current, view) {
 
 function displayWelcomeMessage(user) {
     userName.innerText = `Welcome, ${user}!`
-}
-
-
-function findId(event) {
-    let recipeId = Number(event.target.parentElement.id)
-    return recipeId
 }
 
 function resetView() {
