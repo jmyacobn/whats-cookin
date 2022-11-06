@@ -112,24 +112,20 @@
       </form>
       <section class="ingredient-section hidden" id="ingredientSection">
         <section class="can-cook-section hidden" id="can-cook-section">
-          <section class="can-cook-notification" id="can-cook-notification">
-            <img class="cooking-pot" src="../src/images/cooking.png" alt="picture of cooking pot" />
-            <p>You can cook this recipe!</p>
+            <section class="ingredients-needed hidden" id="ingredients-needed">
+              <h2 class="missing-ingredient-list">Missing Ingredients</h2>
+              <ul class="missing-ingredient-list" id="missing-ingredient-list">
+              </ul>
+              <p class="pantry-message">Go to pantry page and add missing ingredients to pantry in order to cook.</p>
+            </section>
           </section>
-          <section class="ingredients-needed hidden" id="ingredients-needed">
-            <h2 class="missing-ingredient-list">Missing Ingredients</h2>
-            <ul class="missing-ingredient-list" id="missing-ingredient-list">
-            </ul>
-            <p class="pantry-message">Go to pantry page and add missing ingredients to pantry in order to cook.</p>
-          </section>
-        </section>
+          <button type="button" class="cookButton hidden" id="cook-recipe-button">Cook Recipe</button>
+          <p class="cook-message hidden" id="cook-message">You cooked your recipe! Ingredients have been removed from your pantry.</p>
         <h2 class="ingredient-title">Ingredients</h2>
           <ul class="ingredient-list" id="ingredientList">
           </ul>
         <h2>Total Cost</h2>
         <p class="cost-amount" id="totalCost"></p>
-        <button type="button" class="cookButton hidden" id="cook-recipe-button">Cook Recipe</button>
-        <p class="cook-message hidden" id="cook-message">You cooked your recipe! Ingredients have been removed from your pantry.</p>
       </section>
       <section class="recipe-repository" id="recipeRepository">
       </section>
