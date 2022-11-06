@@ -75,13 +75,12 @@ addButton.addEventListener('click', () => {
 cookRecipeButton.addEventListener('click', cookRecipe)
 pantryInputs.forEach(input => {
     input.addEventListener('input', () => {
-        console.log(inputQuantity.value, selectIngredient.value)
         if(inputQuantity.value !== '' && selectIngredient.value !== 'Choose Ingredient') {
             addButton.disabled = false
-        }else {
+        } else {
             addButton.disabled = true
         }
-    }) 
+    })
 })
 inputQuantity.addEventListener('keypress', (event) => {
     if(event.key === "Enter"){
@@ -92,10 +91,10 @@ inputQuantity.addEventListener('keypress', (event) => {
 searchBar.addEventListener('input', () => {
     if(searchBar.value !== '') {
         submitButton.disabled = false
-    }else {
+    } else {
         submitButton.disabled = true
     }
-}) 
+})
 searchBar.addEventListener('keypress', (event) => {
     if (event.key === 'Enter' && homeView) {
         event.preventDefault()
@@ -206,7 +205,7 @@ function giveCookingFeedback() {
         displayMissingIngr()
         hide([cookRecipeButton, favoriteRecipeButton])
         show([cookStatusSection, ingredientsNeededToCook, removeRecipeButton, favoriteButton])
-    } 
+    }
     else if(user.pantry.userCanCook) {
         show([cookRecipeButton, favoriteButton])
         hide([ingredientsNeededToCook, cookStatusSection, favoriteRecipeButton])
@@ -541,4 +540,3 @@ function cookRecipe() {
     }, 4000)
     user.removeRecipesToCook(foundRecipe)
 }
-
