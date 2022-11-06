@@ -276,17 +276,21 @@ select {
   width: 24vw;
 }
 
-div {
+.required-message {
   display: flex;
-  width: 38vw;
-  justify-content:flex-end
+  width: 45vw;
+  justify-content:space-evenly;
+  margin-left: 15vw;
 }
 
-span {
-  font-size: 1em;
-  color:#974343;
-  margin-left: 8vw;
+.message {
+  margin-top: 0px;
+  font-size: 0.8em;
 } 
+
+span {
+  color:#974343;
+}
 
 .quantity {
   display: flex;
