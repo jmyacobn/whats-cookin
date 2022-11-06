@@ -4,11 +4,13 @@ import RecipeRepository from './classes/RecipeRepository'
 import Ingredients from './classes/Ingredients'
 import User from './classes/User'
 import './styles.css'
+import Pantry from './classes/Pantry'
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
 let recipeRepository
 let ingredients
 let randomUser
+//let sameUser
 let user
 let foundRecipe
 let homeView = true
@@ -65,7 +67,7 @@ removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
 favoriteButton.addEventListener('click', displayFavoritesPage)
 pantryButton.addEventListener('click', displayPantryPage)
 addButton.addEventListener('click', addItemToPantry)
-cookRecipeButton.addEventListener('click', removeIngredientsFromPantry)
+cookRecipeButton.addEventListener('click', cookRecipe)
 searchBar.addEventListener('keypress', (event) => {
     if (event.key === "Enter" && homeView) {
         event.preventDefault()
@@ -162,38 +164,41 @@ function displayRecipeDetailPage(event) {
     else {
         hide([removeRecipeButton])
     }
-    show([favoriteButton])
-    hide([cookRecipeButton])
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
     displayRecipeIngredients(event)
     if(user.recipesToCook.includes(foundRecipe)) {
         hide([favoriteRecipeButton])
         show([cookRecipeButton])
-    }
-    hide([ingredientsNeededToCook])
+    } 
+    hide([ingredientsNeededToCook, userCanCook, cookRecipeButton])
+    show([cookStatusSection, ingredientsNeededToCook, favoriteButton])
     user.pantry.checkPantryForIngredients(foundRecipe)
     user.pantry.determineIngredientsNeeded(foundRecipe)
-    missingIngredientList.innerHTML = ''
-    if(user.recipesToCook.includes(foundRecipe) && user.pantry.userCanCook) {
-        show([cookStatusSection])
-    } else if (user.recipesToCook.includes(foundRecipe) && !user.pantry.userCanCook) {
-        const displayThese = user.pantry.ingredientsNeeded.map((ingredientNeed)=>{
-           let ingredientName = ingredients.ingredients.reduce((name, ingredient)=>{
-               if (ingredientNeed.missingIngredient === ingredient.id) {
-                name = ingredient.name
-               }
-               return name
-            }, "")
-            return {name: ingredientName, quantity: ingredientNeed.quantityNeeded, unit:ingredientNeed.units}
-        })
-        displayThese.forEach((missing)=>{
-            missingIngredientList.innerHTML += `<li>${missing.quantity} ${missing.unit} ${missing.name}</li>`
-        })
-        show([cookStatusSection])
-        hide([userCanCook])
+    if(user.pantry.userCanCook) {
+        show([cookRecipeButton])
+        hide([ingredientsNeededToCook])
+    } else {
+        displayMissingIngr()
         show([ingredientsNeededToCook])
     }
+}
+
+function displayMissingIngr() {
+    missingIngredientList.innerHTML = ''
+    // user.pantry.checkPantryForIngredients(foundRecipe)
+    // user.pantry.determineIngredientsNeeded(foundRecipe)
+    return user.pantry.ingredientsNeeded.map((ingredientNeed)=>{
+        let ingredientName = ingredients.ingredients.reduce((name, ingredient)=>{
+            if (ingredientNeed.missingIngredient === ingredient.id) {
+             name = ingredient.name
+            }
+            return name
+         }, "")
+         return {name: ingredientName, quantity: ingredientNeed.quantityNeeded, unit:ingredientNeed.units} 
+     }).forEach((missing)=>{
+        missingIngredientList.innerHTML += `<li>${missing.quantity} ${missing.unit} ${missing.name}</li>`
+    })
 }
 
 function displayRecipeInstructions() {
@@ -319,7 +324,6 @@ function searchFavoriteRecipeByName() {
 
 // ~~~~~~~~~~~~~~ Add/Delete Functions ~~~~~~~~~~~~~~~~~~~~
 function addRecipeToFavorites() {
-    show([cookRecipeButton])
     hide([favoriteRecipeButton])
     navMessage.innerText = "This recipe has been added to favorites!"
     setTimeout(fadeOutNavMessage, 2000);
@@ -390,10 +394,10 @@ function displayIngredientDropDown() {
     })
 }
 
- function addOrRemoveToPantry(test) {
+ function addOrRemoveToPantry() {
     pantryTable.innerHTML = ''
     const amount = apiIngredients.reduce((acc, value) => {
-        test.pantry.pantryData.forEach(current => {
+        user.pantry.pantryData.forEach(current => {
             if(value.id === current.ingredient) {
             let pantryItem = {['Ingredient']: value.name, ['Amount']: current.amount}
             acc.push(pantryItem)
@@ -424,10 +428,10 @@ function getPostVariable() {
     return postItNote
 }
 
-function updatePantry() {
+function updatePantry(postData) {
         return fetch(usersURL, {
           method: 'POST',
-          body: JSON.stringify(postItNote),
+          body: JSON.stringify(postData),
           headers: {'Content-Type': 'application/json'}
         })
         .then(response => {
@@ -439,11 +443,9 @@ function updatePantry() {
         .then(test =>
         getData(usersURL))
         .then(data => {
-            const currentUser = data.find((current)=> {
-                return postItNote.userID === current.id
-            })
-            let sameUser = new User(currentUser)
-            addOrRemoveToPantry(sameUser)
+            updateUser(data)
+            addOrRemoveToPantry()
+            displayMissingIngr()
         })
         .catch(err => {
             console.log('Fetch Error: ', err)
@@ -451,10 +453,16 @@ function updatePantry() {
         })
 }
 
+function updateUser(param) {
+    const updatedUser = param.find((updatedUser) => {
+        return user.id === updatedUser.id
+    })
+    user.pantry = new Pantry(updatedUser.pantry)
+}
+
 function addItemToPantry() {
     getIngredientID()
-    getPostVariable()
-    updatePantry()
+    updatePantry(getPostVariable())
 }
 
 function fadeOutNavMessage(){
@@ -472,10 +480,16 @@ function resetNavMessageAfterFade(){
 }
 
 function removeIngredientsFromPantry() {
-    const items = foundRecipe.ingredients.reduce((acc, value) => {
-        let itemRemoved = {userID: user.id, ingredientID: value.id, ingredientModification: -Number(value.quantity.amount)}
+   const items = foundRecipe.ingredients.reduce((acc, value) => {
+        const itemRemoved = {userID: user.id, ingredientID: value.id, ingredientModification: -Number(value.quantity.amount)}
         acc.push(itemRemoved)
         return acc
     }, [])
     return items
+}
+
+function cookRecipe() {
+   removeIngredientsFromPantry().forEach(element => {
+        updatePantry(element)
+    })
 }
