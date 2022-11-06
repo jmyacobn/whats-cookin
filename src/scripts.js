@@ -76,6 +76,13 @@ inputQuantity.addEventListener('keypress', (event) => {
         addItemToPantry()
     }
 })
+searchBar.addEventListener('input', () => {
+    if(!searchBar.value === '') {
+        submitButton.disabled = true
+    }else {
+        submitButton.disabled = false
+    }
+}) 
 searchBar.addEventListener('keypress', (event) => {
     if (event.key === 'Enter' && homeView) {
         event.preventDefault()
@@ -87,8 +94,10 @@ searchBar.addEventListener('keypress', (event) => {
 })
 submitButton.addEventListener('click', () => {
     if (homeView) {
+        submitButton.disabled = true
         searchHomeRecipeByName()
     } else {
+        submitButton.disabled = true
         searchFavoriteRecipeByName()
     }
 })
