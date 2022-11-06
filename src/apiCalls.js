@@ -1,4 +1,4 @@
-import { allRecipes } from "./scripts"
+import { allRecipes } from './scripts'
 
 const getData = (url) => {
   return fetch(url)
