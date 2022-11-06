@@ -159,6 +159,7 @@ function displayRecipeDetailPage(event) {
     navMessage.innerText = ''
     if (user.recipesToCook.length > 0 && user.recipesToCook.includes(foundRecipe)) {
         show([removeRecipeButton])
+        hide([favoriteRecipeButton])
     }
     else {
         hide([removeRecipeButton])
@@ -166,20 +167,19 @@ function displayRecipeDetailPage(event) {
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
     displayRecipeIngredients(event)
-    if (user.recipesToCook.includes(foundRecipe)) {
-        hide([favoriteRecipeButton])
-        show([cookRecipeButton])
-    }
-    hide([ingredientsNeededToCook, userCanCook, cookRecipeButton])
-    show([cookStatusSection, ingredientsNeededToCook, favoriteButton])
+
     user.pantry.checkPantryForIngredients(foundRecipe)
     user.pantry.determineIngredientsNeeded(foundRecipe)
-    if (user.pantry.userCanCook) {
+    if (user.recipesToCook.includes(foundRecipe) && user.pantry.userCanCook) {
+        //if they have it saved and the user can cook it then hide the missing ingredient shit show 
+        hide([ingredientsNeededToCook, favoriteRecipeButton, cookStatusSection, missingIngredientList, userCanCook])
         show([cookRecipeButton])
-        hide([ingredientsNeededToCook])
-    } else {
+    }
+    else if (user.recipesToCook.includes(foundRecipe) && !user.pantry.userCanCook) {
+        //if it's favorited but they can't cook it - do this deal
+        hide([cookRecipeButton])
+        show([ingredientsNeededToCook, missingIngredientList, userCanCook])
         displayMissingIngr()
-        show([ingredientsNeededToCook])
     }
 }
 
