@@ -169,7 +169,7 @@ function displayRecipeDetailPage(event) {
     displayRecipeInstructions(event)
     displayRecipeTotalCost(event)
     displayRecipeIngredients(event)
-    show([favoriteButton])
+    show([favoriteButton, pantryButton])
 }
 
 function hideYourKids() {
