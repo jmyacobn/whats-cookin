@@ -4,6 +4,7 @@ import RecipeRepository from './classes/RecipeRepository'
 import Ingredients from './classes/Ingredients'
 import User from './classes/User'
 import './styles.css'
+import './images/cooking.png'
 import Pantry from './classes/Pantry'
 
 // ~~~~~~~~~~~~~~ Global Variables ~~~~~~~~~~~~~~~~~~~~
@@ -39,8 +40,8 @@ const radioButtons = document.querySelectorAll('.food-category')
 const resetButton = document.querySelector('#resetButton')
 const favoriteRecipeButton = document.querySelector('#favorite-recipe-button')
 const homeButton = document.querySelector('#home-button')
-const submitButton = document.querySelector('#submit-search-button')
 const searchBar = document.querySelector('#search-bar')
+const submitButton = document.querySelector('#submit-search-button')
 const removeRecipeButton = document.querySelector('#remove-recipe-button')
 const pantryButton = document.querySelector('#pantry-button')
 const pantryView = document.querySelector('#pantry-view')
