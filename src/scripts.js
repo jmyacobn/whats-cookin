@@ -71,10 +71,10 @@ pantryButton.addEventListener('click', displayPantryPage)
 addButton.addEventListener('click', addItemToPantry)
 cookRecipeButton.addEventListener('click', cookRecipe)
 searchBar.addEventListener('keypress', (event) => {
-    if (event.key === "Enter" && homeView) {
+    if (event.key === 'Enter' && homeView) {
         event.preventDefault()
         searchHomeRecipeByName()
-    } else if (event.key === "Enter" && !homeView) {
+    } else if (event.key === 'Enter' && !homeView) {
         event.preventDefault()
         searchFavoriteRecipeByName()
     }
@@ -135,7 +135,7 @@ function displayFavoritesPage() {
     favoritesView.innerHTML = ''
     navMessage.innerText = 'All Favorite Recipes'
     if (user.recipesToCook.length === 0) {
-        favoritesView.innerHTML = `<p class="no-saved-message">You have no saved recipes</p>`
+        favoritesView.innerHTML = `<p class='no-saved-message'>You have no saved recipes</p>`
     }
     user.recipesToCook.forEach((current) => {
         displayRecipePreview(current, favoritesView)
@@ -191,7 +191,7 @@ function displayMissingIngr() {
                 name = ingredient.name
             }
             return name
-        }, "")
+        }, '')
         return { name: ingredientName, quantity: ingredientNeed.quantityNeeded, unit: ingredientNeed.units }
     }).forEach((missing) => {
         missingIngredientList.innerHTML += `<li>${missing.quantity.toFixed(2)} ${missing.unit.toLowerCase()} ${missing.name}</li>`
@@ -233,21 +233,21 @@ radioButtons.forEach(button => {
     button.addEventListener('click', () => {
         if (homeView) {
             allRecipes.innerHTML = ''
-            navMessage.innerText = capitalizeFirstLetter(button.value) + " Recipes"
+            navMessage.innerText = capitalizeFirstLetter(button.value) + ' Recipes'
             recipeRepository.filterTag(button.value).forEach(current => {
                 displayRecipePreview(current, allRecipes)
             })
         }
         else if (!homeView && user.filterToCookByTag(button.value).length > 0) {
             favoritesView.innerHTML = ''
-            navMessage.innerText = "All Favorite " + capitalizeFirstLetter(button.value) + " Recipes"
+            navMessage.innerText = 'All Favorite ' + capitalizeFirstLetter(button.value) + ' Recipes'
             user.filterToCookByTag(button.value).forEach(current => {
                 displayRecipePreview(current, favoritesView)
             })
         }
         else {
-            navMessage.innerText = "Oops!"
-            favoritesView.innerHTML = `<p class="unfound-recipe-message">No recipe found. Please search by name or category to filter recipes.</p>`
+            navMessage.innerText = 'Oops!'
+            favoritesView.innerHTML = `<p class='unfound-recipe-message'>No recipe found. Please search by name or category to filter recipes.</p>`
         }
     })
 })
@@ -288,8 +288,8 @@ function searchHomeRecipeByName() {
         })
     }
     else {
-        navMessage.innerText = "Oops!"
-        allRecipes.innerHTML = `<p class="unfound-recipe-message">No recipe found. Please search by name or category to filter recipes.</p>`
+        navMessage.innerText = 'Oops!'
+        allRecipes.innerHTML = `<p class='unfound-recipe-message'>No recipe found. Please search by name or category to filter recipes.</p>`
     }
     searchBar.value = ''
 }
@@ -300,22 +300,22 @@ function searchFavoriteRecipeByName() {
     const filtersByNameList = user.filterToCookByName(searchBar.value.toLowerCase())
     const filtersByTagList = user.filterToCookByTag(searchBar.value.toLowerCase())
     if (filtersByNameList.length > 0 && searchBar.value != '') {
-        navMessage.innerText = "All Favorite " + capitalizeFirstLetter(searchBar.value) + " Recipes"
+        navMessage.innerText = 'All Favorite ' + capitalizeFirstLetter(searchBar.value) + ' Recipes'
         filteredList = filtersByNameList
         filteredList.forEach((currentRecipe) => {
             displayRecipePreview(currentRecipe, favoritesView)
         })
     }
     else if (filtersByTagList.length > 0 && searchBar.value != '') {
-        navMessage.innerText = "All Favorite " + capitalizeFirstLetter(searchBar.value) + " Recipes"
+        navMessage.innerText = 'All Favorite ' + capitalizeFirstLetter(searchBar.value) + ' Recipes'
         filteredList = filtersByTagList
         filteredList.forEach((currentRecipe) => {
             displayRecipePreview(currentRecipe, favoritesView)
         })
     }
     else {
-        navMessage.innerText = "Oops!"
-        favoritesView.innerHTML = `<p class="unfound-recipe-message">No recipe found. Please search by name or category to filter recipes.</p>`
+        navMessage.innerText = 'Oops!'
+        favoritesView.innerHTML = `<p class='unfound-recipe-message'>No recipe found. Please search by name or category to filter recipes.</p>`
     }
     searchBar.value = ''
 }
@@ -323,7 +323,7 @@ function searchFavoriteRecipeByName() {
 // ~~~~~~~~~~~~~~ Add/Delete Functions ~~~~~~~~~~~~~~~~~~~~
 function addRecipeToFavorites() {
     hide([favoriteRecipeButton])
-    navMessage.innerText = "This recipe has been added to favorites!"
+    navMessage.innerText = 'This recipe has been added to favorites!'
     setTimeout(fadeOutNavMessage, 2000)
     return user.addRecipesToCook(foundRecipe)
 }
@@ -345,7 +345,7 @@ function findRecipeOnClick(event) {
 
 function findRecipeOnTab(event) {
     if (event.keyCode === 32 || event.keyCode === 13) {
-        event.preventDefault();
+        event.preventDefault()
         foundRecipe = recipeRepository.recipes.find((current) => {
             return current.id === Number(event.target.id)
         })
@@ -355,7 +355,7 @@ function findRecipeOnTab(event) {
 
 function displayRecipePreview(current, view) {
     view.innerHTML += `
-    <figure class = 'fullwrap' id='${current.id}' tabindex="0">
+    <figure class = 'fullwrap' id='${current.id}' tabindex='0'>
     <img src='${current.image}' alt='${current.name}'>
     <figcaption class='fullcap'>
         ${current.name}
@@ -390,16 +390,16 @@ function show(elementList) {
 }
 
 function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 function displayIngredientDropDown() {
     const sortedIngredients = apiIngredients.sort((a, b) => a.name.localeCompare(b.name))
     selectIngredient.innerHTML = ''
-    selectIngredient.innerHTML = `<option value="Choose Ingredient">Choose Ingredient...</option>`
+    selectIngredient.innerHTML = `<option value='Choose Ingredient'>Choose Ingredient...</option>`
     sortedIngredients.forEach(ingredient => {
         selectIngredient.innerHTML += `
-        <option value="${ingredient.name}">${ingredient.name}</option>`
+        <option value='${ingredient.name}'>${ingredient.name}</option>`
     })
 }
 
@@ -415,8 +415,8 @@ function addOrRemoveToPantry() {
         return acc
     }, []).forEach(value => {
         pantryTable.innerHTML += `
-            <data class="boxI">${value.Ingredient}</data>
-            <data class="boxA">${value.Amount}</data>
+            <data class='boxI'>${value.Ingredient}</data>
+            <data class='boxA'>${value.Amount}</data>
             `
     })
     return amount
@@ -479,16 +479,16 @@ function addItemToPantry() {
 
 function fadeOutNavMessage() {
     if (recipeView) {
-        navMessage.classList.add("fade-out")
-        setTimeout(resetNavMessageAfterFade, 500);
+        navMessage.classList.add('fade-out')
+        setTimeout(resetNavMessageAfterFade, 500)
     }
 }
 
 function resetNavMessageAfterFade() {
     if (recipeView) {
-        navMessage.innerText = "";
+        navMessage.innerText = ''
     }
-    navMessage.classList.remove("fade-out")
+    navMessage.classList.remove('fade-out')
 }
 
 function removeIngredientsFromPantry() {
