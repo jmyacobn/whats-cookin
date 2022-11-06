@@ -51,7 +51,6 @@ const inputQuantity = document.querySelector('#quantity-input')
 const cookRecipeButton = document.querySelector('#cook-recipe-button')
 const errorMessage = document.querySelector('#error-handling')
 const cookStatusSection = document.querySelector('#can-cook-section')
-const userCanCook = document.querySelector('#can-cook-notification')
 const ingredientsNeededToCook = document.querySelector('#ingredients-needed')
 const missingIngredientList = document.querySelector('#missing-ingredient-list')
 const cookMessage = document.querySelector('#cook-message')
@@ -122,7 +121,7 @@ function randomizeUser(data) {
 function displayHomePage() {
     allRecipes.innerHTML = ''
     navMessage.innerText = 'All Recipes'
-    hide([removeRecipeButton, singleRecipe, favoritesView, favoriteRecipeButton, ingredientSidebar, pantryView, userCanCook, cookStatusSection, ingredientsNeededToCook])
+    hide([removeRecipeButton, singleRecipe, favoritesView, favoriteRecipeButton, ingredientSidebar, pantryView, cookStatusSection, ingredientsNeededToCook])
     show([allRecipes, favoriteButton, filterSidebar, pantryButton])
     displayAllRecipes()
     homeView = true
@@ -155,8 +154,6 @@ function displayPantryPage() {
 }
 
 function displayRecipeDetailPage(event) {
-    console.log('FOUND RECIPE', foundRecipe)
-    console.log('FAVORITES', user.recipesToCook)
     recipeView = true
     navMessage.innerText = ''
     if(!user.recipesToCook.includes(foundRecipe)) {
@@ -178,12 +175,12 @@ function giveCookingFeedback() {
     user.pantry.determineIngredientsNeeded(foundRecipe)
     if(!user.pantry.userCanCook) {
         displayMissingIngr()
-        hide([userCanCook, cookRecipeButton, favoriteRecipeButton])
+        hide([cookRecipeButton, favoriteRecipeButton])
         show([cookStatusSection, ingredientsNeededToCook, removeRecipeButton, favoriteButton])
     } 
     else if(user.pantry.userCanCook) {
         show([cookRecipeButton, favoriteButton])
-        hide([ingredientsNeededToCook, cookStatusSection, userCanCook, favoriteRecipeButton])
+        hide([ingredientsNeededToCook, cookStatusSection, favoriteRecipeButton])
     }
 }
 
@@ -512,6 +509,6 @@ function cookRecipe() {
     show([cookMessage])
     setTimeout( () => {
         hide([cookMessage])
-    }, 2000)
+    }, 4000)
     user.removeRecipesToCook(foundRecipe)
 }
