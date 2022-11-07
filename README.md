@@ -23,7 +23,9 @@ What's Cookin'? is an interactive, web-based application that allows users to vi
 6. `Control + C` is the command to stop running the local server. Closing the terminal without stopping the server first could allow the server to continue to run in the background and cause problems.
 
 ## Context
-What's Cookin'? is a two-part group project that is completed during Weeks 2 and 4 of Module 2 at Turing School of Software Development and Design. We worked as a team of four, implementing mob coding, driver-navigator paired coding, and independent coding. Part 1 took us approximately 60 hours to complete, and Part 2 took us approximately 50 hours for a total of approximately 110 hours. We used a thorough DTR, calendaring, and an Agile/Scrum Workflow to communicate while balancing project work with our full-time coursework and working across multiple time zones. [What's Cookin'? Project Spec Part 1](https://frontend.turing.edu/projects/whats-cookin-part-one.html) [What's Cookin'? Project Spec Part 1](https://frontend.turing.edu/projects/whats-cookin-part-two.html)
+What's Cookin'? is a two-part group project that is completed during Weeks 2 and 4 of Module 2 at Turing School of Software Development and Design. We worked as a team of four, implementing mob coding, driver-navigator paired coding, and independent coding. Part 1 took us approximately 60 hours to complete, and Part 2 took us approximately 50 hours for a total of approximately 110 hours. We used a thorough DTR, calendaring, and an Agile/Scrum Workflow to communicate while balancing project work with our full-time coursework and working across multiple time zones. 
+[What's Cookin'? Project Spec Part 1](https://frontend.turing.edu/projects/whats-cookin-part-one.html) 
+[What's Cookin'? Project Spec Part 1](https://frontend.turing.edu/projects/whats-cookin-part-two.html)
 
 ## Contributors
 - Lauren Frazier [GitHub](https://github.com/FrazierLE) | [LinkedIn](https://www.linkedin.com/in/lauren-frazier-745053188/)
