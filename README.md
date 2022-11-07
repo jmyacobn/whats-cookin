@@ -54,6 +54,7 @@ HTML | CSS | JavaScript | Figma | Webpack | API | Mocha and Chai | Chrome Dev To
 ## Challenges 😅
 - Deleting recipes from our saved recipe view with a double click, while using a single click to view recipe details
 - Initially, accessing the data in our fetch calls
+- Initially, working with three heavily nested data sets that contain different pieces of information that we needed to display to the DOM
 
 ## Future Features
 - Allow users to select multiple tags on both the home and saved recipe views
