@@ -1,7 +1,7 @@
 # 🍴 What's Cookin'? 🍴️
 
 ## Abstract
-What's Cookin'? is an interactive, web-based application that allows users to view a list of recipes they want to cook and plan their meals and shopping trips accordingly. Using HTML, CSS, JavaScript, and APIs, we built our app to allow users to view recipes, filter recipes by tag, search recipes by name, and save their favorite recipes in a single place. Users are able to filter recipes and search for recipes by name on their favorites page as well. When a user clicks on any recipe, they will be provided with a list of ingredients with their quantities, an estimate of the total cost to make this recipe, and step-by-step instructions for cooking.
+What's Cookin'? is an interactive, web-based application that allows users to view a list of recipes they want to cook and plan their meals and shopping trips accordingly. Using HTML, CSS, JavaScript, and APIs, we built our app to allow users to view recipes, including step-by-step cooking instructions, ingredient list, and estimated total cost; filter recipes by tag or by name; save recipes to cook; manage ingredients in their pantry; view a customized shopping list by recipe based upon their pantry; and update their pantry with a single click when recipe has been cooked. 
 
 ## Preview of Application
 ### Search Functionality
@@ -23,7 +23,7 @@ What's Cookin'? is an interactive, web-based application that allows users to vi
 6. `Control + C` is the command to stop running the local server. Closing the terminal without stopping the server first could allow the server to continue to run in the background and cause problems.
 
 ## Context
-What's Cookin'? is a two-part group project that is completed during Weeks 2 and 4 of Module 2 at Turing School of Software Development and Design. We worked as a team of four, implementing mob coding, driver-navigator paired coding, and some independent coding. Part 1 took us approximately 60 hours to complete. We used a thorough DTR, calendaring, GitHub project board, daily stand-ups, and the GitHub workflow to communicate while balancing project work with our full-time coursework and working across multiple time zones. The spec for this project can be found [here](https://frontend.turing.edu/projects/whats-cookin-part-one.html).
+What's Cookin'? is a two-part group project that is completed during Weeks 2 and 4 of Module 2 at Turing School of Software Development and Design. We worked as a team of four, implementing mob coding, driver-navigator paired coding, and independent coding. Part 1 took us approximately 60 hours to complete, and Part 2 took us approximately 50 hours for a total of approximately 110 hours. We used a thorough DTR, calendaring, and an Agile/Scrum Workflow to communicate while balancing project work with our full-time coursework and working across multiple time zones. The specs for each part of this project can be found [here](https://frontend.turing.edu/projects/whats-cookin-part-one.html) and [here](https://frontend.turing.edu/projects/whats-cookin-part-two.html).
 
 ## Contributors
 - Lauren Frazier [GitHub](https://github.com/FrazierLE) | [LinkedIn](https://www.linkedin.com/in/lauren-frazier-745053188/)
@@ -46,7 +46,7 @@ HTML | CSS | JavaScript | Figma | Webpack | API | Mocha and Chai | Chrome Dev To
 - Built a fully functional web application to meet the MVP outlined in the project spec 
 - Building a web accplication that is fully tabbable and includes tab focus to improve the user experience and passes the Lighthouse Accessibility Audit at 100%
 - Successfully learned and implemented API fetch calls
-- Highly successful team collaboration due thorough DTR, calendaring, and Agile/Scrum workflow
+- Highly successful team collaboration due thorough DTR, calendaring, and Agile/Scrum Workflow
 - Learned to use Figma to design our website and GitHub Projects to manage our work as a team
 
 ## Challenges 😅
