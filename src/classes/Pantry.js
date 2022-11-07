@@ -2,7 +2,7 @@ class Pantry {
   constructor(pantryData) {
     this.pantryData = pantryData;
     this.ingredientsNeeded = [];
-    this.userCanCook
+    this.userCanCook;
   }
   
  determineIngredientsNeeded(recipe) {
