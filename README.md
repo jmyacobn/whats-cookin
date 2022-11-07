@@ -4,7 +4,14 @@
 What's Cookin'? is an interactive, web-based application that allows users to view a list of recipes they want to cook and plan their meals and shopping trips accordingly. Using HTML, CSS, JavaScript, and APIs, we built our app to allow users to view recipes, filter recipes by tag, search recipes by name, and save their favorite recipes in a single place. Users are able to filter recipes and search for recipes by name on their favorites page as well. When a user clicks on any recipe, they will be provided with a list of ingredients with their quantities, an estimate of the total cost to make this recipe, and step-by-step instructions for cooking.
 
 ## Preview of Application
-![Brief features gif](https://media.giphy.com/media/V4bSMD3CFTpIQhFgDd/giphy.gif)
+### Search Functionality
+![Search feature gif](https://media.giphy.com/media/RoEGoo8vNhpwDRlaJV/giphy.gif)
+### Filter Functionality
+![Filter feature gif](https://media.giphy.com/media/iwT2GfYsmg78MQN8Py/giphy.gif)
+### Save Recipe Functionality
+![Save Recipe gif](https://media.giphy.com/media/t45tqOWXPQBsPGWULl/giphy.gif)
+### Add to Pantry and Cook Recipe Functionality
+![Filter feature gif](https://media.giphy.com/media/pBaKSwHqVe9QmXOgg6/giphy.gif)
 
 ## Installation Instructions
 1. This website fetches data from an API, so you will need to clone down and run `git clone github@github.com:turingschool/What-s-cookin--starter-kit-API.git`.
