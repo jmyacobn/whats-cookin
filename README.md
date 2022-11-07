@@ -43,7 +43,8 @@ What's Cookin'? is a two-part group project that is completed during Weeks 2 and
 HTML | CSS | JavaScript | Figma | Webpack | API | Mocha and Chai | Chrome Dev Tools | GitHub Project Board | Lighthouse Accessibility Audit
 
 ## Wins 🏆
-- Built a fully functional web application to meet the MVP outlined in the project spec that passes the Lighthouse Accessibility Audit at 100% and is fully tabbable with tab focus to improve the user experience
+- Built a fully functional web application to meet the MVP outlined in the project spec 
+- Building a web accplication that is fully tabbable and includes tab focus to improve the user experience and passes the Lighthouse Accessibility Audit at 100%
 - Successfully learned and implemented API fetch calls
 - Highly successful team collaboration due thorough DTR, calendaring, and Agile/Scrum workflow
 - Learned to use Figma to design our website and GitHub Projects to manage our work as a team
