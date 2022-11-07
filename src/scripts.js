@@ -373,7 +373,7 @@ function findRecipeOnClick(event) {
 }
 
 function findRecipeOnTab(event){
-    if(event.key === " "  || event.key === 'Enter'){
+    if(event.key === ' '   || event.key === 'Enter'){
         event.preventDefault()
         foundRecipe = recipeRepository.recipes.find((current) => {
             return current.id === Number(event.target.id)
