@@ -20,7 +20,6 @@ let apiIngredients
 let postItNote
 let foundIt
 let recipeView = false
-
 const usersURL = 'http://localhost:3001/api/v1/users'
 const recipesURL = 'http://localhost:3001/api/v1/recipes'
 const ingredientsURL = 'http://localhost:3001/api/v1/ingredients'
@@ -49,6 +48,7 @@ const pantryTable = document.querySelector('#pantry-table')
 const navMessage = document.querySelector('.current-view-message')
 const addButton = document.querySelector('#add-button')
 const inputQuantity = document.querySelector('#quantity-input')
+let pantryInputs = [inputQuantity, selectIngredient]
 const cookRecipeButton = document.querySelector('#cook-recipe-button')
 const errorMessage = document.querySelector('#error-handling')
 const cookStatusSection = document.querySelector('#can-cook-section')
@@ -68,12 +68,31 @@ favoriteRecipeButton.addEventListener('click', addRecipeToFavorites)
 removeRecipeButton.addEventListener('click', removeRecipeFromFavorites)
 favoriteButton.addEventListener('click', displayFavoritesPage)
 pantryButton.addEventListener('click', displayPantryPage)
-addButton.addEventListener('click', addItemToPantry)
+addButton.addEventListener('click', () => {
+    addButton.disabled = true
+    addItemToPantry()
+})
 cookRecipeButton.addEventListener('click', cookRecipe)
+pantryInputs.forEach(input => {
+    input.addEventListener('input', () => {
+        if(inputQuantity.value !== '' && selectIngredient.value !== 'Choose Ingredient') {
+            addButton.disabled = false
+        } else {
+            addButton.disabled = true
+        }
+    })
+})
 inputQuantity.addEventListener('keypress', (event) => {
     if(event.key === "Enter"){
         event.preventDefault();
         addItemToPantry()
+    }
+})
+searchBar.addEventListener('input', () => {
+    if(searchBar.value !== '') {
+        submitButton.disabled = false
+    } else {
+        submitButton.disabled = true
     }
 })
 searchBar.addEventListener('keypress', (event) => {
@@ -87,8 +106,10 @@ searchBar.addEventListener('keypress', (event) => {
 })
 submitButton.addEventListener('click', () => {
     if (homeView) {
+        submitButton.disabled = true
         searchHomeRecipeByName()
     } else {
+        submitButton.disabled = true
         searchFavoriteRecipeByName()
     }
 })
@@ -184,7 +205,7 @@ function giveCookingFeedback() {
         displayMissingIngr()
         hide([cookRecipeButton, favoriteRecipeButton])
         show([cookStatusSection, ingredientsNeededToCook, removeRecipeButton, favoriteButton])
-    } 
+    }
     else if(user.pantry.userCanCook) {
         show([cookRecipeButton, favoriteButton])
         hide([ingredientsNeededToCook, cookStatusSection, favoriteRecipeButton])
@@ -519,4 +540,3 @@ function cookRecipe() {
     }, 4000)
     user.removeRecipesToCook(foundRecipe)
 }
-

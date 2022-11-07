@@ -25,7 +25,7 @@
       <form class="filter-section" id="filterSection">
         <fieldset class="search">
             <input type="text" class="search-field" placeholder="Search..." id="search-bar">
-          <button type="button" class="submit-search-button" id="submit-search-button">Search</button>
+          <button type="button" class="submit-search-button" id="submit-search-button" disabled>Search</button>
         </fieldset>
         <datalist class = "tags" id="tags">
           <menu class="category-and-reset-container">
@@ -141,14 +141,14 @@
             <select name="ingredients" id="ingredient-drop-down-menu" class="selectMenu">
             </select>
             <form class="quantity">
-              <input type="text" placeholder="quantity" class="quantityInput" id="quantity-input">
+              <input type="number" placeholder="quantity" class="quantityInput" id="quantity-input">
             </form>
-            <button type="button" class="addButton" id="add-button">Add to Pantry</button>
+            <button type="button" class="addButton" id="add-button" disabled>Add to Pantry</button>
         </menu>
-        <div>
-          <span>*Required Field*</span>
-          <span>*Required Field*</span>
-        </div>
+        <label class="required-message">
+          <p class="message"><span>*</span>Required Field<span>*</span></p>
+          <p class="message"><span>*</span>Number Required<span>*</span></p>
+        </label>
       <section id="error-handling"></section>
         <section class="pantryItems">
           <section class="ingredientsPantry">
