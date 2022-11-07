@@ -40,21 +40,20 @@ What's Cookin'? is a two-part group project that is completed during Weeks 2 and
 - **Make network requests to retrieve data**
 
 ## Technology Used 💻
-HTML | CSS | JavaScript | Figma | Webpack | API | Mocha and Chai | Chrome Dev Tools | GitHub Project Board | Lighthouse Accessbility
+HTML | CSS | JavaScript | Figma | Webpack | API | Mocha and Chai | Chrome Dev Tools | GitHub Project Board | Lighthouse Accessibility Audit
 
 ## Wins 🏆
-### Part 1
-- Built fully functional site to meet the MVP outlined in the project spec
+- Built a fully functional web application to meet the MVP outlined in the project spec that passes the Lighthouse Accessibility Audit at 100% and is fully tabbable with tab focus to improve the user experience
 - Successfully learned and implemented API fetch calls
 - Highly successful team collaboration due thorough DTR, calendaring, and Agile/Scrum workflow
 - Learned to use Figma to design our website and GitHub Projects to manage our work as a team
 
 ## Challenges 😅
-### Part 1
 - Deleting recipes from our saved recipe view with a double click, while using a single click to view recipe details
 - Initially, accessing the data in our fetch calls
 
 ## Future Features
 - Allow users to select multiple tags on both the home and saved recipe views
 - Allow users to customize the recipe details by choosing a serving size
+- Update the users pantry for them with the click of a button once they have all ingredients or create a checklist that they click to update as they acquire missing ingredients
 - Allow users to rate recipes and leave comments
